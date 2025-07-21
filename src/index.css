@@ -1,0 +1,26 @@
+@import "tailwindcss";
+
+@font-face {
+  font-family: 'Supermolot';
+  src: url('/src/assets/fonts/TT\ Supermolot\ Neue\ Trial\ Extended\ DemiBold.ttf') format('woff');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'MAK';
+  src: url('/src/assets/fonts/MAK.woff') format('woff');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+.font-mak {
+    font-family: 'MAK', sans-serif;
+}
+
+.font-supermolot {
+    font-family: 'Supermolot', sans-serif;
+}
+
