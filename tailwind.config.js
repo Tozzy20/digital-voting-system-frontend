@@ -5,7 +5,7 @@ export default {
     "./src/**/*.{js,ts,jsx,tsx}", // Это важно для React-компонентов
   ],
   theme: {
-    extend: {},
-  },
+    extend: { },
   plugins: [],
+},
 }
