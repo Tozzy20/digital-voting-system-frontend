@@ -1,6 +1,7 @@
 import React from "react";
 import { Avatar, AvatarFallback } from "/src/components/ui/avatar";
 import { Button } from "/src/components/ui/button";
+import { Link } from "react-router-dom";
 
 export const HeaderMain = () => {
   const navItems = [
@@ -45,7 +46,9 @@ export const HeaderMain = () => {
           <div className="text-white text-base whitespace-nowrap">
             Фамилия И.О.
           </div>
+          <Link to='/login'>
           <img className="w-8 h-8" src="/src/assets/images/user-circle.png" alt="Аватар" />
+          </Link>
         </div>
       </div>
     </header>

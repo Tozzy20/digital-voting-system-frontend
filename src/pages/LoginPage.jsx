@@ -8,10 +8,6 @@ const LoginPage = () => {
 
             <div className="flex flex-col items-center justify-center min-h-[calc(100vh-100px)] bg-gray-100">
 
-            <Link to="/main" className="block border border-white text-center rounded-xl px-[20px] py-[16px] w-full">
-                                Авторизация
-            </Link>
-
                 {/* Заголовок */}
                 <h1 className="text-[40px] mb-6 w-[264px] h-[48px] font-mak">Авторизация</h1>
 
