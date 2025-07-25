@@ -9,7 +9,10 @@
     "endDate": "22.08.2025",
     "endTime": "17:00",
     "plannedCompletionDate": "25.08.2025",
-    "plannedCompletionTime": "18:00"
+    "plannedCompletionTime": "18:00",
+    "firstName" : "Алексей",
+    "lastName" : "Иванов",
+    "patronymic" : "Иванович"
   },
   {
     "id": 2,
@@ -21,7 +24,10 @@
     "endDate": "10.09.2025",
     "endTime": "16:00",
     "plannedCompletionDate": "12.09.2025",
-    "plannedCompletionTime": "17:00"
+    "plannedCompletionTime": "17:00",
+    "firstName" : "Алексей",
+    "lastName" : "Иванов",
+    "patronymic" : "Иванович"
   },
   {
     "id": 3,
@@ -33,7 +39,10 @@
     "endDate": "12.07.2025",
     "endTime": "15:00",
     "plannedCompletionDate": "15.07.2025",
-    "plannedCompletionTime": "16:00"
+    "plannedCompletionTime": "16:00",
+    "firstName" : "Алексей",
+    "lastName" : "Иванов",
+    "patronymic" : "Иванович"
   },
    {
     "id": 4,
@@ -45,7 +54,10 @@
     "endDate": "17.06.2025",
     "endTime": "17:00",
     "plannedCompletionDate": "20.06.2025",
-    "plannedCompletionTime": "18:00"
+    "plannedCompletionTime": "18:00",
+    "firstName" : "Алексей",
+    "lastName" : "Иванов",
+    "patronymic" : "Иванович"
   },
   {
     "id": 5,
@@ -57,6 +69,24 @@
     "endDate": "08.07.2025",
     "endTime": "16:00",
     "plannedCompletionDate": "10.07.2025",
-    "plannedCompletionTime": "17:00"
+    "plannedCompletionTime": "17:00",
+    "firstName" : "Алексей",
+    "lastName" : "Иванов",
+    "patronymic" : "Иванович"
+  },
+  {
+    "id": 6,
+    "isActive": true,
+    "title": "Выбор поставщика офисных принадлежностей",
+    "groupName": "Административный отдел",
+    "startDate": "01.07.2025",
+    "startTime": "08:00",
+    "endDate": "08.07.2025",
+    "endTime": "16:00",
+    "plannedCompletionDate": "10.07.2025",
+    "plannedCompletionTime": "17:00",
+    "firstName" : "Алексей",
+    "lastName" : "Иванов",
+    "patronymic" : "Иванович"
   }
 ]

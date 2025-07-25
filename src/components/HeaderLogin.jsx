@@ -1,7 +1,7 @@
 const HeaderLogin = () => {
     return (
         <header className="bg-[#212121] text-white font-supermolot shadow-lg h-[100px]">
-                <div className="container ml-[240px] py-4 flex justify-between items-center">
+                <div className="container mx-auto px-4 py-4 flex justify-between items-center">
                     <div className="flex items-center space-x-4">
                         {/* logo */}
                         <div className="flex">
@@ -17,7 +17,7 @@ const HeaderLogin = () => {
                         </a>
                     </div>
 
-                    <div className="flex items-center mr-[95px] space-x-4">
+                    <div className="flex items-center space-x-4">
                         <span className="">Авторизация</span>
                         {/* icon profile */}
                         <a href="#">

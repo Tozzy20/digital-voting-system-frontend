@@ -2,7 +2,7 @@ import React, { useState, Fragment } from 'react';
 import pollsData from '/pollsData.json';
 
 
-const PollCard = ({ isActive, title, groupName, startDate, startTime, endDate, endTime, plannedCompletionDate, plannedCompletionTime }) => {
+const PollCard = ({ isActive, title, groupName, startDate, startTime, endDate, endTime, plannedCompletionDate, plannedCompletionTime, firstName, lastName, patronymic }) => {
     const statusClasses = isActive
         ? "bg-green-100 text-green-700"
         : "bg-yellow-100 text-yellow-700";
@@ -12,15 +12,15 @@ const PollCard = ({ isActive, title, groupName, startDate, startTime, endDate, e
         : "Голосование на этапе регистрации";
 
     const statusIconSrc = isActive
-        ? "/src/assets/icons/fire.svg" 
+        ? "/src/assets/icons/fireGreen.svg" 
         : "/src/assets/icons/books.svg"; 
 
     return (
-        <div className="flex flex-col space-y-4 rounded-[20px] bg-white shadow-lg p-[32px] w-[1037px]">
+        <div className="flex flex-col space-y-4 rounded-[20px] bg-white shadow-lg p-[24px] w-[1037px]">
             <h3 className="text-xl font-semibold text-gray-800">{title}</h3>
             <p className="text-gray-600">{groupName}</p>
 
-            <div className={`flex items-center space-x-2 px-3 py-1 rounded-full w-fit ${statusClasses}`}>
+            <div className={`flex items-center space-x-2 p-[10px] rounded-[8px] w-fit ${statusClasses}`}>
                 <img src={statusIconSrc} alt="Status Icon" className="w-5 h-5" />
                 <span className="text-sm font-medium">{statusText}</span>
             </div>
@@ -74,9 +74,9 @@ const PollCard = ({ isActive, title, groupName, startDate, startTime, endDate, e
             </div>
 
             <div className="flex justify-between items-center mt-4">
-                <p className="font-semibold text-gray-800">Фамилия И. О.</p>
+                <p className="font-semibold text-gray-800">{lastName} {firstName} {patronymic}</p>
                 <div className="flex space-x-4">
-                    <button className="text-blue-600 font-medium">Подробнее</button>
+                    <button className="font-medium">Подробнее</button>
                     <button>
                         <img src="/src/assets/icons/trash.svg" alt="Trash Icon" className="w-6 h-6" />
                     </button>
@@ -101,7 +101,7 @@ const PollsList = () => {
         <Fragment>
             <div className="flex flex-col space-y-[20px] rounded-[20px] bg-white shadow-lg p-[24px] w-[1037px]">
                 <div className="h-[54px] flex items-center justify-between">
-                    <div className="flex font-supermolotM">
+                    <div className="flex font-supermolotM space-x-[10px]">
                         <button
                             className={`flex items-center space-x-2 px-[20px] py-[15px] rounded-[8px] ${
                                 activeTab === 'active' ? 'bg-green-500 text-white' : 'text-gray-600 hover:bg-gray-200'
@@ -116,7 +116,7 @@ const PollsList = () => {
                             <span>Активные голосования</span>
                         </button>
                         <button
-                            className={`flex items-center space-x-2 px-[20px] py-[15px] rounded-[8px] ${
+                            className={`flex items-center space-x-2 px-[20px] py-[15px] rounded-[8px] transition-colors duration-200 ${
                                 activeTab === 'completed' ? 'bg-green-500 text-white' : 'text-gray-600 hover:bg-gray-200'
                             }`}
                             onClick={() => setActiveTab('completed')}
@@ -143,7 +143,7 @@ const PollsList = () => {
                 </div>
             </div>
 
-            <div className="flex flex-col space-y-[10px] mt-8">
+            <div className="flex flex-col space-y-[10px] mt-[10px]">
                 {filteredPolls.map((poll) => (
                     <PollCard
                         key={poll.id}
@@ -156,6 +156,9 @@ const PollsList = () => {
                         endTime={poll.endTime}
                         plannedCompletionDate={poll.plannedCompletionDate}
                         plannedCompletionTime={poll.plannedCompletionTime}
+                        firstName={poll.firstName}
+                        lastName={poll.lastName}
+                        patronymic={poll.patronymic}
                     />
                 ))}
             </div>

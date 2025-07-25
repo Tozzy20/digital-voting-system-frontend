@@ -18,7 +18,7 @@ const Sidebar = ({ activeItem, onMenuItemClick }) => { // Принимаем act
           }`}
           onClick={() => handleItemClick('create-poll')}
         >
-          <img src='/src/assets/icons/plus.svg' alt="Плюс иконка"></img>
+          <img src='/src/assets/icons/plus.svg'></img>
           <span className={`px-[20.76px] ${activeItem === 'create-poll' ? 'text-blue-800' : 'text-gray-700'}`}>
             Создать голосование
           </span>
@@ -33,7 +33,7 @@ const Sidebar = ({ activeItem, onMenuItemClick }) => { // Принимаем act
           }`}
           onClick={() => handleItemClick('poll-templates')}
         >
-          <img src="/src/assets/icons/template.svg" alt="Шаблон иконка"></img>
+          <img src="/src/assets/icons/template.svg"></img>
           <span className={`px-[20.76px] ${activeItem === 'poll-templates' ? 'text-blue-800' : 'text-gray-700'}`}>
             Шаблоны голосований
           </span>
@@ -48,7 +48,7 @@ const Sidebar = ({ activeItem, onMenuItemClick }) => { // Принимаем act
           }`}
           onClick={() => handleItemClick('polls')}
         >
-          <img src='/src/assets/icons/people.svg' alt="Люди иконка"></img>
+          <img src='/src/assets/icons/people.svg'></img>
           <span className={`px-[20.76px] ${activeItem === 'polls' ? 'text-blue-800' : 'text-gray-700'}`}>
             Голосования
           </span>
