@@ -1,35 +1,30 @@
-import React, { useState } from "react";
+import React from "react";
 
-const Sidebar = () => {
-  const [activeItem, setActiveItem] = useState('create-poll'); // 'create-poll' as initial active item
-
+const Sidebar = ({ activeItem, onMenuItemClick }) => { // Принимаем activeItem и onMenuItemClick как пропсы
   const handleItemClick = (itemKey) => {
-    setActiveItem(itemKey);
-    // You would typically pass this `itemKey` up to a parent component
-    // or use a router (like React Router) to change the main content displayed.
+    onMenuItemClick(itemKey); // Вызываем функцию из родительского компонента
     console.log(`Активный пункт: ${itemKey}`);
   };
 
   return (
-    <div className="bg-white rounded-[20px] shadow-lg p-6 w-[393px] h-[216px]">
+    <div className="bg-white rounded-[20px] shadow-lg p-[32px] w-[393px] h-[216px]">
       <ul className="space-y-[10px] font-supermolotM">
-        {/* Item: Создать голосование */}
+        {/* Создать голосование */}
         <li
           className={`flex items-center p-[10px] rounded-[8px] cursor-pointer transition-colors duration-200 ${
             activeItem === 'create-poll'
-              ? 'bg-[#D2F0FF]' // Active state background
-              : 'hover:bg-gray-100' // Inactive state hover
+              ? 'bg-[#D2F0FF]'
+              : 'hover:bg-gray-100'
           }`}
           onClick={() => handleItemClick('create-poll')}
         >
           <img src='/src/assets/icons/plus.svg' alt="Плюс иконка"></img>
-          {/* Apply specific text color for active item if desired, otherwise it will inherit from a global style or stay default */}
           <span className={`px-[20.76px] ${activeItem === 'create-poll' ? 'text-blue-800' : 'text-gray-700'}`}>
             Создать голосование
           </span>
         </li>
 
-        {/* Item: Шаблоны голосований */}
+        {/* Шаблоны голосований */}
         <li
           className={`flex items-center p-[10px] rounded-[8px] cursor-pointer transition-colors duration-200 ${
             activeItem === 'poll-templates'
@@ -44,7 +39,7 @@ const Sidebar = () => {
           </span>
         </li>
 
-        {/* Item: Голосования */}
+        {/*Голосования */}
         <li
           className={`flex items-center p-[10px] rounded-[8px] cursor-pointer transition-colors duration-200 ${
             activeItem === 'polls'

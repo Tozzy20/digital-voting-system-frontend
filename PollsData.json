@@ -1,0 +1,62 @@
+[
+  {
+    "id": 1,
+    "isActive": true,
+    "title": "Голосование по выбору лучшего дизайна нового логотипа компании",
+    "groupName": "Отдел маркетинга и дизайна",
+    "startDate": "15.08.2025",
+    "startTime": "09:00",
+    "endDate": "22.08.2025",
+    "endTime": "17:00",
+    "plannedCompletionDate": "25.08.2025",
+    "plannedCompletionTime": "18:00"
+  },
+  {
+    "id": 2,
+    "isActive": false,
+    "title": "Опрос удовлетворенности сотрудников условиями труда",
+    "groupName": "Все сотрудники компании",
+    "startDate": "01.09.2025",
+    "startTime": "10:00",
+    "endDate": "10.09.2025",
+    "endTime": "16:00",
+    "plannedCompletionDate": "12.09.2025",
+    "plannedCompletionTime": "17:00"
+  },
+  {
+    "id": 3,
+    "isActive": true,
+    "title": "Выбор места для корпоративного мероприятия",
+    "groupName": "Команда организации мероприятий",
+    "startDate": "05.07.2025",
+    "startTime": "11:00",
+    "endDate": "12.07.2025",
+    "endTime": "15:00",
+    "plannedCompletionDate": "15.07.2025",
+    "plannedCompletionTime": "16:00"
+  },
+   {
+    "id": 4,
+    "isActive": false,
+    "title": "Голосование за новый формат еженедельных совещаний",
+    "groupName": "Руководители отделов",
+    "startDate": "10.06.2025",
+    "startTime": "09:00",
+    "endDate": "17.06.2025",
+    "endTime": "17:00",
+    "plannedCompletionDate": "20.06.2025",
+    "plannedCompletionTime": "18:00"
+  },
+  {
+    "id": 5,
+    "isActive": true,
+    "title": "Выбор поставщика офисных принадлежностей",
+    "groupName": "Административный отдел",
+    "startDate": "01.07.2025",
+    "startTime": "08:00",
+    "endDate": "08.07.2025",
+    "endTime": "16:00",
+    "plannedCompletionDate": "10.07.2025",
+    "plannedCompletionTime": "17:00"
+  }
+]
