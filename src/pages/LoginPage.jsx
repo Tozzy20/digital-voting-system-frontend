@@ -1,8 +1,11 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom'; // Импортируем useNavigate
 import HeaderLogin from '/src/components/HeaderLogin';
+import { useAuth } from '../context/AuthProvider'
 
 const LoginPage = () => {
+
+    const {login} = useAuth();
 
     const [formData, setFormData] = useState({
         email: '',
@@ -51,15 +54,14 @@ const LoginPage = () => {
 
             if (response.ok) {
                 
-                setMessage('Авторизация прошла успешно!');
-                
                 if (data.access_token) {
-                    localStorage.setItem('access_token', data.access_token);
+                    login(data.access_token);
+                    setMessage('Авторизация прошла успешно!');
                 
                 
                 // Перенаправление на защищенную страницу
                 setTimeout(() => {
-                    navigate('/');
+                    navigate('/profile');
                 }, 1000);
             
                 } else setMessage('Авторизация прошла успешно, но токен не был получен.');

@@ -1,6 +1,6 @@
 const Header = () => {
     return (
-        <header class="w-full h-24 bg-neutral-800 flex items-center justify-between">
+        <header class="w-full h-24 bg-neutral-800 font-supermolotM flex items-center justify-between">
         <nav class="ml-[240px] hidden lg:flex items-center gap-6">
             <div class="w-16 h-16 bg-stone-300 rounded-full"></div>
             <div class="text-white text-base font-semibold">Главная</div>

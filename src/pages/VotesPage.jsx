@@ -17,7 +17,7 @@ const VotesPage = () => {
       <Header />
 
       <div className="ml-[240px] mt-[60px] mr-[240px]">
-        <Breadcrumbs />
+        <Breadcrumbs title="Главная / Голосования" />
         <PageTitle title="Голосования" />
 
         <div className="flex mt-[24px] gap-4">
