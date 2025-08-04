@@ -1,29 +1,109 @@
+import React, { useState } from 'react';
 import HeaderLogin from "/src/components/HeaderLogin";
-import { Link } from 'react-router-dom';
-
+import { Link, useNavigate } from 'react-router-dom';
 
 const RegisterPage = () => {
+    const [formData, setFormData] = useState({
+        first_name: '',
+        last_name: '',
+        surname: '',
+        email: '',
+        phone: '',
+        role_id: 1,
+        password: '',
+        confirm_password: '',
+    });
+    const [message, setMessage] = useState('');
+    const navigate = useNavigate(); // Инициализируем хук для навигации
+
+    // Универсальный обработчик изменений в полях ввода
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+
+        // Обрабатываем role_id отдельно, чтобы убедиться, что это число
+        let parsedValue = value;
+        if (name === 'role_id') {
+            parsedValue = parseInt(value, 10);
+        }
+        
+        setFormData(prevState => ({
+            ...prevState,
+            [name]: parsedValue 
+        }));
+    };
+
+    // Обработчик отправки формы на бэкенд
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        setMessage('');
+
+        // Клиентская валидация паролей
+        if (formData.password !== formData.confirm_password) {
+            setMessage('Пароли не совпадают!');
+            return;
+        }
+
+        // Подготовка данных для отправки
+        const dataToSend = {
+            first_name: formData.first_name,
+            last_name: formData.last_name,
+            surname: formData.surname,
+            email: formData.email,
+            phone: formData.phone,
+            role_id: formData.role_id,
+            password: formData.password,
+            confirm_password: formData.confirm_password,
+        };
+
+        try {
+            const response = await fetch('http://192.168.31.241:8000/api/auth/register', { 
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(dataToSend),
+            });
+
+            const data = await response.json();
+
+            if (response.ok) {
+                
+                setMessage('Регистрация прошла успешно!');
+                
+                
+                
+                setTimeout(() => {
+                    navigate('/login');
+                }, 2000);
+
+            } else {
+                // Обработка ошибок с сервера
+                setMessage(data.message || 'Ошибка регистрации. Попробуйте еще раз.');
+            }
+
+        } catch (error) {
+            console.error('Ошибка:', error);
+            setMessage('Не удалось подключиться к серверу.');
+        }
+    };
+
     return (
         <>
-        <HeaderLogin />
-
+            <HeaderLogin />
             <div className="flex flex-col items-center font-supermolot justify-center min-h-[calc(100vh-100px)] bg-gray-100">
-                {/* Заголовок */}
                 <h1 className="text-[40px] mb-6 w-[264px] h-[48px] font-mak">Регистрация</h1>
-                
-                <div className="flex bg-white w-[816px] h-[500px] shadow-lg rounded-[20px] overflow-hidden">
+                <div className="flex bg-white w-[816px] h-[700px] shadow-lg rounded-[20px] overflow-hidden">
                     {/* Левая панель */}
-                    <div className="bg-[#212121] rounded-[20px] text-white p-6 w-[285px] h-[500px] flex flex-col justify-between">
+                    <div className="bg-[#212121] rounded-[20px] text-white p-6 w-[285px] flex flex-col justify-between">
                         <div className="flex mb-4">
                             <button className="bg-[#303030] mr-[10px] p-[10px] rounded-lg">RU</button>
                             <button>ENG</button>
                         </div>
-
                         <div className="justify-between">
                             <span className="text-sm w-[245px] h-[57px]">
                                 Панель управления системой электронных голосований
                             </span>
-                            <div className="w-full h-[20px]"></div> {/*Разделитель*/}
+                            <div className="w-full h-[20px]"></div>
                             <Link to="/login" className="block border border-white text-center rounded-xl px-[20px] py-[16px] w-full">
                                 Авторизация
                             </Link>
@@ -32,58 +112,108 @@ const RegisterPage = () => {
 
                     {/* Форма */}
                     <div className="px-[32px] py-6 w-[467px] grow"> 
-                        <div className="flex mb-4 gap-[12px]">
+                        <form onSubmit={handleSubmit}>
 
-                            <div className="flex flex-col">
-                                <label for="Фамилия" className="mb-1">Фамилия</label>
-                                <input type="text" id="Фамилия" placeholder="Иванов" className="border rounded-[8px] w-[150px] h-[51px] px-3 py-2" />
+                            <label className="block mb-2 text-base">Войти как</label>
+                            <select 
+                                className="w-full border rounded-[8px] px-3 py-2 h-[51px] mb-4"
+                                name="role_id"
+                                value={formData.role_id}
+                                onChange={handleChange}>
+                                <option value={1}>Сотрудник</option>
+                                <option value={2}>Начальник</option>
+                                <option value={3}>Администратор</option>
+                            </select>
+
+                            <div className="flex mb-4 gap-[12px]">
+                                <div className="flex flex-col">
+                                    <label htmlFor="last_name" className="mb-1">Фамилия</label>
+                                    <input 
+                                        type="text" 
+                                        id="last_name" 
+                                        name="last_name"
+                                        placeholder="Иванов" 
+                                        className="border rounded-[8px] w-[150px] h-[51px] px-3 py-2" 
+                                        value={formData.last_name}
+                                        onChange={handleChange}
+                                    />
+                                </div>
+                                <div className="flex flex-col">
+                                    <label htmlFor="first_name" className="mb-1">Имя</label>
+                                    <input  
+                                        type="text" 
+                                        id="first_name" 
+                                        name="first_name"
+                                        placeholder="Иван" 
+                                        className="border rounded-[8px] w-[115px] h-[51px] px-3 py-2" 
+                                        value={formData.first_name}
+                                        onChange={handleChange}
+                                    />
+                                </div>
+                                <div className="flex flex-col">
+                                    <label htmlFor="surname" className="mb-1">Отчество</label>
+                                    <input 
+                                        type="text" 
+                                        id="surname" 
+                                        name="surname"
+                                        placeholder="Иванович" 
+                                        className="border rounded-[8px] w-[178px] h-[51px] px-3 py-2" 
+                                        value={formData.surname}
+                                        onChange={handleChange}
+                                    />
+                                </div>
                             </div>
+                            
+                            <label className="block mb-2 text-base">Электронная почта</label>
+                            <input
+                                type="email"
+                                name="email"
+                                placeholder="ivanovivan@mail.ru"
+                                className="w-full border h-[51px] rounded-[8px] px-3 py-2 mb-4"
+                                value={formData.email}
+                                onChange={handleChange}
+                            />
 
-                            <div className="flex flex-col">
-                                <label for="Имя" className="mb-1">Имя</label>
-                                <input type="text" id="Имя" placeholder="Иван" className="border rounded-[8px] w-[115px] h-[51px] px-3 py-2" />
-                            </div>
+                            <label className="block mb-2 text-base">Телефон</label>
+                            <input
+                                type="tel"
+                                name="phone"
+                                placeholder="+7XXXXXXXXXX"
+                                maxLength={12}
+                                className="w-full border h-[51px] rounded-[8px] px-3 py-2 mb-4"
+                                value={formData.phone}
+                                onChange={handleChange}
+                            />
 
-                            <div className="flex flex-col">
-                                <label for="Отчество" className="mb-1">Отчество</label>
-                                <input type="text" id="Отчество" placeholder="Иванович" className="border rounded-[8px] w-[178px] h-[51px] px-3 py-2" />
-                            </div>
+                            <label className="block mb-2 text-base">Пароль</label>
+                            <input
+                                type="password"
+                                name="password"
+                                placeholder="******"
+                                className="w-full border h-[51px] rounded-[8px] px-3 py-2 mb-2"
+                                value={formData.password}
+                                onChange={handleChange}
+                            />
 
-                        </div>
+                            <label className="block mb-2 text-base">Повторите пароль</label>
+                            <input
+                                type="password"
+                                name="confirm_password"
+                                placeholder="******"
+                                className="w-full border h-[51px] rounded-[8px] px-3 py-2 mb-2"
+                                value={formData.confirm_password}
+                                onChange={handleChange}
+                            />
 
-                        
+                            {message && <p className="text-red-500 text-sm mt-2">{message}</p>}
 
-                        <label className="block mb-2 text-base">Электронная почта</label>
-                        <input
-                            type="email"
-                            placeholder="ivanovivan@mail.ru"
-                            className="w-full border h-[51px] rounded-[8px] px-3 py-2 mb-4"
-                        />
-
-                        <label className="block mb-2 text-base">Повторите пароль</label>
-                        <input
-                            type="password"
-                            placeholder="******"
-                            className="w-full border h-[51px] rounded-[8px] px-3 py-2 mb-2"
-                        />
-
-                        <label className="block mb-2 text-base">Повторите пароль</label>
-                        <input
-                            type="password"
-                            placeholder="ABC123!"
-                            className="w-full border h-[51px] rounded-[8px] px-3 py-2 mb-2"
-                        />
-
-                        <button className="w-full bg-black font-supermolot text-white px-[20px] py-[16px] rounded-[12px] my-5">
-                            Зарегистрироваться
-                        </button>
+                            <button type="submit" className="w-full bg-black font-supermolot text-white px-[20px] py-[16px] rounded-[12px] my-5">
+                                Зарегистрироваться
+                            </button>
+                        </form>
                     </div>
-
                 </div>
             </div>
-
-
-
         </>
     );
 };

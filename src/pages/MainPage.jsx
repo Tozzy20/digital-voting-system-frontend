@@ -1,11 +1,11 @@
 import React from "react";
 import { Badge } from "/src/components/ui/badge";
 import { Card, CardContent } from "/src/components/ui/card";
-import {HeaderMain} from "/src/components/HeaderMain";
-import { ContentMain } from "/src/components/ContentMain";
-import { StatisticsMain } from "/src/components/StatisticsMain";
-import { UserMain } from "/src/components/UserMain";
-import { VotingMain } from "/src/components/VotingMain";
+import {HeaderMain} from "/src/components/main/HeaderMain";
+import { ContentMain } from "/src/components/main/ContentMain";
+import { StatisticsMain } from "/src/components/main/StatisticsMain";
+import { UserMain } from "/src/components/main/UserMain";
+import { VotingMain } from "/src/components/main/VotingMain";
 import { Link } from 'react-router-dom';
 
 const MainPage = () => {

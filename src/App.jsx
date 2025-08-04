@@ -1,9 +1,9 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
-import LoginPage from "/src/pages/LoginPage.jsx";
-import RegisterPage from "/src/pages/RegisterPage.jsx"
-import MainPage from '/src/pages/MainPage.jsx';
-import MyOfficePage from './pages/MyOfficePage';
+import Votes from './pages/VotesPage'
+import LoginPage from './pages/LoginPage';
+import RegisterPage from './pages/RegisterPage';
+import MainPage from './pages/MainPage';
 
 
 
@@ -12,11 +12,10 @@ function App() {
   return (
     <Router>
       <Routes>
-        <Route path='/' element={<MainPage />} />
-        <Route path='/register' element={<RegisterPage />} />
+        <Route path='/' element={<Votes />} />
         <Route path='/login' element={<LoginPage />} />
-        <Route path='/office' element={<MyOfficePage />} />
-
+        <Route path='/register' element={<RegisterPage />} />
+        <Route path='/main' element={<MainPage />} />
       </Routes>
     </Router>
   );
