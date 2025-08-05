@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useAuth } from '/src/context/AuthProvider.jsx'
+import { getProfileData, updateProfileData } from '/src/services/api.js'
 
 const PersonalData = () => {
     const { authToken } = useAuth();
@@ -16,36 +17,28 @@ const PersonalData = () => {
 
     // GET-запрос
     useEffect(() => {
-        // Проверяем наличие токена. Если его нет, выходим.
+        
         if (!authToken) { 
             return;
         }
 
-        const fetchUserProfile = async () => {
+         const fetchUserProfile = async () => {
             setLoading(true);
+            // setError(null); 
             try {
-                const response = await fetch('http://192.168.31.241:8000/api/users/profile', {
-                    method: 'GET',
-                    headers: {
-                        'Authorization': `Bearer ${authToken}`
-                    }
-                });
-
-                if (!response.ok) {
-                    throw new Error('Не удалось получить данные профиля');
-                }
                 
-                const data = await response.json();
+                const data = await getProfileData(authToken);
                 setFormData(data);
-                setLoading(false);
-
             } catch (error) {
-                console.error('Ошибка:', error);
+                console.error('Ошибка при получении данных профиля:', error);
+                // const errorMessage = error.response?.data?.message || 'Не удалось получить данные профиля';
+                // setError(errorMessage);
+            } finally {
                 setLoading(false);
             }
         };
         fetchUserProfile();
-    }, [authToken]); // useEffect будет запускаться снова, когда authToken изменится
+    }, [authToken]);
 
     // Обработчик изменений в полях формы
     const handleChange = (e) => {
@@ -74,20 +67,7 @@ const PersonalData = () => {
                 email: formData.email
             };
 
-            const response = await fetch('http://192.168.31.241:8000/api/users/profile', {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${authToken}`
-                },
-                body: JSON.stringify(updatableData)
-            });
-
-            if (!response.ok) {
-                const errorData = await response.json();
-                throw new Error(errorData.message || 'Не удалось сохранить изменения');
-            }
-            
+            await updateProfileData(authToken, updatableData);
             console.log('Данные успешно сохранены!');
             
         } catch (error) {

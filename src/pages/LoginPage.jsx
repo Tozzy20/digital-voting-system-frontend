@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom'; // Импортируем useNavigate
+import { Link, useNavigate } from 'react-router-dom'; 
 import HeaderLogin from '/src/components/HeaderLogin';
 import { useAuth } from '../context/AuthProvider'
+import { loginUser } from '../services/api'
 
 const LoginPage = () => {
 
@@ -10,7 +11,7 @@ const LoginPage = () => {
     const [formData, setFormData] = useState({
         email: '',
         password: '',
-        role_id: 1 // Устанавливаем значение по умолчанию, если это необходимо для логики бэкенда
+        role_id: 1 
     });
     const [message, setMessage] = useState('');
     const navigate = useNavigate();
@@ -20,7 +21,7 @@ const LoginPage = () => {
         
         let parsedValue = value;
         if (name === 'role_id') {
-            // Преобразуем значение в число, если это поле для role_id
+            
             parsedValue = parseInt(value, 10);
         }
         
@@ -34,40 +35,20 @@ const LoginPage = () => {
         e.preventDefault();
         setMessage('');
 
-        // Формируем данные для отправки на сервер
-        const dataToSend = {
-            email: formData.email,
-            password: formData.password,
-            role_id: formData.role_id
-        };
 
         try {
-            const response = await fetch('http://192.168.31.241:8000/api/auth/login', { 
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(dataToSend),
-            });
+            const response = await loginUser(formData.email, formData.password, formData.role_id);
+            const { access_token } = response;
 
-            const data = await response.json();
-
-            if (response.ok) {
-                
-                if (data.access_token) {
-                    login(data.access_token);
-                    setMessage('Авторизация прошла успешно!');
-                
-                
-                // Перенаправление на защищенную страницу
-                setTimeout(() => {
-                    navigate('/profile');
-                }, 1000);
+            if (access_token) {
+                login(access_token);
+                setMessage('Авторизация прошла успешно!');
             
-                } else setMessage('Авторизация прошла успешно, но токен не был получен.');
-
+                setTimeout(() => {
+                    navigate('/constructor');
+                }, 1000);
             } else {
-                setMessage(data.message || 'Ошибка авторизации. Проверьте email и пароль.');
+                setMessage('Авторизация прошла успешно, но токен не был получен.');
             }
 
         } catch (error) {
