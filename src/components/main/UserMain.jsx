@@ -41,14 +41,14 @@ export const UserMain = () => {
             key={card.id}
             className="w-full border border-solid border-[#ededed] rounded-[20px] overflow-hidden"
           >
-            <CardContent className="p-6 max-h-[317px]">
+            <CardContent className="p-6">
               <div className="flex flex-col gap-6">
-                <h3 className="[font-family:'TT_Supermolot_Neue_Trl_Ext-Bd',Helvetica] font-normal text-cryptblack text-base">
+                <h3 className="text-cryptblack text-base">
                   {card.title}
                 </h3>
 
                 <div className="flex flex-wrap justify-between">
-                  <div className="[font-family:'TT_Supermolot_Neue_Trl_Ext-Rg',Helvetica] font-normal text-cryptlowgrey text-base">
+                  <div className="font-normal text-base">
                     {card.groupName}
                   </div>
 
@@ -58,39 +58,39 @@ export const UserMain = () => {
                       alt="Longitude"
                       src="/src/assets/images/user0.png"
                     />
-                    <span className="[font-family:'TT_Supermolot_Neue_Trl_Ext-Rg',Helvetica] font-normal text-cryptblack text-base whitespace-nowrap">
+                    <span className="font-normal text-base whitespace-nowrap">
                       {card.location}
                     </span>
                   </div>
                 </div>
 
                 <div className="flex flex-wrap justify-between gap-4">
-                  <div className="flex flex-col gap-2.5 max-w-[399px]">
-                    <Badge className="flex items-center justify-center gap-2.5 p-2.5 bg-cryptyellow text-[#564e13] rounded-lg font-normal hover:bg-cryptyellow">
+                  <div className="flex flex-col gap-2.5 max-w-[400px]">
+                    <Badge className="flex items-center justify-center gap-2.5 p-2.5 text-[#564e13] bg-[#FFFBD0] rounded-lg font-normal">
                       <img
                         className="w-6 h-6"
                         alt="Identification"
                         src="/src/assets/images/user3.png"
                       />
-                      <span className="[font-family:'TT_Supermolot_Neue_Trl_Ext-Md',Helvetica] text-base whitespace-nowrap">
+                      <span className="text-base whitespace-nowrap">
                         {card.status}
                       </span>
                     </Badge>
 
-                    <Badge className="flex items-center justify-center gap-2.5 p-2.5 bg-[#f3f3f3] text-cryptblack rounded-lg font-normal hover:bg-[#f3f3f3]">
+                    <Badge className="flex items-center justify-center gap-2.5 p-2.5 bg-[#f3f3f3] rounded-lg font-normal hover:bg-[#f3f3f3]">
                       <img
                         className="w-6 h-6"
                         alt="File zip"
                         src="/src/assets/images/user4.png"
                       />
-                      <span className="[font-family:'TT_Supermolot_Neue_Trl_Ext-Md',Helvetica] text-base whitespace-nowrap">
+                      <span className="text-base whitespace-nowrap">
                         {card.type}
                       </span>
                     </Badge>
                   </div>
 
                   <div className="flex flex-col gap-2.5 bg-[#fff6f6] rounded-lg p-4">
-                    <div className="[font-family:'TT_Supermolot_Neue_Trl_Ext-Rg',Helvetica] font-normal text-cryptlowgrey text-base">
+                    <div className="text-base">
                       Окончание регистрации
                     </div>
                     <div className="flex items-center gap-4">
@@ -100,7 +100,7 @@ export const UserMain = () => {
                           alt="Calendar"
                           src="/src/assets/images/user2.png"
                         />
-                        <span className="[font-family:'TT_Supermolot_Neue_Trl_Ext-Rg',Helvetica] font-normal text-cryptblack text-base whitespace-nowrap">
+                        <span className="whitespace-nowrap">
                           {card.date}
                         </span>
                       </div>
@@ -110,7 +110,7 @@ export const UserMain = () => {
                           alt="Clock"
                           src="/src/assets/images/user1.png"
                         />
-                        <span className="[font-family:'TT_Supermolot_Neue_Trl_Ext-Rg',Helvetica] font-normal text-cryptblack text-base whitespace-nowrap">
+                        <span className=" whitespace-nowrap">
                           {card.time}
                         </span>
                       </div>
@@ -119,12 +119,12 @@ export const UserMain = () => {
                 </div>
 
                 <div className="flex items-center gap-6 mt-4">
-                  <Button className="bg-cryptblue text-cryptwhite px-5 py-4 rounded-lg hover:bg-cryptblue/90">
-                    <span className="[font-family:'TT_Supermolot_Neue_Trl_Ext-Db',Helvetica] font-normal text-base">
+                  <Button className="bg-blue-500 px-5 py-4 rounded-lg hover:bg-blue-300">
+                    <span className="text-white">
                       Зарегистрироваться
                     </span>
                   </Button>
-                  <span className="[font-family:'TT_Supermolot_Neue_Trl_Ext-Db',Helvetica] font-normal text-cryptred text-base">
+                  <span className="text-cryptred text-red-500">
                     Вы не зарегистрированы
                   </span>
                 </div>

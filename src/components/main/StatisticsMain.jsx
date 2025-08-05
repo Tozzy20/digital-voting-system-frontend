@@ -20,13 +20,13 @@ export const StatisticsMain = () => {
   ];
 
   return (
-    <Card className="max-w-[520px] h-auto rounded-[20px] shadow-[0px_2px_10px_#00000040] overflow-hidden">
+    <Card className="max-w-[520px] h-[100%] rounded-[20px] bg-white shadow-[0px_2px_10px_#00000040] overflow-hidden">
       <CardContent className="p-6">
-        <h2 className="[font-family:'TT_Supermolot_Neue_Trl_Ext-Bd',Helvetica] font-normal text-cryptblack text-xl">
+        <h2 className="text-xl">
           Актуальное
         </h2>
 
-        <p className="mt-4 [font-family:'TT_Supermolot_Neue_Trl_Ext-Bd',Helvetica] font-normal text-cryptblack text-base">
+        <p className="mt-4 text-base">
           Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the
         </p>
 
@@ -37,7 +37,7 @@ export const StatisticsMain = () => {
               className={`${info.bgColor} w-72 rounded-lg border-none`}
             >
               <CardContent className="flex flex-col items-start gap-2.5 px-4 py-2.5">
-                <p className="[font-family:'TT_Supermolot_Neue_Trl_Ext-Rg',Helvetica] font-normal text-cryptlowgrey text-base">
+                <p className="text-base">
                   {info.title}
                 </p>
                 <div className="flex items-center gap-4 w-full">
@@ -77,10 +77,10 @@ export const StatisticsMain = () => {
               />
 
               <div className="flex flex-col w-[178px] items-center gap-2.5 absolute top-[142px] left-[97px]">
-                <div className="[font-family:'TT_Supermolot_Neue_Trl_Ext-XBd',Helvetica] font-normal text-cryptblack text-[40px] text-center">
+                <div className="font-normal text-cryptblack text-[40px] text-center">
                   65%
                 </div>
-                <div className="[font-family:'TT_Supermolot_Neue_Trl_Ext-Rg',Helvetica] font-normal text-cryptlowgrey text-base text-center whitespace-nowrap">
+                <div className="font-normal text-cryptlowgrey text-base text-center whitespace-nowrap">
                   Времени прошло
                 </div>
               </div>
@@ -102,7 +102,7 @@ export const StatisticsMain = () => {
           </button>
         </div>
 
-        <Button className="w-72 mt-10 bg-cryptgreen hover:bg-cryptdarkgreen text-cryptwhite rounded-lg px-5 py-4 [font-family:'TT_Supermolot_Neue_Trl_Ext-Db',Helvetica] font-normal text-base">
+        <Button className="w-72 mt-25 bg-green-400 hover:bg-green-500 text-white rounded-lg px-5 py-4 font-normal text-base">
           Проголосовать
         </Button>
       </CardContent>

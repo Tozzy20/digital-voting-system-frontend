@@ -69,7 +69,7 @@ export const VotingMain = () => {
   ];
 
   return (
-    <Card className="w-full h-auto rounded-[20px] shadow-[0px_2px_10px_#00000040]">
+    <Card className="w-full h-[100%] rounded-[20px] shadow-[0px_2px_10px_#00000040]">
       <CardContent className="p-8">
         <h2 className="font-normal text-cryptblack text-xl mb-6">
           Календарь голосований
