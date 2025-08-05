@@ -1,6 +1,5 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
-import Votes from './pages/VotesPage'
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
 import MainPage from './pages/MainPage';
@@ -15,6 +14,7 @@ import Detali3 from './pages/Detali3Page';
 import Detali4 from './pages/Detali4Page';
 import Detali5 from './pages/Detali5Page';
 import Detali6 from './pages/Detali6Page';
+import VotesPage from './pages/VotesPage';
 
 
 
@@ -23,8 +23,8 @@ function App() {
     <AuthProvider>
     <Router>
       <Routes>
-        <Route path='/' element={<Votes />} />
-        <Route path='/login' element={<LoginPage />} />
+        <Route path='/' element={<LoginPage />} />
+        <Route path='/votes' element={<VotesPage />} />
         <Route path='/register' element={<RegisterPage />} />
         <Route path='/main' element={<MainPage />} />
         <Route path='/profile' element={<ProfilePage />} />

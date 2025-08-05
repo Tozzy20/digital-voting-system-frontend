@@ -4,6 +4,8 @@ import InputField from '/src/components/constructor/CreateVoting/InputField';
 import DateTimePicker from '/src/components/constructor/CreateVoting/DateTimePicker';
 import QuestionForm from '/src/components/constructor/CreateVoting/QuestionForm';
 import AddQuestionButton from '/src/components/constructor/CreateVoting/AddQuestionButton';
+import { useAuth }  from '../../context/AuthProvider';
+
 
 const CreateVoting = () => {
   const [votingTitle, setVotingTitle] = useState('');
@@ -12,6 +14,8 @@ const CreateVoting = () => {
   const [registrationEnd, setRegistrationEnd] = useState({ date: '2025-07-06', time: '10:00' });
   const [votingStart, setVotingStart] = useState({ date: '2025-07-06', time: '10:00' });
   const [votingEnd, setVotingEnd] = useState({ date: '2025-07-06', time: '10:00' });
+
+  const { authToken } = useAuth();
 
   const [questions, setQuestions] = useState([
     {
@@ -170,12 +174,12 @@ const combineDateTime = (date, time) => {
     };
   
     try {
-      const response = await fetch('http://192.168.31.241:8000/api/votings/', {
+      const response = await fetch('http://192.168.31.241:8000/api/votings', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           // Если нужна авторизация:
-          // 'Authorization': 'Bearer ' + token
+          'Authorization': `Bearer ${authToken}`
         },
         body: JSON.stringify(data)
       });
@@ -283,7 +287,7 @@ const combineDateTime = (date, time) => {
       {/* Кнопки управления */}
       <div className="mt-6 flex space-x-4">
         <button
-          onClick={() => console.log("Запуск голосования...")}
+          onClick={sendToServer}
           className="bg-blue-500 text-white px-4 py-2 rounded-lg flex items-center space-x-2"
         >
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">

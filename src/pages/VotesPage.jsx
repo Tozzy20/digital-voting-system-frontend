@@ -1,5 +1,5 @@
 // src/pages/VotesPage.jsx
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Header from "../components/Header";
 import Breadcrumbs from "../components/Breadcrumbs";
 import PageTitle from "../components/PageTitle";
@@ -9,9 +9,88 @@ import SearchInput from "../components/votes/SearchInput";
 import VotingCard from "../components/votes/VotingCard";
 import Button from "../components/Button";
 
-import mockVotingData from "/mockVotes.json"
+import { getVotings } from '../services/api'
+import { useAuth } from '../context/AuthProvider'
+import { formatDate, formatTime, getVotingStatus } from "../components/votes/Formatters";
+
+
 
 const VotesPage = () => {
+
+  const [votings, setVotings] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const { authToken } = useAuth();
+
+  useEffect(() => {
+    
+    const fetchVotings = async () => {
+      try {
+        if (!authToken) {
+          throw new Error("Пользователь не авторизован.");
+        }
+
+        
+        const response = await getVotings(authToken);
+
+        
+        const fetchedVotings = response.items;
+
+        
+        const formattedVotings = fetchedVotings.map((voting) => ({
+          ...voting,
+          // Используем вспомогательные функции для форматирования
+          registrationStart: {
+            date: formatDate(voting.registration_start),
+            time: formatTime(voting.registration_start),
+          },
+          registrationEnd: {
+            date: formatDate(voting.registration_end),
+            time: formatTime(voting.registration_end),
+          },
+          votingStart: {
+            date: formatDate(voting.voting_start),
+            time: formatTime(voting.voting_start),
+          },
+          votingEnd: {
+            date: formatDate(voting.voting_end),
+            time: formatTime(voting.voting_end),
+          },
+          status: getVotingStatus(voting),
+          groupName: voting.departments?.[0]?.name || "Общая группа",
+          timezone: "UTC+3",
+        }));
+
+        setVotings(formattedVotings);
+      } catch (e) {
+        console.error("Ошибка при загрузке голосований:", e);
+        setError(e.message || "Не удалось загрузить голосования.");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchVotings();
+  }, [authToken]);
+
+
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center min-h-screen bg-[#EFF3F8]">
+        Загрузка голосований...
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="flex justify-center items-center min-h-screen bg-[#EFF3F8]">
+        Ошибка: {error}
+      </div>
+    );
+  }
+
+
   return (
     <div className="bg-[#EFF3F8] font-supermolotM min-h-screen">
       <Header />
@@ -51,7 +130,7 @@ const VotesPage = () => {
           </div>
 
           <div className="flex flex-col gap-[10px]">
-            {mockVotingData.map((voting) => (
+            {votings.map((voting) => (
               <VotingCard key={voting.id} voting={voting} />
             ))}
           </div>
