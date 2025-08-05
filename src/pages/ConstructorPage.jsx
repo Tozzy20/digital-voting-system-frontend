@@ -3,6 +3,8 @@ import Breadcrumbs from "../components/Breadcrumbs";
 import PageTitle from "../components/PageTitle";
 import Header from "../components/Header";
 import Sidebar from "../components/constructor/Sidebar";
+import Constructor from '../components/constructor/CreateVoting'
+import Templates from "../components/constructor/Templates";
 
 const ConstructorPage = () => {
   const [activeContent, setActiveContent] = useState("create-poll"); // Устанавливаем 'create-poll' как начальное активное состояние
@@ -15,10 +17,10 @@ const ConstructorPage = () => {
   const renderContent = () => {
     switch (activeContent) {
       case "create-poll":
-        return;
+        return <Constructor />;
 
       case "poll-templates":
-        return ; // Компонент "Список шаблонов"
+        return <Templates />;
     }
   };
 
@@ -28,12 +30,16 @@ const ConstructorPage = () => {
       <div className="ml-[240px] mt-[60px] mr-[240px]">
         <Breadcrumbs title="Администратор / Конструктор голосований / Добавить голосование" />
         <PageTitle title="Конструктор голосований" />
-        <main className="mt-[24px]">
+        <main className="flex mt-[24px]">
+          <div>
           <Sidebar
             activeItem={activeContent}
             onMenuItemClick={handleMenuItemClick}
           />
+          </div>
+          <div className="ml-[10px] flex-1">
           {renderContent()}
+          </div>
         </main>
       </div>
     </div>

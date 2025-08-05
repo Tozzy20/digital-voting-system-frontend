@@ -92,39 +92,39 @@ const CreateVoting = () => {
   };
 
   // --- Генерация JSON по вашему шаблону ---
-  const generateJSON = () => {
-    // Функция для объединения даты и времени в ISO-формат
-    const combineDateTime = (date, time) => {
-      return new Date(`${date}T${time}:00`).toISOString();
-    };
+  // const generateJSON = () => {
+  //   // Функция для объединения даты и времени в ISO-формат
+  //   const combineDateTime = (date, time) => {
+  //     return new Date(`${date}T${time}:00`).toISOString();
+  //   };
 
-    // Преобразуем вопросы
-    const formattedQuestions = questions.map(q => ({
-      type: q.type || 'single_choice',
-      title: q.header || 'Без названия',
-      options: q.options
-        .filter(opt => opt.trim() !== '') // убираем пустые
-        .map(opt => ({ option: opt.trim() }))
-    }));
+  //   // Преобразуем вопросы
+  //   const formattedQuestions = questions.map(q => ({
+  //     type: q.type || 'single_choice',
+  //     title: q.header || 'Без названия',
+  //     options: q.options
+  //       .filter(opt => opt.trim() !== '') // убираем пустые
+  //       .map(opt => ({ option: opt.trim() }))
+  //   }));
 
-    // Поддельный department_id (пока нет выбора департаментов)
-    const departmentIds = [0]; // Можно заменить на реальные ID из state
+  //   // Поддельный department_id (пока нет выбора департаментов)
+  //   const departmentIds = [0]; // Можно заменить на реальные ID из state
 
-    return {
-      title: votingTitle || 'Без названия',
-      theme: 'string', // Можно добавить поле ввода темы
-      public: true, // Можно сделать переключателем
-      quorum: quorumCondition === '50_plus_1' ? 50 : quorumCondition === 'two_thirds' ? 66 : 0,
-      registration_start: combineDateTime(registrationStart.date, registrationStart.time),
-      registration_end: combineDateTime(registrationEnd.date, registrationEnd.time),
-      voting_start: combineDateTime(votingStart.date, votingStart.time),
-      voting_end: combineDateTime(votingEnd.date, votingEnd.time),
-      questions: formattedQuestions,
-      department_ids: departmentIds
-    };
-  };
+  //   return {
+  //     title: votingTitle || 'Без названия',
+  //     theme: 'string', // Можно добавить поле ввода темы
+  //     public: true, // Можно сделать переключателем
+  //     quorum: quorumCondition === '50_plus_1' ? 50 : quorumCondition === 'two_thirds' ? 66 : 0,
+  //     registration_start: combineDateTime(registrationStart.date, registrationStart.time),
+  //     registration_end: combineDateTime(registrationEnd.date, registrationEnd.time),
+  //     voting_start: combineDateTime(votingStart.date, votingStart.time),
+  //     voting_end: combineDateTime(votingEnd.date, votingEnd.time),
+  //     questions: formattedQuestions,
+  //     department_ids: departmentIds
+  //   };
+  // };
 
-  // // --- Скачивание JSON ---
+  // --- Скачивание JSON ---
   // const downloadJSON = () => {
   //   const data = generateJSON();
   //   const jsonString = JSON.stringify(data, null, 2);

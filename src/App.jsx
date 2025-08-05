@@ -16,8 +16,8 @@ function App() {
     <AuthProvider>
     <Router>
       <Routes>
-        <Route path='/' element={<Votes />} />
-        <Route path='/login' element={<LoginPage />} />
+        <Route path='/votes' element={<Votes />} />
+        <Route path='/' element={<LoginPage />} />
         <Route path='/register' element={<RegisterPage />} />
         <Route path='/main' element={<MainPage />} />
         <Route path='/profile' element={<ProfilePage />} />
