@@ -1,26 +1,32 @@
 import { Link } from 'react-router-dom';
 import { useState, useEffect } from 'react';
+import { useAuth } from '/src/context/AuthProvider.jsx'
+import { getProfileData } from '../services/api'
 
 const Header = () => {
+    const { authToken } = useAuth();
 
-const [userProfile, setUserProfile] = useState(null);
+const [user, setUser] = useState(null);
 
     useEffect(() => {
-        const savedProfileString = localStorage.getItem('userName');
-
-        if (savedProfileString) {
-            try {
-               
-                const user = JSON.parse(savedProfileString);
-                
-                setUserProfile(user);
-            } catch (e) {
-                console.error("Ошибка парсинга данных пользователя из localStorage", e);
-            }
+    const fetchAndSetUserData = async () => {
+        try {
+          const fullProfileData = await getProfileData(authToken);
+          setUser({
+            last_name: fullProfileData.last_name,
+            first_name: fullProfileData.first_name,
+            surname: fullProfileData.surname,
+          });
+        } catch (error) {
+         
+          setUser(null);
         }
-    }, []); 
+      
+    };
+    fetchAndSetUserData();
+  }, [])
 
-    if (!userProfile) {
+    if (!user) {
         return <header className="w-full h-24 bg-neutral-800 font-supermolotM"></header>;
     }
 
@@ -52,9 +58,9 @@ const [userProfile, setUserProfile] = useState(null);
                 </div>
             </div>
             <Link to='/profile' className="flex items-center gap-2.5">
-                <div className="text-white text-base font-semibold">{userProfile.last_name} {userProfile.first_name} {userProfile.surname}</div>
+                <div className="text-white text-base font-semibold">{user.last_name} {user.first_name} {user.surname}</div>
                 <div className="w-8 h-8 cursor-pointer">
-                    <img src="/src/assets/icons/profile.svg" alt="User" className="w-full h-full object-contain" />
+                    <img src="/src/assets/icons/profile.svg" alt="User" class="w-full h-full object-contain" />
                 </div>
             </Link>
         </div>

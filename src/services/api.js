@@ -28,19 +28,7 @@ export const getProfileData = async (authToken) => {
     },
   });
 
-  const profileData = response.data;
-
-  const itemToSave = {
-    last_name: profileData.last_name,
-    first_name: profileData.first_name,
-    surname: profileData.surname,
-  };
-
-  const itemToSaveAsString = JSON.stringify(itemToSave);
-
-  localStorage.setItem("userName", itemToSaveAsString);
-
-  return profileData;
+  return response.data;
 };
 
 export const updateProfileData = async (authToken, profileData) => {

@@ -76,7 +76,7 @@ const RegisterPage = () => {
                                 Панель управления системой электронных голосований
                             </span>
                             <div className="w-full h-[20px]"></div>
-                            <Link to="/login" className="block border border-white text-center rounded-xl px-[20px] py-[16px] w-full">
+                            <Link to="/" className="block border border-white text-center rounded-xl px-[20px] py-[16px] w-full">
                                 Авторизация
                             </Link>
                         </div>
