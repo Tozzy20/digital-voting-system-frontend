@@ -58,7 +58,7 @@ const [user, setUser] = useState(null);
                 </div>
             </div>
             <Link to='/profile' className="flex items-center gap-2.5">
-                <div className="text-white text-base font-semibold">{user.last_name} {user.first_name} {user.surname}</div>
+                <div className="text-white text-base font-semibold">{user.last_name} {user.first_name.slice(0, 1) + "."} {user.surname.slice(0, 1) + "."}</div>
                 <div className="w-8 h-8 cursor-pointer">
                     <img src="/src/assets/icons/profile.svg" alt="User" class="w-full h-full object-contain" />
                 </div>

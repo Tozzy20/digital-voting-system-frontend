@@ -45,7 +45,7 @@ const LoginPage = () => {
                 setMessage('Авторизация прошла успешно!');
             
                 setTimeout(() => {
-                    navigate('/profile');
+                    navigate('/constructor');
                 }, 1000);
             } else {
                 setMessage('Авторизация прошла успешно, но токен не был получен.');
