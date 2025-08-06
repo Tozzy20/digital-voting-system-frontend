@@ -11,7 +11,7 @@ import Button from "../components/Button";
 
 import { getVotings } from '../services/api'
 import { useAuth } from '../context/AuthProvider'
-import { formatDate, formatTime, getVotingStatus } from "../components/votes/Formatters";
+import { formatDate, formatTime, getVotingStatus } from '../components/votes/Formatters'
 
 
 
