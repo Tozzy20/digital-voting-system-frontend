@@ -74,21 +74,21 @@ const VotesPage = () => {
   }, [authToken]);
 
 
-  if (loading) {
-    return (
-      <div className="flex justify-center items-center min-h-screen bg-[#EFF3F8]">
-        Загрузка голосований...
-      </div>
-    );
-  }
+  // if (loading) {
+  //   return (
+  //     <div className="flex justify-center items-center min-h-screen bg-[#EFF3F8]">
+  //       Загрузка голосований...
+  //     </div>
+  //   );
+  // }
 
-  if (error) {
-    return (
-      <div className="flex justify-center items-center min-h-screen bg-[#EFF3F8]">
-        Ошибка: {error}
-      </div>
-    );
-  }
+  // if (error) {
+  //   return (
+  //     <div className="flex justify-center items-center min-h-screen bg-[#EFF3F8]">
+  //       Ошибка: {error}
+  //     </div>
+  //   );
+  // }
 
 
   return (

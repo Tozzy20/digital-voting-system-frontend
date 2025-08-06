@@ -95,65 +95,14 @@ const CreateVoting = () => {
     ]);
   };
 
-  // --- Генерация JSON по вашему шаблону ---
-  // const generateJSON = () => {
-  //   // Функция для объединения даты и времени в ISO-формат
-  //   const combineDateTime = (date, time) => {
-  //     return new Date(`${date}T${time}:00`).toISOString();
-  //   };
-
-  //   // Преобразуем вопросы
-  //   const formattedQuestions = questions.map(q => ({
-  //     type: q.type || 'single_choice',
-  //     title: q.header || 'Без названия',
-  //     options: q.options
-  //       .filter(opt => opt.trim() !== '') // убираем пустые
-  //       .map(opt => ({ option: opt.trim() }))
-  //   }));
-
-  //   // Поддельный department_id (пока нет выбора департаментов)
-  //   const departmentIds = [0]; // Можно заменить на реальные ID из state
-
-  //   return {
-  //     title: votingTitle || 'Без названия',
-  //     theme: 'string', // Можно добавить поле ввода темы
-  //     public: true, // Можно сделать переключателем
-  //     quorum: quorumCondition === '50_plus_1' ? 50 : quorumCondition === 'two_thirds' ? 66 : 0,
-  //     registration_start: combineDateTime(registrationStart.date, registrationStart.time),
-  //     registration_end: combineDateTime(registrationEnd.date, registrationEnd.time),
-  //     voting_start: combineDateTime(votingStart.date, votingStart.time),
-  //     voting_end: combineDateTime(votingEnd.date, votingEnd.time),
-  //     questions: formattedQuestions,
-  //     department_ids: departmentIds
-  //   };
-  // };
-
-  // --- Скачивание JSON ---
-  // const downloadJSON = () => {
-  //   const data = generateJSON();
-  //   const jsonString = JSON.stringify(data, null, 2);
-  //   const blob = new Blob([jsonString], { type: 'application/json' });
-  //   const url = URL.createObjectURL(blob);
-
-  //   const a = document.createElement('a');
-  //   a.href = url;
-  //   a.download = `voting_template_${Date.now()}.json`;
-  //   document.body.appendChild(a);
-  //   a.click();
-  //   document.body.removeChild(a);
-  //   URL.revokeObjectURL(url);
-  // };
-
   // Функция для объединения даты и времени в ISO-формат
 const combineDateTime = (date, time) => {
-  // Создаём строку в формате 'YYYY-MM-DDTHH:MM:SS'
+
   const dateTimeString = `${date}T${time}:00`;
-  // Преобразуем в объект Date и возвращаем в формате ISO
-  return new Date(dateTimeString).toISOString();
+  return new Date(dateTimeString).toISOString().slice(0, 19).replace('T', ' ');
 };
 
   const sendToServer = async () => {
-    // Генерируем данные (как в предыдущем JSON)
     const data = {
       title: votingTitle || 'Без названия',
       theme: 'string',
@@ -174,11 +123,10 @@ const combineDateTime = (date, time) => {
     };
   
     try {
-      const response = await fetch('http://192.168.31.241:8000/api/votings', {
+      const response = await fetch('http://192.168.31.241:8000/api/votings/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          // Если нужна авторизация:
           'Authorization': `Bearer ${authToken}`
         },
         body: JSON.stringify(data)
