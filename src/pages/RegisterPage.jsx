@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import HeaderLogin from "/src/components/HeaderLogin";
 import { Link, useNavigate } from 'react-router-dom';
+import { register } from '../services/api'
 
 const RegisterPage = () => {
     const [formData, setFormData] = useState({
@@ -44,42 +45,13 @@ const RegisterPage = () => {
         }
 
         // Подготовка данных для отправки
-        const dataToSend = {
-            first_name: formData.first_name,
-            last_name: formData.last_name,
-            surname: formData.surname,
-            email: formData.email,
-            phone: formData.phone,
-            role_id: formData.role_id,
-            password: formData.password,
-            confirm_password: formData.confirm_password,
-        };
-
         try {
-            const response = await fetch('http://192.168.31.241:8000/api/auth/register', { 
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(dataToSend),
-            });
+            await register(formData);
 
-            const data = await response.json();
-
-            if (response.ok) {
-                
-                setMessage('Регистрация прошла успешно!');
-                
-                
-                
-                setTimeout(() => {
-                    navigate('/login');
-                }, 2000);
-
-            } else {
-                // Обработка ошибок с сервера
-                setMessage(data.message || 'Ошибка регистрации. Попробуйте еще раз.');
-            }
+            setMessage('Регистрация прошла успешно!');
+            setTimeout(() => {
+                navigate('/');
+            }, 2000);
 
         } catch (error) {
             console.error('Ошибка:', error);

@@ -1,60 +1,87 @@
-import axios from 'axios';
+import axios from "axios";
 
-const API_URL = 'http://192.168.31.241:8000/api';
+const API_URL = import.meta.env.VITE_API_URL;
+
+export const register = async (formData) => {
+  const response = await axios.post(`${API_URL}/auth/register`, formData, {
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+  return response.data;
+};
 
 export const loginUser = async (email, password, role_id) => {
-    const response = await axios.post(`${API_URL}/auth/login`, { email, password, role_id });
-    return response.data;
+  const response = await axios.post(`${API_URL}/auth/login`, {
+    email,
+    password,
+    role_id,
+  });
+  return response.data;
 };
 
 export const getProfileData = async (authToken) => {
-    const response = await axios.get(`${API_URL}/users/profile`, {
-        headers: {
-            'Authorization': `Bearer ${authToken}`,
-            'Content-Type': 'application/json',
-        },
-    });
+  const response = await axios.get(`${API_URL}/users/profile`, {
+    headers: {
+      Authorization: `Bearer ${authToken}`,
+      "Content-Type": "application/json",
+    },
+  });
 
-    const profileData = response.data;
+  const profileData = response.data;
 
-    const itemToSave = {
-        last_name: profileData.last_name,
-        first_name: profileData.first_name,
-        surname: profileData.surname,
-    };
+  const itemToSave = {
+    last_name: profileData.last_name,
+    first_name: profileData.first_name,
+    surname: profileData.surname,
+  };
 
-    const itemToSaveAsString = JSON.stringify(itemToSave);
+  const itemToSaveAsString = JSON.stringify(itemToSave);
 
-    localStorage.setItem('userName', itemToSaveAsString);
+  localStorage.setItem("userName", itemToSaveAsString);
 
-    return profileData;
+  return profileData;
 };
 
 export const updateProfileData = async (authToken, profileData) => {
-    const response = await axios.put(`${API_URL}/users/profile/`, profileData, {
-        headers: {
-            'Authorization': `Bearer ${authToken}`,
-            'Content-Type': 'application/json',
-        },
-    });
-    return response.data;
+  const response = await axios.put(`${API_URL}/users/profile`, profileData, {
+    headers: {
+      Authorization: `Bearer ${authToken}`,
+      "Content-Type": "application/json",
+    },
+  });
+  return response.data;
 };
 
 export const changePassword = async (authToken, passwords) => {
-    const response = await axios.put(`${API_URL}/users/change-password/`, passwords, {
-        headers: {
-            'Authorization': `Bearer ${authToken}`,
-            'Content-Type': 'application/json',
-        },
-    });
-    return response.data;
+  const response = await axios.put(
+    `${API_URL}/users/change-password/`,
+    passwords,
+    {
+      headers: {
+        Authorization: `Bearer ${authToken}`,
+        "Content-Type": "application/json",
+      },
+    }
+  );
+  return response.data;
 };
 
 export const getVotings = async (authToken) => {
   const response = await axios.get(`${API_URL}/votings/`, {
     headers: {
-        Authorization: `Bearer ${authToken}`,
-        'Content-Type': 'application/json',
+      Authorization: `Bearer ${authToken}`,
+      "Content-Type": "application/json",
+    },
+  });
+  return response.data;
+};
+
+export const createVoting = async (votingData, authToken) => {
+  const response = await axios.post(`${API_URL}/votings/`, votingData, {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${authToken}`,
     },
   });
   return response.data;

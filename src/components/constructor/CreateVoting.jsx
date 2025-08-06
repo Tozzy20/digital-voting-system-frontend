@@ -5,6 +5,7 @@ import DateTimePicker from '/src/components/constructor/CreateVoting/DateTimePic
 import QuestionForm from '/src/components/constructor/CreateVoting/QuestionForm';
 import AddQuestionButton from '/src/components/constructor/CreateVoting/AddQuestionButton';
 import { useAuth }  from '../../context/AuthProvider';
+import { createVoting } from '../../services/api'
 
 
 const CreateVoting = () => {
@@ -123,20 +124,7 @@ const combineDateTime = (date, time) => {
     };
   
     try {
-      const response = await fetch('http://192.168.31.241:8000/api/votings/', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${authToken}`
-        },
-        body: JSON.stringify(data)
-      });
-  
-      if (!response.ok) {
-        throw new Error(`Ошибка сервера: ${response.status}`);
-      }
-  
-      const result = await response.json();
+      const result = await createVoting(data, authToken);
       console.log('Успех:', result);
       alert('Голосование успешно отправлено на сервер!');
     } catch (error) {
