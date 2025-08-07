@@ -11,23 +11,30 @@ const LoginPage = () => {
     const [formData, setFormData] = useState({
         email: '',
         password: '',
-        role_id: 1 
+        role_id: 1,
+        remember_flag: false,
     });
     const [message, setMessage] = useState('');
     const navigate = useNavigate();
 
     const handleChange = (e) => {
-        const { name, value } = e.target;
-        
-        let parsedValue = value;
-        if (name === 'role_id') {
-            
+        const { name, value, type, checked } = e.target;
+
+        let parsedValue;
+
+        if (type === 'checkbox') {
+            parsedValue = checked;
+        } 
+        else if (name === 'role_id') {
             parsedValue = parseInt(value, 10);
+        } 
+        else {
+            parsedValue = value;
         }
-        
+
         setFormData(prevState => ({
             ...prevState,
-            [name]: parsedValue // Используем преобразованное значение
+            [name]: parsedValue,
         }));
     };
 
@@ -36,8 +43,9 @@ const LoginPage = () => {
         setMessage('');
 
 
+
         try {
-            const response = await loginUser(formData.email, formData.password, formData.role_id);
+            const response = await loginUser(formData.email, formData.password, formData.role_id, formData.remember_flag);
             const { access_token } = response;
 
             if (access_token) {
@@ -109,7 +117,7 @@ const LoginPage = () => {
                                     Забыли пароль?
                                 </a>
                                 <label className="flex text-base mt-[24px]">
-                                    <input type="checkbox" className="mr-2" /> Запомнить меня
+                                    <input type="checkbox" name='remember_flag' value={formData.remember_flag} onChange={handleChange} className="mr-2" /> Запомнить меня
                                 </label>
                                 
                             </div>

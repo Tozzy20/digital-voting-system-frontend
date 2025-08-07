@@ -11,11 +11,12 @@ export const register = async (formData) => {
   return response.data;
 };
 
-export const loginUser = async (email, password, role_id) => {
+export const loginUser = async (email, password, role_id, remember_flag) => {
   const response = await axios.post(`${API_URL}/auth/login`, {
     email,
     password,
     role_id,
+    remember_flag,
   });
   return response.data;
 };

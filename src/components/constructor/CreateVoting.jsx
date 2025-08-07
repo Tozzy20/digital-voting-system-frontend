@@ -114,7 +114,7 @@ const combineDateTime = (date, time) => {
       voting_start: combineDateTime(votingStart.date, votingStart.time),
       voting_end: combineDateTime(votingEnd.date, votingEnd.time),
       questions: questions.map(q => ({
-        type: q.type || '',
+        type: q.type || 'single_choice',
         title: q.header || 'Без названия',
         options: q.options
           .filter(opt => opt.trim() !== '')

@@ -45,22 +45,25 @@ const QuestionForm = ({
   };
 
   return (
-    <div className="mb-4 p-4 border-[2px] border-black rounded-lg"> 
+    <div className="mb-4 py-4"> 
       <div className="flex items-center justify-between">
-        <div className="text-sm font-medium text-gray-700">
+        <div className="text-base font-bold text-gray-700">
           Вопрос №{questionNumber}
         </div>
       </div>
       
       <div className="mt-2">
         <label className="block text-sm font-medium text-gray-700">Тип вопроса</label>
-        <input
+        <select
           type="text"
           value={type}
           onChange={handleTypeChange}
-          className="mt-1 p-2 px-[20px] py-[16px] border border-gray-300 rounded-lg w-full"
+          className="mt-1 p-2 px-[20px] py-[16px] border border-gray-300 rounded-[12px] w-full"
           placeholder="Введите тип вопроса"
-        />
+        >
+        <option value="single_choice">Одиночный вопрос</option>
+        <option value="multiple_choice">Множественный вопрос</option>
+        </select>
       </div>
       
       <div className="mt-2">
@@ -69,7 +72,7 @@ const QuestionForm = ({
           type="text"
           value={header}
           onChange={handleHeaderChange}
-          className="mt-1 p-2 px-[20px] py-[16px] border border-gray-300 rounded-lg w-full"
+          className="mt-1 p-2 px-[20px] py-[16px] border border-gray-300 rounded-[12px] w-full"
           placeholder="Введите заголовок вопроса"
         />
       </div>
@@ -83,7 +86,7 @@ const QuestionForm = ({
                 type="text"
                 value={option}
                 onChange={(e) => handleOptionChange(index, e)}
-                className="p-2 border px-[20px] py-[16px] border-gray-300 rounded-lg w-full"
+                className="p-2 border px-[20px] py-[16px] border-gray-300 rounded-[12px] w-full"
                 placeholder={`Вариант ${index + 1}`}
               />
               <button 
