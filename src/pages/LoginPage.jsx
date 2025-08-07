@@ -59,7 +59,7 @@ const LoginPage = () => {
 
 
     return (
-        <div className="bg-[#EFF3F8] font-supermolot">
+        <div className="bg-[#EFF3F8] ">
             <HeaderLogin />
 
             <div className="flex flex-col items-center justify-center min-h-[calc(100vh-100px)] bg-gray-100">
@@ -85,35 +85,42 @@ const LoginPage = () => {
                             <label className="block mb-2 text-base">Электронная почта</label>
                             <input
                                 type="email"
-                                name="email" // Добавляем name
+                                name="email"
                                 placeholder="ivanovivan@mail.ru"
                                 className="w-full border rounded-[8px] px-3 py-2 mb-4"
                                 value={formData.email}
                                 onChange={handleChange}
+                                required
                             />
 
                             <label className="block mb-2 text-base">Пароль</label>
                             <input
                                 type="password"
-                                name="password" // Добавляем name
+                                name="password"
                                 placeholder="******"
                                 className="w-full border rounded-[8px] px-3 py-2 mb-2"
                                 value={formData.password}
                                 onChange={handleChange}
+                                required
                             />
 
                             <div className="flex flex-col justify-between text-sm mb-4">
                                 <a href="#" className="text-gray-500">
                                     Забыли пароль?
                                 </a>
-                                <label className="flex text-base my-[24px]">
+                                <label className="flex text-base mt-[24px]">
                                     <input type="checkbox" className="mr-2" /> Запомнить меня
                                 </label>
+                                
                             </div>
                             
-                            {message && <p className="text-red-500 text-sm mt-2">{message}</p>}
+                            {message ? (
+                            <p className="text-red-500 text-sm">{message}</p>
+                            ) : (
+                            <div style={{ height: '24px' }}></div>
+                            )}
 
-                            <button type="submit" className="w-full bg-black font-supermolot text-white px-[20px] py-[16px] rounded-[12px] my-8">
+                            <button type="submit" className="w-full bg-black  text-white px-[20px] py-[16px] rounded-[12px] my-8">
                                 Войти
                             </button>
                         </form>

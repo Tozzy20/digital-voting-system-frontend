@@ -62,9 +62,9 @@ const RegisterPage = () => {
     return (
         <>
             <HeaderLogin />
-            <div className="flex flex-col items-center font-supermolot justify-center min-h-[calc(100vh-100px)] bg-gray-100">
+            <div className="flex flex-col items-center  justify-center min-h-[calc(100vh-100px)] bg-gray-100">
                 <h1 className="text-[40px] mb-6 w-[264px] h-[48px] font-mak">Регистрация</h1>
-                <div className="flex bg-white w-[816px] h-[700px] shadow-lg rounded-[20px] overflow-hidden">
+                <div className="flex bg-white w-[816px] h-[720px] shadow-lg rounded-[20px] overflow-hidden">
                     {/* Левая панель */}
                     <div className="bg-[#212121] rounded-[20px] text-white p-6 w-[285px] flex flex-col justify-between">
                         <div className="flex mb-4">
@@ -86,7 +86,7 @@ const RegisterPage = () => {
                     <div className="px-[32px] py-6 w-[467px] grow"> 
                         <form onSubmit={handleSubmit}>
 
-                            <label className="block mb-2 text-base">Войти как</label>
+                            <label className="block mb-2 text-base">Зарегистрироваться как</label>
                             <select 
                                 className="w-full border rounded-[8px] px-3 py-2 h-[51px] mb-4"
                                 name="role_id"
@@ -108,6 +108,7 @@ const RegisterPage = () => {
                                         className="border rounded-[8px] w-[150px] h-[51px] px-3 py-2" 
                                         value={formData.last_name}
                                         onChange={handleChange}
+                                        required
                                     />
                                 </div>
                                 <div className="flex flex-col">
@@ -120,6 +121,7 @@ const RegisterPage = () => {
                                         className="border rounded-[8px] w-[115px] h-[51px] px-3 py-2" 
                                         value={formData.first_name}
                                         onChange={handleChange}
+                                        required
                                     />
                                 </div>
                                 <div className="flex flex-col">
@@ -132,6 +134,7 @@ const RegisterPage = () => {
                                         className="border rounded-[8px] w-[178px] h-[51px] px-3 py-2" 
                                         value={formData.surname}
                                         onChange={handleChange}
+                                        required
                                     />
                                 </div>
                             </div>
@@ -144,6 +147,7 @@ const RegisterPage = () => {
                                 className="w-full border h-[51px] rounded-[8px] px-3 py-2 mb-4"
                                 value={formData.email}
                                 onChange={handleChange}
+                                required
                             />
 
                             <label className="block mb-2 text-base">Телефон</label>
@@ -155,6 +159,7 @@ const RegisterPage = () => {
                                 className="w-full border h-[51px] rounded-[8px] px-3 py-2 mb-4"
                                 value={formData.phone}
                                 onChange={handleChange}
+                                required
                             />
 
                             <label className="block mb-2 text-base">Пароль</label>
@@ -165,6 +170,7 @@ const RegisterPage = () => {
                                 className="w-full border h-[51px] rounded-[8px] px-3 py-2 mb-2"
                                 value={formData.password}
                                 onChange={handleChange}
+                                required
                             />
 
                             <label className="block mb-2 text-base">Повторите пароль</label>
@@ -175,11 +181,16 @@ const RegisterPage = () => {
                                 className="w-full border h-[51px] rounded-[8px] px-3 py-2 mb-2"
                                 value={formData.confirm_password}
                                 onChange={handleChange}
+                                required
                             />
 
-                            {message && <p className="text-red-500 text-sm mt-2">{message}</p>}
+                            {message ? (
+                            <p className="text-red-500 text-sm">{message}</p>
+                            ) : (
+                            <div style={{ height: '24px' }}></div>
+                            )}
 
-                            <button type="submit" className="w-full bg-black font-supermolot text-white px-[20px] py-[16px] rounded-[12px] my-5">
+                            <button type="submit" className="w-full bg-black  text-white px-[20px] py-[16px] rounded-[12px] my-5">
                                 Зарегистрироваться
                             </button>
                         </form>

@@ -33,11 +33,11 @@ const VotingCard = ({ voting }) => {
                     <div className="text-neutral-800 text-xl font-semibold font-supermolotDB leading-[30px]">
                         {voting.title}
                     </div>
-                    <div className="text-stone-300 text-sm font-normal font-supermolot leading-[21px]">
+                    <div className="text-stone-300 text-sm font-normal  leading-[21px]">
                         {voting.groupName}
                     </div>
                 </div>
-                <div className="flex items-center gap-2 text-neutral-600 text-sm font-normal font-supermolot leading-[21px]">
+                <div className="flex items-center gap-2 text-neutral-600 text-sm font-normal  leading-[21px]">
                     <img src="/src/assets/icons/timezone.svg" alt="UTC+3" className="w-4 h-4" />
                     {voting.timezone}
                 </div>
@@ -57,7 +57,7 @@ const VotingCard = ({ voting }) => {
                     {/* Даты регистрации */}
                     <div className="flex flex-col gap-4">
                         <div className="flex flex-col gap-2">
-                            <div className="text-neutral-600 text-base font-supermolot">Начало регистрации</div>
+                            <div className="text-neutral-600 text-base ">Начало регистрации</div>
                             <div className="flex items-center gap-2 text-neutral-800 text-base font-semibold font-supermolotDB">
                                 <img src="/src/assets/icons/calendar.svg" alt="Date" className="w-5 h-5" />
                                 {voting.registrationStart.date}
@@ -66,7 +66,7 @@ const VotingCard = ({ voting }) => {
                             </div>
                         </div>
                         <div className="flex flex-col gap-2">
-                            <div className="text-neutral-600 text-base font-normal font-supermolot leading-normal">
+                            <div className="text-neutral-600 text-base font-normal  leading-normal">
                                 Окончание регистрации
                             </div>
                             <div className="flex items-center gap-2 text-neutral-800 text-base font-semibold font-supermolotDB leading-normal">
@@ -81,7 +81,7 @@ const VotingCard = ({ voting }) => {
                     {/* Даты голосования */}
                     <div className="flex flex-col gap-4">
                         <div className="flex flex-col gap-2">
-                            <div className="text-neutral-600 text-base font-normal font-supermolot leading-normal">
+                            <div className="text-neutral-600 text-base font-normal  leading-normal">
                                 Начало голосования
                             </div>
                             <div className="flex items-center gap-2 text-neutral-800 text-base font-semibold font-supermolotDB leading-normal">
@@ -92,7 +92,7 @@ const VotingCard = ({ voting }) => {
                             </div>
                         </div>
                         <div className="flex flex-col gap-2">
-                            <div className="text-neutral-600 text-base font-normal font-supermolot leading-normal">
+                            <div className="text-neutral-600 text-base font-normal  leading-normal">
                                 Окончание голосования
                             </div>
                             <div className="flex items-center gap-2 text-neutral-800 text-base font-semibold font-supermolotDB leading-normal">

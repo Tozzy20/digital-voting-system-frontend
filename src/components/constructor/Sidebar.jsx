@@ -1,14 +1,14 @@
 import React from "react";
 
-const Sidebar = ({ activeItem, onMenuItemClick }) => { // Принимаем activeItem и onMenuItemClick как пропсы
+const Sidebar = ({ activeItem, onMenuItemClick }) => { 
   const handleItemClick = (itemKey) => {
-    onMenuItemClick(itemKey); // Вызываем функцию из родительского компонента
+    onMenuItemClick(itemKey);
     console.log(`Активный пункт: ${itemKey}`);
   };
 
   return (
     <div className="bg-white rounded-[20px] shadow-lg p-[32px] w-[393px]">
-      <ul className="space-y-[10px] font-supermolotM">
+      <ul className="space-y-[10px] ">
         {/* Создать голосование */}
         <li
           className={`flex items-center p-[10px] rounded-[8px] cursor-pointer transition-colors duration-200 ${

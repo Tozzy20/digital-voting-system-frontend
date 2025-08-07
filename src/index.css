@@ -3,7 +3,7 @@
 @font-face {
   font-family: 'Supermolot';
   src: url('/src/assets/fonts/TT\ Supermolot\ Neue\ Trial\ Extended\ DemiBold.ttf') format('woff');
-  font-weight: normal;
+  font-weight: 600;
   font-style: normal;
   font-display: swap;
 }
@@ -17,9 +17,9 @@
 }
 
 @font-face {
-  font-family: 'SupermolotM';
+  font-family: 'Supermolot';
   src: url('/src/assets/fonts/TT\ Supermolot\ Neue\ Trial\ Extended\ Medium.ttf') format('woff');
-  font-weight: 400;
+  font-weight: 500;
   font-style: normal;
   font-display: swap;
 }
@@ -28,11 +28,7 @@
     font-family: 'MAK', sans-serif;
 }
 
-.font-supermolot {
-    font-family: 'Supermolot', sans-serif;
-}
-
-.font-supermolotM {
-    font-family: 'SupermolotM', sans-serif;
+body {
+  font-family: 'Supermolot', sans-serif;
 }
 

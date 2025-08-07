@@ -84,7 +84,7 @@ const PersonalData = () => {
 
 
     return (
-            <form className="font-supermolotM shadow-lg bg-white rounded-[20px] w-[473px]"
+            <form className=" shadow-lg bg-white rounded-[20px] w-[473px]"
             onSubmit={handleSubmit}>
                 <div className="p-[32px] space-y-[20px]">
                     <h1 className="text-neutral-800 text-2xl font-semibold">Персональные данные</h1>

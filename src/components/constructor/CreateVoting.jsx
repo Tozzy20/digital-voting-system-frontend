@@ -21,9 +21,9 @@ const CreateVoting = () => {
   const [questions, setQuestions] = useState([
     {
       id: 1,
-      type: 'single_choice',
-      header: 'Пример вопроса',
-      options: ['Вариант 1', 'Вариант 2']
+      type: '',
+      header: '',
+      options: ['', '']
     }
   ]);
 
@@ -92,7 +92,7 @@ const CreateVoting = () => {
     const newId = Math.max(0, ...questions.map(q => q.id)) + 1;
     setQuestions(prev => [
       ...prev,
-      { id: newId, type: 'single_choice', header: '', options: [''] }
+      { id: newId, type: '', header: '', options: [''] }
     ]);
   };
 
@@ -114,7 +114,7 @@ const combineDateTime = (date, time) => {
       voting_start: combineDateTime(votingStart.date, votingStart.time),
       voting_end: combineDateTime(votingEnd.date, votingEnd.time),
       questions: questions.map(q => ({
-        type: q.type || 'single_choice',
+        type: q.type || '',
         title: q.header || 'Без названия',
         options: q.options
           .filter(opt => opt.trim() !== '')
@@ -135,7 +135,7 @@ const combineDateTime = (date, time) => {
 
   // --- JSX ---
   return (
-    <div className="bg-white p-6 rounded-[20px] shadow-lg font-supermolot">
+    <div className="bg-white p-6 rounded-[20px] shadow-lg ">
       <StepHeader stepNumber={1} title="Настройки" />
 
       <InputField
@@ -152,7 +152,7 @@ const combineDateTime = (date, time) => {
       <select
         value={quorumCondition}
         onChange={handleQuorumChange}
-        className="mt-1 p-2 border border-gray-300 rounded-lg w-full bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+        className="my-1 p-2 py-[20px] border border-gray-300 rounded-lg w-full bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"
       >
         <option value="" disabled>Выберите условие...</option>
         <option value="50_plus_1">50% + 1</option>

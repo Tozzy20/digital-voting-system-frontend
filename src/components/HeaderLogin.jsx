@@ -1,6 +1,6 @@
 const HeaderLogin = () => {
     return (
-        <header className="bg-[#212121] text-white font-supermolot shadow-lg h-[100px]">
+        <header className="bg-[#212121] text-white  shadow-lg h-[100px]">
                 <div className="container mx-auto px-4 py-4 flex justify-between items-center">
                     <div className="flex items-center space-x-4">
                         {/* logo */}

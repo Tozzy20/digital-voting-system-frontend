@@ -1,10 +1,10 @@
 // src/components/Breadcrumbs.jsx
 import React from 'react';
 
-const Breadcrumbs = ({title}) => {
+const Breadcrumbs = (props) => {
     return (
-        <div className="text-stone-300 text-base font-normal font-supermolot">
-            {title}
+        <div className="text-stone-300 text-base font-normal ">
+            {props.title}
         </div>
     );
 };

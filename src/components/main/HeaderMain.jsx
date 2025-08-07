@@ -12,7 +12,7 @@ export const HeaderMain = () => {
   ];
 
   return (
-    <header className="bg-[#212121] font-supermolot w-full h-[100px] bg-cryptblack flex items-center justify-between px-60">
+    <header className="bg-[#212121]  w-full h-[100px] bg-cryptblack flex items-center justify-between px-60">
       <div className="flex items-center gap-6">
       <img className="w-16 h-16 bg-cryptlowgrey ml-[8%]" src="/src/assets/images/Ellipse 2051.png" alt="Logo" />
       <nav className="text-white flex gap-6">

@@ -1,6 +1,6 @@
 const TimezoneSetting = () => {
     return (
-        <div className="font-supermolotM shadow-lg bg-white rounded-[20px] w-full">
+        <div className=" shadow-lg bg-white rounded-[20px] w-full">
             <div className="p-[32px] space-y-[20px]">
                 <h1 className="text-neutral-800 text-2xl font-semibold">Настройка времени</h1>
                 <div className="flex flex-col gap-[10px]">

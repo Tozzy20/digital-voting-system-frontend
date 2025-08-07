@@ -92,7 +92,7 @@ const VotesPage = () => {
 
 
   return (
-    <div className="bg-[#EFF3F8] font-supermolotM min-h-screen">
+    <div className="bg-[#EFF3F8]  min-h-screen">
       <Header />
 
       <div className="ml-[240px] mt-[60px] mr-[240px]">

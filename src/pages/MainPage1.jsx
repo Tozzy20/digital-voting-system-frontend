@@ -1,5 +1,8 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
+import Header from '../components/Header'
+import Breadcrumbs from '../components/Breadcrumbs';
+import PageTitle from '../components/PageTitle';
 
 
 const MainPage1 = () => {
@@ -7,44 +10,11 @@ const MainPage1 = () => {
     <>
 <div className="relative bg-slate-100 w-screen min-h-screen overflow-x-hidden flex flex-col items-center">
 
-    <header className="w-full h-24 bg-neutral-800 flex items-center justify-between px-6">
-      <nav className="ml-[16.67%] hidden lg:flex items-center gap-6">
-        <img src="/src/assets/images/detaliAndMain/logo.svg" className="w-16 h-16" alt="Logo" />
-        <Link to="/" className="text-white text-base font-semibold">Главная</Link>
-        <div className="flex items-center gap-2.5">
-          <Link to="/users" className="text-white text-base font-semibold">Пользователи</Link>
-          <div className="w-2 h-2 bg-stone-300 rounded-full"></div>
-        </div>
-        <div className="flex items-center gap-2.5">
-          <Link to="/votes" className="text-white text-base font-semibold">Голосования</Link>
-          <div className="w-2 h-2 bg-stone-300 rounded-full"></div>
-        </div>
-        <Link to="/add" className="px-5 py-4 rounded-lg outline outline-1 outline-white flex items-center gap-2.5">
-          <div className="text-white text-base font-semibold">Добавить</div>
-          <div className="w-2 h-2 bg-stone-300 rounded-full"></div>
-        </Link>
-      </nav>
-      <div className=" mr-[16.67%] flex items-center gap-6">
-        <div className="flex items-center gap-4">
-          <div className="w-8 h-8 cursor-pointer">
-            <img src="/src/assets/images/detaliAndMain/elements.png" alt="Search" className="w-full h-full object-contain" />
-          </div>
-          <div className="w-8 h-8 cursor-pointer">
-            <img src="/src/assets/images/detaliAndMain/setting-05.png" alt="Notifications" className="w-full h-full object-contain" />
-          </div>
-        </div>
-        <div className="flex items-center gap-2.5">
-          <div className="text-white text-base font-semibold">Фамилия И.О.</div>
-          <div className="w-8 h-8 cursor-pointer">
-            <img src="/src/assets/images/detaliAndMain/user-circle.png" alt="User" className="w-full h-full object-contain" />
-          </div>
-        </div>
-      </div>
-    </header>
+    <Header />
 
     <div className="relative w-[1470px] mt-8 mb-8">
-      <div className="top-[39px] absolute justify-start text-neutral-800 text-4xl font-light font-['Mak']">Главная</div>
-      <div className="top-0 absolute justify-start text-stone-300 text-base font-normal font-['TT_Supermolot_Neue_Trl_Ext']">Главная</div>
+      <Breadcrumbs title='Главная' />
+      <PageTitle title='Главная' />
 
       <div className="top-[103px] flex absolute inline-flex w-full justify-center items-center gap-2.5">
         <div className="w-56 h-48 relative bg-white rounded-[20px] overflow-hidden">

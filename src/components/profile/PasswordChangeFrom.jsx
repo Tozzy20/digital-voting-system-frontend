@@ -61,7 +61,7 @@ const PasswordChangeForm = () => {
     };
 
     return (
-        <form onSubmit={handleSubmit} className="font-supermolotM shadow-lg bg-white rounded-[20px] w-[473px]">
+        <form onSubmit={handleSubmit} className=" shadow-lg bg-white rounded-[20px] w-[473px]">
             <div className="p-[32px] space-y-[20px]">
                 <h1 className="text-neutral-800 text-2xl font-semibold">Пароль</h1>
 

@@ -6,7 +6,7 @@ import { getProfileData } from '../services/api'
 const Header = () => {
     const { authToken } = useAuth();
 
-const [user, setUser] = useState(null);
+    const [user, setUser] = useState(null);
 
     useEffect(() => {
     const fetchAndSetUserData = async () => {
@@ -27,24 +27,26 @@ const [user, setUser] = useState(null);
   }, [])
 
     if (!user) {
-        return <header className="w-full h-24 bg-neutral-800 font-supermolotM"></header>;
+        return <header className="w-full h-24 bg-neutral-800 "></header>;
     }
 
     return (
-        <header className="w-full h-24 bg-neutral-800 font-supermolotM flex items-center justify-between">
+        <header className="w-full h-24 bg-neutral-800 flex items-center justify-between">
         <nav className="ml-[240px] hidden lg:flex items-center gap-6">
             <div className="w-16 h-16 bg-stone-300 rounded-full"></div>
-            <div className="text-white text-base font-semibold">Главная</div>
-            <div className="flex items-center gap-2.5">
-                <div className="text-white text-base font-semibold">Пользователи</div>
-                <div className="w-2 h-2 bg-stone-300 rounded-full"></div>
+            <Link to='/main1' className="text-white text-base font-semibold hover:text-gray-500">Главная</Link>
+            <div className="relative group">
+                <div className="flex items-center gap-2.5">
+                    <div className="text-white text-base font-semibold hover:text-gray-500">Пользователи</div>
+                    <div className="w-2 h-2 bg-stone-300 rounded-full"></div>
+                </div>
             </div>
             <div className="flex items-center gap-2.5">
-                <Link to='/votes' className="text-white text-base font-semibold hover:text-amber-300">Голосования</Link>
+                <Link to='/votes' className="text-white text-base font-semibold hover:text-gray-500">Голосования</Link>
                 <div className="w-2 h-2 bg-stone-300 rounded-full"></div>
             </div>
-            <div className="px-5 py-4 rounded-lg outline outline-1 outline-white flex items-center gap-2.5">
-                <Link to='/constructor' className="text-white text-base font-semibold hover:text-amber-300">Добавить голосование</Link>
+            <div className="px-5 py-4 rounded-lg outline outline-white flex items-center gap-2.5">
+                <Link to='/constructor' className="text-white text-base font-semibold hover:text-gray-500">Добавить</Link>
                 <div className="w-2 h-2 bg-stone-300 rounded-full"></div>
             </div>
         </nav>
