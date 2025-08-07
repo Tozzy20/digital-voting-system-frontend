@@ -17,10 +17,10 @@ const Header = () => {
             first_name: fullProfileData.first_name,
             surname: fullProfileData.surname,
           });
-        } catch (error) {
-         
-          setUser(null);
+        } catch { 
+            setUser(null);
         }
+        
       
     };
     fetchAndSetUserData();
