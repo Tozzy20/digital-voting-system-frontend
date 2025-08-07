@@ -20,7 +20,36 @@ const VotesPage = () => {
   const [votings, setVotings] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(0);
+  const [hasNext, setHasNext] = useState(false);
+  const [hasPrev, setHasPrev] = useState(false);
+
+  const [searchQuery, setSearchQuery] = useState('');
+  const [inputValue, setInputValue] = useState('');
+
   const { authToken } = useAuth();
+
+  const handleNextPage = () => {
+    if (hasNext) {
+      setCurrentPage((prevPage) => prevPage + 1);
+    }
+  };
+
+  const handlePrevPage = () => {
+    if (hasPrev) {
+      setCurrentPage((prevPage) => prevPage - 1);
+    }
+  };
+
+  const handleInputChange = (e) => {
+        setInputValue(e.target.value);
+    };
+
+  const handleSearchChange = () => {
+        setSearchQuery(inputValue);
+        setCurrentPage(1);
+  };
 
   useEffect(() => {
     
@@ -31,13 +60,13 @@ const VotesPage = () => {
         }
 
         
-        const response = await getVotings(authToken);
+        const responseData = await getVotings(authToken, currentPage, searchQuery);
+
+        const { items, pagination } = responseData;
+        
 
         
-        const fetchedVotings = response.items;
-
-        
-        const formattedVotings = fetchedVotings.map((voting) => ({
+        const formattedVotings = items.map((voting) => ({
           ...voting,
           // Используем вспомогательные функции для форматирования
           registrationStart: {
@@ -59,9 +88,16 @@ const VotesPage = () => {
           status: getVotingStatus(voting),
           groupName: voting.departments?.[0]?.name || "Общая группа",
           timezone: "UTC+3",
+
+
         }));
 
+
+
         setVotings(formattedVotings);
+        setTotalPages(pagination.total_pages);
+        setHasNext(pagination.has_next);
+        setHasPrev(pagination.has_prev);
       } catch (e) {
         console.error("Ошибка при загрузке голосований:", e);
         setError(e.message || "Не удалось загрузить голосования.");
@@ -71,7 +107,7 @@ const VotesPage = () => {
     };
 
     fetchVotings();
-  }, [authToken]);
+  }, [authToken, currentPage, searchQuery]);
 
 
   // if (loading) {
@@ -100,7 +136,7 @@ const VotesPage = () => {
         <PageTitle title="Голосования" />
 
         <div className="flex mt-[24px] gap-4">
-          <Button className="outline outline-1 outline-neutral-400 text-neutral-800 font-normal">
+          <Button className="outline outline-neutral-400 text-neutral-800 font-normal">
             <img
               src="/src/assets/icons/filter.svg"
               alt="Фильтры"
@@ -108,7 +144,7 @@ const VotesPage = () => {
             />
             Фильтры
           </Button>
-          <Button className="outline outline-1 outline-neutral-400 text-neutral-800 font-normal">
+          <Button className="outline outline-neutral-400 text-neutral-800 font-normal">
             <img
               src="/src/assets/icons/sort.svg"
               alt="Сортировка"
@@ -124,8 +160,18 @@ const VotesPage = () => {
               <VotingControls />
             </div>
             <div className="flex items-center gap-4">
-              <PaginationControls />
-              <SearchInput />
+              <PaginationControls
+              currentPage={currentPage}
+              totalPages={totalPages}
+              hasNext={hasNext}
+              hasPrev={hasPrev}
+              onNextPage={handleNextPage}
+              onPrevPage={handlePrevPage}
+              />
+              <SearchInput 
+              value={inputValue}
+              onChange={handleInputChange}
+              onSearch={handleSearchChange}/>
             </div>
           </div>
 

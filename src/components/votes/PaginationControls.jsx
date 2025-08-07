@@ -1,7 +1,7 @@
 // src/components/PaginationControls.jsx
 import React from 'react';
 
-const PaginationControls = () => {
+const PaginationControls = ({currentPage, totalPages, hasNext, hasPrev, onNextPage, onPrevPage}) => {
     return (
         <div className="flex items-center gap-4">
             <div className="flex items-center rounded-lg border border-[#CCCCCC] gap-2 px-5 py-4">
@@ -12,13 +12,21 @@ const PaginationControls = () => {
                 </div>
             </div>
             <div className="flex items-center rounded-lg border border-[#CCCCCC] px-5 py-4">
-                <div className="text-neutral-800 text-base font-normal ">1-5 из 100</div>
-                <div className="rounded-lg flex items-center justify-center cursor-pointer">
+                <div className="text-neutral-800 text-base font-normal ">{currentPage} из {totalPages}</div>
+                <button
+                 onClick={onPrevPage}
+                 disabled={!hasPrev}
+                 className={`rounded-lg flex items-center justify-center cursor-pointer ${!hasPrev ? 'opacity-50 cursor-not-allowed' : ''}`} >
                     <img src="/src/assets/icons/arrow-left.svg" alt="Previous" className="w-5 h-5" />
-                </div>
-                <div className="rounded-lg flex items-center justify-center cursor-pointer">
+                </button>
+
+
+                <button
+                onClick={onNextPage}
+                disabled={!hasNext}
+                className={`rounded-lg flex items-center justify-center cursor-pointer ${!hasNext ? 'opacity-50 cursor-not-allowed' : ''}`}>
                     <img src="/src/assets/icons/arrow-right.svg" alt="Next" className="w-5 h-5" />
-                </div>
+                </button>
             </div>
         </div>
     );

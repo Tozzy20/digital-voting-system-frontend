@@ -56,11 +56,15 @@ export const changePassword = async (authToken, passwords) => {
   return response.data;
 };
 
-export const getVotings = async (authToken) => {
+export const getVotings = async (authToken, page = 1, find='') => {
   const response = await axios.get(`${API_URL}/votings/`, {
     headers: {
       Authorization: `Bearer ${authToken}`,
       "Content-Type": "application/json",
+    },
+    params: {
+      page: page,
+      find: find,
     },
   });
   return response.data;
