@@ -44,9 +44,9 @@ const Header = () => {
             "Секретарь",
           ]}
           links={[
-            "/detali1",
-            "/users/commission",
-            "/users/secretary"
+            "",
+            "",
+            ""
           ]}
           triggerClassName="bg-neutral-800 px-3 py-4 "
           menuClassName="bg-[#505050]"
@@ -58,6 +58,10 @@ const Header = () => {
             "Список голосований",
             "Конструктор голосований",
           ]}
+          links={[
+            "/votes",
+            "/constructor",
+          ]}
           triggerClassName="bg-neutral-800 px-3 py-4"
           menuClassName="bg-[#505050] w-43"
         />
@@ -68,6 +72,11 @@ const Header = () => {
             "Голосование",
             "Шаблон голосования",
             "Группу пользователей",
+          ]}
+          links={[
+            "/constructor",
+            "",
+            ""
           ]}
           triggerClassName="bg-neutral-800 px-7 py-4 rounded-lg outline outline-1 outline-white"
           menuClassName="bg-[#505050] w-43"
