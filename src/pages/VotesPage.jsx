@@ -92,7 +92,7 @@ const VotesPage = () => {
 
         }));
 
-
+ 
 
         setVotings(formattedVotings);
         setTotalPages(pagination.total_pages);

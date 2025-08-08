@@ -18,7 +18,7 @@ const Sidebar = ({ menuItems, activeItem, onMenuItemClick }) => {
           >
             <img src={item.icon} alt={item.label} />
             <span className={`px-[20.76px] ${activeItem === item.key ? 'text-blue-800' : 'text-gray-700'}`}>
-              {item.label}
+              {item.label} 
             </span>
           </li>
         ))}

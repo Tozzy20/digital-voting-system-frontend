@@ -34,7 +34,7 @@ const Stats = (progressData) => {
               </div>
               <div className="text-black text-base font-normal">{lastUpdated.time}</div>
             </div>
-          </div>
+          </div> 
 
           <div className="flex flex-wrap items-end gap-5">
             <div className="flex items-end gap-2.5">

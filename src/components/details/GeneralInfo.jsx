@@ -5,7 +5,7 @@ const GeneralInfo = ({ votingData }) => {
   if (!votingData) {
     return <div>Данные о голосовании не найдены.</div>;
   }
-
+ 
   return (
     <main className="p-6 bg-white rounded-[20px] w-[77.5%] shadow-lg">
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 h-full">

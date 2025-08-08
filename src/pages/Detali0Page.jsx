@@ -35,7 +35,7 @@ const Detali0 = () => {
                 console.error("Ошибка при получении данных:", e);
             }
         };
-
+ 
         // Запускаем запрос, только если есть votingId
         if (votingId) {
             fetchData();

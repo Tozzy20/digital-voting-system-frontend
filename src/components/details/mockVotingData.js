@@ -9,5 +9,5 @@ const mockVotingData = {
   votingStart: { date: '16.08.2025', time: '09:00' },
   votingEnd: { date: '20.08.2025', time: '18:00' },
 };
-
+ 
 export default mockVotingData;
