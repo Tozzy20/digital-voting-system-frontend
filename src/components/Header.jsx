@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { useAuth } from '/src/context/AuthProvider.jsx'
 import { getProfileData } from '../services/api'
+import DropdownMenu from '../components/DropdownMenu'
 
 const Header = () => {
     const { authToken } = useAuth();
@@ -35,20 +36,51 @@ const Header = () => {
         <nav className="ml-[240px] hidden lg:flex items-center gap-6">
             <div className="w-16 h-16 bg-stone-300 rounded-full"></div>
             <Link to='/main1' className="text-white text-base font-semibold hover:text-gray-500">Главная</Link>
-            <div className="relative group">
-                <div className="flex items-center gap-2.5">
-                    <div className="text-white text-base font-semibold hover:text-gray-500">Пользователи</div>
-                    <div className="w-2 h-2 bg-stone-300 rounded-full"></div>
-                </div>
-            </div>
-            <div className="flex items-center gap-2.5">
-                <Link to='/votes' className="text-white text-base font-semibold hover:text-gray-500">Голосования</Link>
-                <div className="w-2 h-2 bg-stone-300 rounded-full"></div>
-            </div>
-            <div className="px-5 py-4 rounded-lg outline outline-white flex items-center gap-2.5">
-                <Link to='/constructor' className="text-white text-base font-semibold hover:text-gray-500">Добавить</Link>
-                <div className="w-2 h-2 bg-stone-300 rounded-full"></div>
-            </div>
+        <DropdownMenu
+          label="Пользователи"
+          items={[
+            "Наблюдатель",
+            "Член счетной комиссии",
+            "Секретарь",
+          ]}
+          links={[
+            "",
+            "",
+            ""
+          ]}
+          triggerClassName="bg-neutral-800 px-3 py-4 "
+          menuClassName="bg-[#505050]"
+        />
+
+        <DropdownMenu
+          label="Голосования"
+          items={[
+            "Список голосований",
+            "Конструктор голосований",
+          ]}
+          links={[
+            "/votes",
+            "/constructor",
+          ]}
+          triggerClassName="bg-neutral-800 px-3 py-4"
+          menuClassName="bg-[#505050] w-43"
+        />
+
+        <DropdownMenu
+          label="Добавить"
+          items={[
+            "Голосование",
+            "Шаблон голосования",
+            "Группу пользователей",
+          ]}
+          links={[
+            "/constructor",
+            "",
+            ""
+          ]}
+          triggerClassName="bg-neutral-800 px-7 py-4 rounded-lg outline outline-1 outline-white"
+          menuClassName="bg-[#505050] w-43"
+        />
         </nav>
         <div className="mr-[240px] flex items-center gap-6">
             <div className="flex items-center gap-4">

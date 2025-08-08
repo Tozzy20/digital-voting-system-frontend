@@ -27,41 +27,53 @@ const RegisterPage = () => {
             parsedValue = parseInt(value, 10);
         }
         
-        setFormData(prevState => ({
+        setFormData(prevState => {
+            const updatedData = {
             ...prevState,
-            [name]: parsedValue 
-        }));
+            [name]: parsedValue,
+        };
+        console.log("Обновлены данные формы:", updatedData);
+        return updatedData;   
+    });
     };
 
     // Обработчик отправки формы на бэкенд
     const handleSubmit = async (e) => {
         e.preventDefault();
         setMessage('');
+        console.log('Попытка регистрации с использованием данных', formData);
 
         // Клиентская валидация паролей
         if (formData.password !== formData.confirm_password) {
-            setMessage('Пароли не совпадают!');
+            const errorMsg = 'Пароли не совпадают!';
+            console.warn('Не удалось подтвердить пароль',errorMsg);
+            setMessage(errorMsg);
             return;
         }
 
         // Подготовка данных для отправки
         try {
-            await register(formData);
+            const response = await register(formData);
+            console.log('Ответ API регистрации:', response);
 
-            setMessage('Регистрация прошла успешно!');
+            const successMsg = 'Регистрация прошла успешно!';
+            setMessage(successMsg);
+            console.log('Регистрация прошла успешно, переходим к входу в систему');
+
             setTimeout(() => {
                 navigate('/');
             }, 2000);
 
         } catch (error) {
-            console.error('Ошибка:', error);
-            setMessage('Не удалось подключиться к серверу.');
+            console.error('Ошибка при регистрации:', error);
+            const errorMsg = 'Не удалось подключиться к серверу.';
+            setMessage(errorMsg);
+            console.error('Ошибка регистрации с сообщением:', errorMsg);
         }
     };
 
     return (
         <>
-            <HeaderLogin />
             <div className="flex flex-col items-center  justify-center min-h-[calc(100vh-100px)] bg-gray-100">
                 <h1 className="text-[40px] mb-6 w-[264px] h-[48px] font-mak">Регистрация</h1>
                 <div className="flex bg-white w-[816px] h-[720px] shadow-lg rounded-[20px] overflow-hidden">
