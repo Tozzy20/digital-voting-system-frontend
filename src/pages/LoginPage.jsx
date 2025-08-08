@@ -32,35 +32,42 @@ const LoginPage = () => {
             parsedValue = value;
         }
 
-        setFormData(prevState => ({
+        setFormData(prevState => {
+            const updatedData = {
             ...prevState,
             [name]: parsedValue,
-        }));
+        };
+        console.log("Обновлены данные формы:", updatedData);
+        return updatedData;   
+    });
     };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         setMessage('');
-
-
+        console.log("Попытка входа в систему с использованием данных:", formData);
 
         try {
             const response = await loginUser(formData.email, formData.password, formData.role_id, formData.remember_flag);
+            console.log("Ответ API для входа в систему:", response);
+
             const { access_token } = response;
 
             if (access_token) {
                 login(access_token);
                 setMessage('Авторизация прошла успешно!');
-            
+                console.log("Вход в систему завершен успешно!");
+
                 setTimeout(() => {
                     navigate('/constructor');
                 }, 1000);
             } else {
                 setMessage('Авторизация прошла успешно, но токен не был получен.');
+                console.warn('Вход в систему прошел успешно, но токен не получен:');
             }
 
         } catch (error) {
-            console.error('Ошибка:', error);
+            console.error('Ошибка при авторизации:', error);
             setMessage('Не удалось подключиться к серверу.');
         }
     };
@@ -68,8 +75,6 @@ const LoginPage = () => {
 
     return (
         <div className=" ">
-            {/* <HeaderLogin /> */}
-
             <div className="flex flex-col items-center justify-center min-h-[calc(100vh-100px)] bg-gray-100">
 
                 <h1 className="text-[40px] mb-6 w-[264px] h-[48px] font-mak">Авторизация</h1>
