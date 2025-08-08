@@ -10,7 +10,7 @@ const MainPage1 = () => {
     <>
 <div className="relative bg-slate-100 w-screen min-h-screen overflow-x-hidden flex flex-col items-center">
 
-    <Header />
+    
 
     <div className="relative w-[1470px] mt-8 mb-8">
       <Breadcrumbs title='Главная' />

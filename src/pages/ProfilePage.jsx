@@ -7,8 +7,8 @@ import TimezoneSettings from "../components/profile/TimezoneSetting";
 
 const ProfilePage = () => {
   return (
-    <div className="bg-[#EFF3F8] min-h-screen">
-      <Header />
+    <div className=" min-h-screen">
+      
       <div className="ml-[240px] mt-[60px] mr-[240px]">
         <Breadcrumbs title="Администратор / Личный кабинет / Общая информация" />
         <PageTitle title="Личный кабинет" />

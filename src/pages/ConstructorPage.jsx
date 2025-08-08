@@ -25,8 +25,8 @@ const ConstructorPage = () => {
   };
 
   return (
-    <div className="bg-[#EFF3F8] min-h-screen">
-      <Header />
+    <div className=" min-h-screen">
+      
       <div className="ml-[240px] mt-[60px] mr-[240px]">
         <Breadcrumbs title="Администратор / Конструктор голосований / Добавить голосование" />
         <PageTitle title="Конструктор голосований" />

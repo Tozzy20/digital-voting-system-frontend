@@ -31,7 +31,7 @@ const MainPage = () => {
       className="  flex flex-col items-center relative w-full bg-[#eff2f7]"
       data-model-id="2475:12451"
     >
-      <Header />
+      
 
       <div className="relative w-full overflow-hidden mask-image">
         <img

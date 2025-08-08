@@ -67,8 +67,8 @@ const LoginPage = () => {
 
 
     return (
-        <div className="bg-[#EFF3F8] ">
-            <HeaderLogin />
+        <div className=" ">
+            {/* <HeaderLogin /> */}
 
             <div className="flex flex-col items-center justify-center min-h-[calc(100vh-100px)] bg-gray-100">
 

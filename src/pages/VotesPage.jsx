@@ -112,7 +112,7 @@ const VotesPage = () => {
 
   // if (loading) {
   //   return (
-  //     <div className="flex justify-center items-center min-h-screen bg-[#EFF3F8]">
+  //     <div className="flex justify-center items-center min-h-screen ">
   //       Загрузка голосований...
   //     </div>
   //   );
@@ -120,7 +120,7 @@ const VotesPage = () => {
 
   // if (error) {
   //   return (
-  //     <div className="flex justify-center items-center min-h-screen bg-[#EFF3F8]">
+  //     <div className="flex justify-center items-center min-h-screen ">
   //       Ошибка: {error}
   //     </div>
   //   );
@@ -128,8 +128,8 @@ const VotesPage = () => {
 
 
   return (
-    <div className="bg-[#EFF3F8]  min-h-screen">
-      <Header />
+    <div className="  min-h-screen">
+      
 
       <div className="ml-[240px] mt-[60px] mr-[240px]">
         <Breadcrumbs title="Главная / Голосования" />
