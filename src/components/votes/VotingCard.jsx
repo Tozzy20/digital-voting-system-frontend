@@ -1,5 +1,6 @@
 // src/components/VotingCard.jsx
 import React from 'react';
+import { Link } from 'react-router-dom'; 
 
 const VotingCard = ({ voting }) => {
     const statusText = voting.status === 'active' 
@@ -27,6 +28,7 @@ const VotingCard = ({ voting }) => {
         : '/src/assets/icons/archive.svg';
 
     return (
+        
         <div className="bg-white rounded-[20px] h-[278px] shadow-lg p-6 flex flex-col gap-4 relative">
             <div className="flex justify-between items-start">
                 <div className="flex flex-col gap-2">
@@ -107,7 +109,9 @@ const VotingCard = ({ voting }) => {
             </div>
 
             <div className="absolute bottom-6 right-6 flex gap-[10px]">
+                <Link to='/detali0' >
                 <img src="/src/assets/icons/details.svg" alt="Edit" className="w-[36px] h-[36px] cursor-pointer" />
+                </Link>
                 <img src="/src/assets/icons/delete.svg" alt="Delete" className="w-[36px] h-[36px] cursor-pointer" />
             </div>
         </div>

@@ -1,7 +1,6 @@
 import { useState } from "react";
 import Breadcrumbs from "../components/Breadcrumbs";
 import PageTitle from "../components/PageTitle";
-import Header from "../components/Header";
 import Sidebar from "../components/constructor/Sidebar";
 import Constructor from '../components/constructor/CreateVoting'
 import Templates from "../components/constructor/Templates";
@@ -13,6 +12,19 @@ const ConstructorPage = () => {
   const handleMenuItemClick = (itemKey) => {
     setActiveContent(itemKey);
   };
+
+  const menuItems = [
+        { 
+            key: 'create-poll', 
+            label: 'Добавить голосование', 
+            icon: '/src/assets/icons/plus.svg' 
+        },
+        { 
+            key: 'poll-templates', 
+            label: 'Шаблоны голосований', 
+            icon: '/src/assets/icons/template.svg' 
+        },
+  ];
 
   const renderContent = () => {
     switch (activeContent) {
@@ -33,6 +45,7 @@ const ConstructorPage = () => {
         <main className="flex mt-[24px]">
           <div>
           <Sidebar
+            menuItems={menuItems}
             activeItem={activeContent}
             onMenuItemClick={handleMenuItemClick}
           />

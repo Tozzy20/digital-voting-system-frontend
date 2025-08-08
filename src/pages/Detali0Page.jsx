@@ -1,54 +1,107 @@
-import React from 'react';
-import { BrowserRouter as Router, Route, Link, Routes } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { useParams} from 'react-router-dom';
+import Breadcrumbs from '../components/Breadcrumbs';
+import PageTitle from '../components/PageTitle';
+import GeneralInfo from '../components/details/GeneralInfo';
+import Stats from '../components/details/Stats';
+import Voters from '../components/details/Voters';
+import Results from '../components/details/Results';
+import Sidebar from '../components/constructor/Sidebar';
+import mockVotingData from '../components/details/mockVotingData.js';
+import mockProgressData from '../components/details/mockProgressData.js';
+import { getVotingData } from '../services/api.js';
+import { useAuth } from '../context/AuthProvider.jsx'
 
 const Detali0 = () => {
+  const { votingId } = useParams();
+  const [activeContent, setActiveContent] = useState("general-info"); // Устанавливаем 'create-poll' как начальное активное состояние
+    const { authToken } = useAuth();
+
+  // Функция, которая будет вызываться при клике на пункт сайдбара
+  const handleMenuItemClick = (itemKey) => {
+    setActiveContent(itemKey);
+  };
+
+     useEffect(() => {
+        const fetchData = async () => {
+            try {
+               
+                const rawData = await getVotingData(votingId, authToken);
+                
+                // Преобразуем данные в нужный формат и сохраняем в состояние
+                const formattedData = prepareVotingDataForComponent(rawData);
+                setVotingData(formattedData);
+            } catch (e) {
+                console.error("Ошибка при получении данных:", e);
+            }
+        };
+
+        // Запускаем запрос, только если есть votingId
+        if (votingId) {
+            fetchData();
+        }
+    }, [votingId, authToken]); // Зависимости: запрос повторится при смене ID или токена
+
+// Внутри компонента Detali0
+  const detailsMenuItems = [
+    { 
+        key: 'general-info', 
+        label: 'Общая информация', 
+        icon: '/src/assets/images/detaliAndMain/Component 108.png' 
+    },
+    { 
+        key: 'stats', 
+        label: 'Статистика голосования', 
+        icon: '/src/assets/images/detaliAndMain/Component 109.png' 
+    },
+    { 
+        key: 'voters', 
+        label: 'Голосующие', 
+        icon: '/src/assets/images/detaliAndMain/Component 110.png' 
+    },
+    { 
+        key: 'results', 
+        label: 'Результаты', 
+        icon: '/src/assets/images/detaliAndMain/Component 111.png' 
+    },
+  ];
+
+  const renderContent = () => {
+    switch (activeContent) {
+        case "general-info":
+            return <GeneralInfo votingData={mockVotingData} />;
+        case "stats":
+            return <Stats progressData={mockProgressData} />;
+        case "voters":
+            return <Voters />;
+        case "results":
+            return <Results />;
+    }
+  };
+
+
   return (
     <>
       <div className="relative bg-slate-100 min-h-screen overflow-x-hidden">
-        <div className="w-full h-full flex flex-col">
-          <header className="w-full h-24 bg-neutral-800 flex items-center justify-between px-6">
-            <nav className="ml-[16.67%] hidden lg:flex items-center gap-6">
-              <img src="/src/assets/images/detaliAndMain/logo.svg" className="w-16 h-16" alt="Logo" />
-              <div className="text-white text-base font-semibold">Главная</div>
-              <div className="flex items-center gap-2.5">
-                <div className="text-white text-base font-semibold">Пользователи</div>
-                <div className="w-2 h-2 bg-stone-300 rounded-full"></div>
-              </div>
-              <div className="flex items-center gap-2.5">
-                <div className="text-white text-base font-semibold">Голосования</div>
-                <div className="w-2 h-2 bg-stone-300 rounded-full"></div>
-              </div>
-              <div className="px-5 py-4 rounded-lg outline outline-1 outline-white flex items-center gap-2.5">
-                <div className="text-white text-base font-semibold">Добавить</div>
-                <div className="w-2 h-2 bg-stone-300 rounded-full"></div>
-              </div>
-            </nav>
-            <div className=" mr-[16.67%] flex items-center gap-6">
-              <div className="flex items-center gap-4">
-                <div className="w-8 h-8 cursor-pointer">
-                  <img src="/src/assets/images/detaliAndMain/elements.png" alt="Search" className="w-full h-full object-contain" />
-                </div>
-                <div className="w-8 h-8 cursor-pointer">
-                  <img src="/src/assets/images/detaliAndMain/setting-05.png" alt="Notifications" className="w-full h-full object-contain" />
-                </div>
-              </div>
-              <div className="flex items-center gap-2.5">
-                <div className="text-white text-base font-semibold">Фамилия И.О.</div>
-                <div className="w-8 h-8 cursor-pointer">
-                  <img src="/src/assets/images/detaliAndMain/user-circle.png" alt="User" className="w-full h-full object-contain" />
-                </div>
-              </div>
+        <div className="w-full h-full flex flex-col ml-[240px] mt-[60px] mr-[240px]">
+          
+          <Breadcrumbs title='Администратор / Детали голосования / Общая информация'/>
+            
+          <PageTitle title='Детали голосования' />
+
+          <main className="flex mt-[24px]">
+            <div>
+            <Sidebar
+            menuItems={detailsMenuItems}
+            activeItem={activeContent}
+            onMenuItemClick={handleMenuItemClick}
+            />
             </div>
-          </header>
-
-          <div className="w-full ml-[17.36%] mt-[60px] text-stone-300 text-base font-normal">
-            Администратор / Детали голосования / Общая информация
-          </div>
-          <div className="w-full ml-[17.36%] mt-[20px] text-neutral-800 text-4xl font-light font-['Mak']">
-            Детали голосования
-          </div>
-
-          <div className="w-[20%] p-8 mt-[260px] bg-white rounded-[20px] shadow-[0px_2px_10px_0px_rgba(0,0,0,0.25)] flex flex-col items-start gap-2.5 absolute left-[17.36%]">
+            <div className="ml-[10px] flex-1">
+            {renderContent()}
+            </div>
+          </main>
+          {/* <div className="w-[20%] p-8 mt-[260px] bg-white rounded-[20px] shadow-[0px_2px_10px_0px_rgba(0,0,0,0.25)] flex flex-col items-start gap-2.5 absolute left-[17.36%]">
             <div className="flex items-center gap-4 p-2.5 bg-cyan-100 rounded-lg w-full">
               <div className="w-6 h-6 relative overflow-hidden">
                 <img src="/src/assets/images/detaliAndMain/Component 108.png" alt="Icon" />
@@ -73,9 +126,9 @@ const Detali0 = () => {
               </div>
               <Link to="/results"><div className="text-neutral-800 text-base font-normal">Результаты</div></Link>
             </div>
-          </div>
+          </div> */}
 
-          <main className="w-[calc(100%-250px)] md:w-[calc(100%-300px)] lg:w-[65%] xl:w-[50%] h-[496px] ml-[37.8%] mt-[20px] bg-white rounded-[20px] shadow-[0px_2px_10px_0px_rgba(0,0,0,0.25)] overflow-hidden p-6">
+          {/* <main className="w-[calc(100%-250px)] md:w-[calc(100%-300px)] lg:w-[65%] xl:w-[50%] h-[496px] ml-[37.8%] mt-[20px] bg-white rounded-[20px] shadow-[0px_2px_10px_0px_rgba(0,0,0,0.25)] overflow-hidden p-6">
             <Routes>
               <Route path="/" element={
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 h-full">
@@ -218,7 +271,7 @@ const Detali0 = () => {
               <Route path="/voters" element={<div>Голосующие content goes here</div>} />
               <Route path="/results" element={<div>Результаты content goes here</div>} />
             </Routes>
-          </main>
+          </main> */}
         </div>
       </div>
     </>

@@ -32,6 +32,7 @@ function AppContent() {
         <Route path='/constructor' element={<ConstructorPage />} />
         <Route path='/main1' element={<MainPage1 />} />
         <Route path='/detali0' element={<Detali0 />} />
+        <Route path='/votes/:votingId' element={<Detali0 />} />
         <Route path='/detali1' element={<Detali1 />} />
         <Route path='/detali2' element={<Detali2 />} />
         <Route path='/detali3' element={<Detali3 />} />
