@@ -15,6 +15,7 @@ const RegisterPage = () => {
         confirm_password: '',
     });
     const [message, setMessage] = useState('');
+    const [isSuccess, setIsSuccess] = useState(false);
     const navigate = useNavigate(); // Инициализируем хук для навигации
 
     // Универсальный обработчик изменений в полях ввода
@@ -32,8 +33,12 @@ const RegisterPage = () => {
             ...prevState,
             [name]: parsedValue,
         };
-        console.log("Обновлены данные формы:", updatedData);
-        return updatedData;   
+
+        //---------------------------------------------------------------------
+        const logMessage = `Обновлены данные формы: ${JSON.stringify(updatedData)}`;
+        console.log(logMessage);
+        // setMessage(logMessage); // Раскомментируйте, если хотите видеть это сообщение
+        return updatedData; 
     });
     };
 
@@ -41,7 +46,11 @@ const RegisterPage = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         setMessage('');
-        console.log('Попытка регистрации с использованием данных', formData);
+        setIsSuccess(false);
+
+        const logMessage = `Попытка регистрации с использованием данных: ${JSON.stringify(formData)}`;
+        console.log(logMessage);
+        setMessage(logMessage);
 
         // Клиентская валидация паролей
         if (formData.password !== formData.confirm_password) {
@@ -66,8 +75,8 @@ const RegisterPage = () => {
 
         } catch (error) {
             console.error('Ошибка при регистрации:', error);
-            const errorMsg = 'Не удалось подключиться к серверу.';
-            setMessage(errorMsg);
+            const errorMsg = error.response?.data?.message || error.message || 'Не удалось подключиться к серверу.';
+            setMessage(`Ошибка: ${errorMsg}`);
             console.error('Ошибка регистрации с сообщением:', errorMsg);
         }
     };
@@ -196,10 +205,10 @@ const RegisterPage = () => {
                                 required
                             />
 
-                            {message ? (
-                            <p className="text-red-500 text-sm">{message}</p>
-                            ) : (
-                            <div style={{ height: '24px' }}></div>
+                            {message && (
+                                <p className={`text-sm mb-2 ${isSuccess ? 'text-green-600' : 'text-red-500'}`}>
+                                    {message}
+                                </p>
                             )}
 
                             <button type="submit" className="w-full bg-black  text-white px-[20px] py-[16px] rounded-[12px] my-5">

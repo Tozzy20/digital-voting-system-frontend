@@ -14,7 +14,9 @@ const LoginPage = () => {
         role_id: 1,
         remember_flag: false,
     });
+
     const [message, setMessage] = useState('');
+    const [isSuccess, setIsSuccess] = useState(false);
     const navigate = useNavigate();
 
     const handleChange = (e) => {
@@ -37,7 +39,10 @@ const LoginPage = () => {
             ...prevState,
             [name]: parsedValue,
         };
-        console.log("Обновлены данные формы:", updatedData);
+        // -------------------------------------------------------------------------
+        const logMessage = `Обновлены данные формы: ${JSON.stringify(updatedData)}`;
+        console.log(logMessage);
+        setMessage(logMessage); // Раскомментируйте, если хотите видеть это сообщение
         return updatedData;   
     });
     };
@@ -45,30 +50,38 @@ const LoginPage = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         setMessage('');
-        console.log("Попытка входа в систему с использованием данных:", formData);
+        setIsSuccess(false);
+
+        const logMessage = `Попытка входа в систему с использованием данных: ${JSON.stringify(formData)}`;
+        console.log(logMessage);
+        setMessage(logMessage);
 
         try {
             const response = await loginUser(formData.email, formData.password, formData.role_id, formData.remember_flag);
             console.log("Ответ API для входа в систему:", response);
+            setMessage(`Ответ API для входа в систему: ${JSON.stringify(response)}`);
 
             const { access_token } = response;
 
             if (access_token) {
                 login(access_token);
                 setMessage('Авторизация прошла успешно!');
+                setIsSuccess(true);
                 console.log("Вход в систему завершен успешно!");
 
                 setTimeout(() => {
                     navigate('/constructor');
                 }, 1000);
             } else {
-                setMessage('Авторизация прошла успешно, но токен не был получен.');
+                const errorMsg = 'Авторизация прошла успешно, но токен не был получен.';
+                setIsSuccess(errorMsg);
                 console.warn('Вход в систему прошел успешно, но токен не получен:');
             }
 
         } catch (error) {
             console.error('Ошибка при авторизации:', error);
-            setMessage('Не удалось подключиться к серверу.');
+            const errorMsg = error.message || 'Не удалось подключиться к серверу.';
+            setMessage(`Ошибка: ${errorMsg}`);
         }
     };
 
@@ -127,10 +140,10 @@ const LoginPage = () => {
                                 
                             </div>
                             
-                            {message ? (
-                            <p className="text-red-500 text-sm">{message}</p>
-                            ) : (
-                            <div style={{ height: '24px' }}></div>
+                            {message && (
+                                <p className={`text-sm mb-2 ${isSuccess ? 'text-green-600' : 'text-red-500'}`}>
+                                    {message}
+                                </p>
                             )}
 
                             <button type="submit" className="w-full bg-black  text-white px-[20px] py-[16px] rounded-[12px] my-8">
