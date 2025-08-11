@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useParams} from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import Breadcrumbs from '../components/Breadcrumbs';
 import PageTitle from '../components/PageTitle';
 import GeneralInfo from '../components/details/GeneralInfo';
@@ -7,13 +7,38 @@ import Stats from '../components/details/Stats';
 import Voters from '../components/details/Voters';
 import Results from '../components/details/Results';
 import Sidebar from '../components/constructor/Sidebar';
-import mockVotingData from '../components/details/mockVotingData.js';
-import mockProgressData from '../components/details/mockProgressData.js';
 import { getVotingData } from '../services/api.js';
 import { useAuth } from '../context/AuthProvider.jsx'
+import { formatDate, formatTime } from '../components/votes/Formatters.jsx';
+
+const prepareVotingDataForComponent = (rawData) => {
+    if (!rawData) return null;
+
+    // Предполагаем, что rawData содержит поля `registration_start_date` и `voting_end_date`
+     return {
+        // Копируем все исходные поля
+        ...rawData,
+        // Создаем новые поля с отформатированными данными
+        registration: {
+            startDate: formatDate(rawData.voting_full_info.registration_start),
+            startTime: formatTime(rawData.voting_full_info.registration_start),
+            endDate: formatDate(rawData.voting_full_info.registration_end),
+            endTime: formatTime(rawData.voting_full_info.registration_end),
+        },
+        voting: {
+            startDate: formatDate(rawData.voting_full_info.voting_start),
+            startTime: formatTime(rawData.voting_full_info.voting_start),
+            endDate: formatDate(rawData.voting_full_info.voting_end),
+            endTime: formatTime(rawData.voting_full_info.voting_end),
+        },
+        
+    };
+};
 
 const Detali0 = () => {
   const { votingId } = useParams();
+  const [votingData, setVotingData] = useState(null);
+  const [loading, setLoading] = useState(true);
   const [activeContent, setActiveContent] = useState("general-info"); // Устанавливаем 'create-poll' как начальное активное состояние
     const { authToken } = useAuth();
 
@@ -34,13 +59,23 @@ const Detali0 = () => {
             } catch (e) {
                 console.error("Ошибка при получении данных:", e);
             }
+            finally {
+                setLoading(false);
+            }
         };
  
-        // Запускаем запрос, только если есть votingId
         if (votingId) {
             fetchData();
         }
     }, [votingId, authToken]); // Зависимости: запрос повторится при смене ID или токена
+
+    if (loading) {
+        return <div>Загрузка...</div>;
+    }
+
+    if (!votingData) {
+        return <div>Данные о голосовании не найдены.</div>;
+    }
 
 // Внутри компонента Detali0
   const detailsMenuItems = [
@@ -69,9 +104,9 @@ const Detali0 = () => {
   const renderContent = () => {
     switch (activeContent) {
         case "general-info":
-            return <GeneralInfo votingData={mockVotingData} />;
+            return <GeneralInfo votingData={votingData} />;
         case "stats":
-            return <Stats progressData={mockProgressData} />;
+            return <Stats votingData={votingData} />;
         case "voters":
             return <Voters />;
         case "results":
@@ -82,8 +117,8 @@ const Detali0 = () => {
 
   return (
     <>
-      <div className="relative bg-slate-100 min-h-screen overflow-x-hidden">
-        <div className="w-full h-full flex flex-col ml-[240px] mt-[60px] mr-[240px]">
+      
+        <div className="h-full flex flex-col ml-[240px] mt-[60px] mr-[240px]">
           
           <Breadcrumbs title='Администратор / Детали голосования / Общая информация'/>
             
@@ -273,7 +308,6 @@ const Detali0 = () => {
             </Routes>
           </main> */}
         </div>
-      </div>
     </>
   );
 };

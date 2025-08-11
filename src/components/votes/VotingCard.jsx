@@ -1,32 +1,10 @@
 // src/components/VotingCard.jsx
 import React from 'react';
 import { Link } from 'react-router-dom'; 
+import { getVotingStatusConfig } from './Formatters';
 
 const VotingCard = ({ voting }) => {
-    const statusText = voting.status === 'active' 
-        ? 'Голосование активно' 
-        : voting.status === 'registration'
-        ? 'Голосование на этапе регистрации'
-        : 'Голосование завершено';
-
-    const statusBg = voting.status === 'active' 
-        ? 'bg-[#E6FFDD]' 
-        : voting.status === 'registration'
-        ? 'bg-[#FFFBD0]'
-        : 'bg-neutral-100';
-
-    const statusTextColor = voting.status === 'active' 
-        ? 'text-[#135615]' 
-        : voting.status === 'registration'
-        ? 'text-[#564E13]'
-        : 'text-neutral-800';
-
-    const statusIcon = voting.status === 'active'
-        ? '/src/assets/icons/fireGreen.svg'
-        : voting.status === 'registration'
-        ? '/src/assets/icons/registration.svg'
-        : '/src/assets/icons/archive.svg';
-
+    const status = getVotingStatusConfig(voting);
     return (
         
         <div className="bg-white rounded-[20px] h-[278px] shadow-lg p-6 flex flex-col gap-4 relative">
@@ -47,10 +25,10 @@ const VotingCard = ({ voting }) => {
 
             <div className="flex gap-[68px] items-start flex-grow">
                 <div className="flex flex-col gap-2 h-[44px] w-[393px]">
-                    <div className={`h-8 p-[10px] rounded-lg h-full w-full flex items-center gap-2 ${statusBg}`}>
-                        <img src={statusIcon} alt={statusText} className="w-5 h-5" />
-                        <div className={`text-sm font-semibold font-supermolotDB leading-[21px] ${statusTextColor}`}>
-                            {statusText}
+                    <div className={`h-8 p-[10px] rounded-lg h-full w-full flex items-center gap-2 ${status.bg}`}>
+                        <img src={status.icon} alt={status.text} className="w-5 h-5" />
+                        <div className={`text-sm font-semibold font-supermolotDB leading-[21px] ${status.textColor}`}>
+                            {status.text}
                         </div>
                     </div>
                 </div>
@@ -109,7 +87,7 @@ const VotingCard = ({ voting }) => {
             </div>
 
             <div className="absolute bottom-6 right-6 flex gap-[10px]">
-                <Link to='/detali0' >
+                <Link to={`/votes/${voting.id}`}>
                 <img src="/src/assets/icons/details.svg" alt="Edit" className="w-[36px] h-[36px] cursor-pointer" />
                 </Link>
                 <img src="/src/assets/icons/delete.svg" alt="Delete" className="w-[36px] h-[36px] cursor-pointer" />
