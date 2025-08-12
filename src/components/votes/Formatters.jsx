@@ -31,3 +31,44 @@ export const getVotingStatus = (voting) => {
     
     return 'completed'; 
 };
+
+export const getVotingStatusConfig = (voting) => {
+  const now = new Date();
+  const registrationStart = new Date(voting.registration_start);
+  const votingStart = new Date(voting.voting_start);
+  const votingEnd = new Date(voting.voting_end);
+
+  if (now >= votingStart && now <= votingEnd) {
+    return {
+      text: 'Голосование активно',
+      bg: 'bg-[#E6FFDD]',
+      textColor: 'text-[#135615]',
+      icon: '/src/assets/icons/fireGreen.svg',
+    };
+  }
+
+  if (now >= registrationStart && now < votingStart) {
+    return {
+      text: 'Голосование на этапе регистрации',
+      bg: 'bg-[#FFFBD0]',
+      textColor: 'text-[#564E13]',
+      icon: '/src/assets/icons/registration.svg',
+    };
+  }
+  
+  if (now > votingEnd) {
+    return {
+      text: 'Голосование завершено',
+      bg: 'bg-neutral-100',
+      textColor: 'text-neutral-800',
+      icon: '/src/assets/icons/archive.svg',
+    };
+  }
+  
+  return {
+    text: 'Ожидает начала',
+    bg: 'bg-neutral-100',
+    textColor: 'text-neutral-600',
+    icon: '/src/assets/icons/archive.svg',
+  };
+};

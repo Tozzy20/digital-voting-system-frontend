@@ -87,12 +87,12 @@ const VotesPage = () => {
           },
           status: getVotingStatus(voting),
           groupName: voting.departments?.[0]?.name || "Общая группа",
-          timezone: "UTC+3",
+          timezone: "(UTC+3) Россия - Москва",
 
 
         }));
 
-
+ 
 
         setVotings(formattedVotings);
         setTotalPages(pagination.total_pages);

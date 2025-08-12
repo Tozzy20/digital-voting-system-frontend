@@ -79,3 +79,13 @@ export const createVoting = async (votingData, authToken) => {
   });
   return response.data;
 };
+
+export const getVotingData = async (votingId, authToken) => {
+  const response = await axios.get(`${API_URL}/votings/${votingId}`, {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${authToken}`,
+    },
+  });
+  return response.data;
+}

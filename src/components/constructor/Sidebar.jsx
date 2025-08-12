@@ -1,43 +1,27 @@
 import React from "react";
 
-const Sidebar = ({ activeItem, onMenuItemClick }) => { 
+const Sidebar = ({ menuItems, activeItem, onMenuItemClick }) => { 
   const handleItemClick = (itemKey) => {
     onMenuItemClick(itemKey);
-    console.log(`Активный пункт: ${itemKey}`);
   };
 
   return (
     <div className="bg-white rounded-[20px] shadow-lg p-[32px] w-[393px]">
       <ul className="space-y-[10px] ">
-        {/* Создать голосование */}
-        <li
-          className={`flex items-center p-[10px] rounded-[8px] cursor-pointer transition-colors duration-200 ${
-            activeItem === 'create-poll'
-              ? 'bg-[#D2F0FF]'
-              : 'hover:bg-gray-100'
-          }`}
-          onClick={() => handleItemClick('create-poll')}
-        >
-          <img src='/src/assets/icons/plus.svg'></img>
-          <span className={`px-[20.76px] ${activeItem === 'create-poll' ? 'text-blue-800' : 'text-gray-700'}`}>
-            Добавить голосование
-          </span>
-        </li>
-
-        {/* Шаблоны голосований */}
-        <li
-          className={`flex items-center p-[10px] rounded-[8px] cursor-pointer transition-colors duration-200 ${
-            activeItem === 'poll-templates'
-              ? 'bg-[#D2F0FF]'
-              : 'hover:bg-gray-100'
-          }`}
-          onClick={() => handleItemClick('poll-templates')}
-        >
-          <img src="/src/assets/icons/template.svg"></img>
-          <span className={`px-[20.76px] ${activeItem === 'poll-templates' ? 'text-blue-800' : 'text-gray-700'}`}>
-            Шаблоны голосований
-          </span>
-        </li>
+        {menuItems.map((item) => (
+          <li
+            key={item.key} // Важно использовать уникальный ключ для каждого элемента списка
+            className={`flex items-center p-[10px] rounded-[8px] cursor-pointer transition-colors duration-200 ${
+              activeItem === item.key ? 'bg-[#D2F0FF]' : 'hover:bg-gray-100'
+            }`}
+            onClick={() => handleItemClick(item.key)}
+          >
+            <img src={item.icon} alt={item.label} />
+            <span className={`px-[20.76px] ${activeItem === item.key ? 'text-blue-800' : 'text-gray-700'}`}>
+              {item.label} 
+            </span>
+          </li>
+        ))}
       </ul>
     </div>
   );
