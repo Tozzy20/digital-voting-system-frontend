@@ -1,8 +1,10 @@
-import React from 'react';
-import { getVotingStatusConfig } from '../votes/Formatters';
+import { useNavigate } from 'react-router';
+import { getVotingStatusConfigDetails } from '../votes/Formatters';
+import { Button } from '@material-tailwind/react'
 
 const GeneralInfo = ({ votingData }) => {
-  const status = getVotingStatusConfig(votingData);
+  const navigate = useNavigate();
+  const status = getVotingStatusConfigDetails(votingData);
   // Проверка на наличие данных, чтобы избежать ошибок, если prop не передан
   if (!votingData) {
     return <div>Данные о голосовании не найдены.</div>;
@@ -35,9 +37,11 @@ const GeneralInfo = ({ votingData }) => {
               <div className="text-neutral-800 text-base font-medium">{votingData.voting_full_info.public ? 'Публичное' : 'Тайное'}</div>
             </div>
           </div>
-          <div className="px-5 py-4 mt-auto w-full lg:w-96 bg-blue-500 rounded-lg flex justify-center items-center gap-2.5 self-start">
-            <div className="text-white text-base font-semibold">Результаты</div>
-          </div>
+          
+            <Button className='bg-[#437DE9] text-base px-5 py-4 mt-auto w-full lg:w-96 rounded-lg flex justify-center items-center gap-2.5 self-start'>
+							Результаты
+						</Button>
+          
         </div>
 
         {/* Правая колонка */}

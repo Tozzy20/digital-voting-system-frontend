@@ -11,7 +11,7 @@ import Button from "../components/Button";
 
 import { getVotings } from '../services/api'
 import { useAuth } from '../context/AuthProvider'
-import { formatDate, formatTime, getVotingStatus } from '../components/votes/Formatters'
+import { formatDate, formatTime, getVotingStatusConfig } from '../components/votes/Formatters'
 
 
 
@@ -85,7 +85,7 @@ const VotesPage = () => {
             date: formatDate(voting.voting_end),
             time: formatTime(voting.voting_end),
           },
-          status: getVotingStatus(voting),
+          status: getVotingStatusConfig(voting),
           groupName: voting.departments?.[0]?.name || "Общая группа",
           timezone: "(UTC+3) Россия - Москва",
 

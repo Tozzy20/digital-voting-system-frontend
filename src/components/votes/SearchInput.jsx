@@ -20,5 +20,16 @@ const SearchInput = ({value, onChange, onSearch}) => {
         </div>
     );
 };
+ 
+
+
+
+
+
+
+
+
+
+
 
 export default SearchInput;
