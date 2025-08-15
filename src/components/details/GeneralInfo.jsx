@@ -39,7 +39,7 @@ const GeneralInfo = ({ votingData }) => {
           </div>
           
             <Button className='bg-[#437DE9] text-base px-5 py-4 mt-auto w-full lg:w-96 rounded-lg flex justify-center items-center gap-2.5 self-start'>
-							Результаты
+							{status.text === 'Голосование на этапе регистрации' ? 'Зарегестрироваться' : (status.text === 'Голосование активно' ? 'Проголосовать' : 'Результаты')}
 						</Button>
           
         </div>

@@ -45,7 +45,7 @@ const HeaderDropdown = ({
               <div
                 key={index}
                 onClick={() => handleItemClick(index)}
-                className='p-3 w-36 cursor-pointer text-xl font-normal select-none transition-all block hover:bg-[#606060]'
+                className='p-3 w-36 cursor-pointer text-base font-normal select-none transition-all block hover:bg-[#606060]'
               >
                 {option.title || option}
               </div>

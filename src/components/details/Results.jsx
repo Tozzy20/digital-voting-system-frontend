@@ -96,7 +96,9 @@
 
 
 import { AlignRight, ChartColumn } from 'lucide-react'
-import { useState } from 'react'
+import { useState, useParams, useEffect } from 'react'
+import { getVotingResults } from '../../services/api'
+import { useAuth } from '../../context/AuthProvider'
 // import { Button, GrayButton } from '../../../components/Buttons'
 
 const ResultsBlock= ({ title, description, children, buttons = true, results }) => {
@@ -123,34 +125,58 @@ const ResultsBlock= ({ title, description, children, buttons = true, results }) 
 				)}
 			</div>
 			{children}
-      		{resultStyle === 'list' ? <ResultsStyle1 results={results} /> : <ResultsStyle3 />}
+      		{resultStyle === 'list' ? <ResultsStyle1 results={results} /> : <ResultsStyle3 results={results} />}
 		</div>
 	)
 }
 
-const ResultsForAdmin = ({ results }) => {
+export const ResultsForAdmin = ({ votingId }) => {
 	
 
+ 	const { authToken } = useAuth();
+	const [results, setResults] = useState([]);
+
+
+
+	useEffect(() => {
+			const fetchData = async () => {
+				try {
+
+					// Запрос на результаты
+					const results = await getVotingResults(votingId, authToken)
+					setResults(results)
+				} catch (e) {
+					console.error("Ошибка при получении данных:", e);
+				}
+			};
+	 
+			if (votingId) {
+				fetchData();
+			}
+		}, [votingId, authToken]);
+
+	const questions = results?.questions || [];
 	return (
 		<>
 			<div className='flex flex-col gap-3'>
 				<div className='bg-white shadow-sm rounded-[20px] p-6'>
 					<p className='text-xl font-bold'>Результаты голосования</p>
 				</div>
-				<ResultsBlock
-					title={'№1 Пример вопроса?'}
+				{questions.map((question, index) => (
+                    <ResultsBlock
+                        key={question.id} // Важно использовать уникальный ключ
+                        title={`№${index + 1} ${question.title}`}
+                        description={`Вопрос ${question.type === "single_choice" ? 'одним вариантом ответа' : 'несколькими вариантами ответов'}`}
+                        results={question}
+                    />
+                ))}
+				{/* <ResultsBlock
+					title={questions[1].title}
 					description={'Необходимо выбрать один вариант ответа'}
-					results={results}
+					results={questions[1]}
 				>
 					
-				</ResultsBlock>
-				<ResultsBlock
-					title={'№2 Пример вопроса?'}
-					description={'Необходимо выбрать один вариант ответа'}
-					
-				>
-					
-				</ResultsBlock>
+				</ResultsBlock> */}
 				{/* <ResultsBlock
 					title={'№3 Пример вопроса?'}
 					description={'Необходимо выбрать один вариант ответа'}
@@ -173,7 +199,7 @@ const ResultsForAdmin = ({ results }) => {
 
 const ResultsStyle1 = ({ results }) => {
 
-	const optionsArray = results.questions.options;
+	const optionsArray = results.options
 	const VotingMass = optionsArray.map(item => ({
         option: item.option,
         result: item.vote_count
@@ -238,27 +264,27 @@ const ResultsStyle1 = ({ results }) => {
 		</>
 	)
 }
-const ResultsStyle2 = () => {
-	const VotingMass = [
-		{
-			option: 'За',
-			result: 3200,
-			color: '#5BC25B',
-			textColor: '#59E059',
-		},
-		{
-			option: 'Против',
-			result: 288,
-			color: '#EE5B5B',
-			textColor: '#FF6B6B',
-		},
-		{
-			option: 'Воздержались',
-			result: 200,
-			color: '#f4f4f4',
-			textColor: '#ccc',
-		},
-	]
+
+export const BeforeResults = () => {
+	return (
+		<div className="w-full h-auto bg-white rounded-[20px] shadow-[0px_2px_10px_0px_rgba(0,0,0,0.25)] overflow-hidden p-8 flex items-center justify-center">
+                <div className="flex flex-col items-center gap-6 max-w-md text-center">
+                  <img className="w-80 h-80 max-w-full" src="/src/assets/images/detaliAndMain/Detali4.svg" alt="Processing" />
+                  <div className="text-neutral-800 text-base">
+                    Результаты голосования пока в обработке.
+                    <br />
+                    Посетите раздел позднее
+                  </div>
+                </div>
+    		</div>	
+	)
+}
+const ResultsStyle2 = ({ results }) => {
+	const optionsArray = results.options
+	const VotingMass = optionsArray.map(item => ({
+        option: item.option,
+        result: item.vote_count
+    }))
 
 	const AllVotingPoints = VotingMass.reduce((sum, item) => sum + item.result, 0)
 	console.log(AllVotingPoints)
@@ -303,24 +329,14 @@ const ResultsStyle2 = () => {
 		</div>
 	)
 }
-const ResultsStyle3 = () => {
-	const VotingMass = [
-		{
-			option: 'Вариант 1',
-			result: 1000,
-			color: '#EE5B5B',
-		},
-		{
-			option: 'Вариант 2',
-			result: 500,
-			color: '#F57575',
-		},
-		{
-			option: 'Вариант 3',
-			result: 76,
-			color: '#FFE3E3',
-		},
-	]
+
+
+const ResultsStyle3 = ({ results }) => {
+	const optionsArray = results.options
+	const VotingMass = optionsArray.map(item => ({
+        option: item.option,
+        result: item.vote_count
+    }))
 
 	const maxResult = Math.max(...VotingMass.map(item => item.result))
 	const AllVotingPoints = maxResult
@@ -342,7 +358,7 @@ const ResultsStyle3 = () => {
 										className={`w-full rounded-t-xl transition-all duration-500 `}
 										style={{
 											height: `${percentage}%`,
-											backgroundColor: `${item.color}`,
+											backgroundColor: `#EE5B5B`,
 										}}
 									/>
 								</div>
@@ -596,4 +612,4 @@ const ResultsStyle5 = () => {
 	)
 }
 
-export default ResultsForAdmin
+

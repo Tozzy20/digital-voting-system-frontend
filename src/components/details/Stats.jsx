@@ -223,7 +223,7 @@ const VotingStatistic = ({
 							<p className='font-normal text-base text-[#ccc]'>
 								Электронная явка [{votingStats.turnout_percentage}%]
 							</p>
-							<div className='rounded-full w-2/3 bg-gray-700 h-4 overflow-hidden'>
+							<div className='rounded-full w-2/3 bg-[#F4F4F4] h-4 overflow-hidden'>
 								<div
 									className='rounded-full bg-[#7DD4FF] h-full'
 									style={{ width: `${votingStats.turnout_percentage}%` }}

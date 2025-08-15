@@ -12,7 +12,7 @@ export const ProgressCircle = ({ progress }) => {
 				<div
 					className={`w-100 h-100 absolute drop-shadow-xl ${
 						progress <= 25
-							? ' drop-shadow-[#EE5B5B50] stroke-[#EE5B5B]'
+							? 'drop-shadow-[#EE5B5B50] stroke-[#EE5B5B]'
 							: progress <= 50
 							? 'drop-shadow-[#FFa05a50] stroke-[#FFa05a]'
 							: progress <= 75
