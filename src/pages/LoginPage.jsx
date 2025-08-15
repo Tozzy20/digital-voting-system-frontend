@@ -41,8 +41,8 @@ const LoginPage = () => {
         };
         // -------------------------------------------------------------------------
         const logMessage = `Обновлены данные формы: ${JSON.stringify(updatedData)}`;
-        console.log(logMessage);
-        setMessage(logMessage); // Раскомментируйте, если хотите видеть это сообщение
+        //console.log(logMessage);
+        //setMessage(logMessage); 
         return updatedData;   
     });
     };

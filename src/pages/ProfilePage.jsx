@@ -17,7 +17,7 @@ const ProfilePage = () => {
         
         <PageTitle 
           title="Личный кабинет" 
-          className="text-2xl lg:text-3xl mt-2 lg:mt-0"
+          className="text-2xl lg:text-3xl lg:mt-0"
         />
         
         <main className="flex flex-col lg:flex-row gap-4 lg:gap-[10px] mt-4 lg:mt-[24px]">
@@ -28,7 +28,7 @@ const ProfilePage = () => {
           </div>
 
           {/* Правая колонка (настройки) */}
-          <div className="flex flex-col w-full lg:w-auto gap-4 lg:gap-[10px]">
+          <div className="flex flex-col w-full lg:w-full gap-4 lg:gap-[10px]">
             <TimezoneSettings />
           </div>
         </main>

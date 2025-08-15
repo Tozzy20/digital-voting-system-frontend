@@ -23,7 +23,7 @@ const MainPage = () => {
 		'44%',
 	]
 	const colors = ['#BD3636', '#FFE3E3', '#E87C7C', '#F2A4A4']
-	const [role, setRole] = useState('админ')
+	const [role, setRole] = useState('адми')
 	return (
 		<>
 			{role !== 'админ' && (
@@ -92,7 +92,7 @@ const MainPage = () => {
 							<div className='flex flex-col gap-2 w-5/11 max-lg:w-full'>
 								<div className='bg-white rounded-[20px] px-6 py-8 max-h-100 flex gap-2 max-lg:flex-col max-md:px-4 max-md:py-5'>
 									<div className='col-span-3 flex flex-col justify-between h-full max-lg:order-2'>
-										<p className='font-bold text-xl leading-5 max-md:text-lg'>
+										<p className='font-bold text-xl leading-5 max-md:text-base'>
 											Ваш голос — неприкосновенен.
 										</p>
 										<p className='text-base font-base leading-5 max-md:text-sm'>
@@ -302,34 +302,34 @@ const MainPage = () => {
 						role === 'админ' ? 'grid-cols-3' : 'grid-cols-6 grid-rows-2 mt-2'
 					}  gap-2 max-lg:grid-cols-3 max-md:grid-cols-2 max-sm:grid-cols-1`}
 				>
-					<div
-						className={`bg-white rounded-[20px] flex flex-col ${
-							role !== 'админ' && 'col-span-2 row-span-1'
-						} justify-between h-70 p-5 max-md:p-4 max-sm:col-span-1`}
-					>
-						<p className='font-bold text-xl max-md:text-lg'>Регистрация и голосование</p>
-						<p className='font-normal text-base text-[#CCCCCC] max-md:text-sm'>
-							Соотношение регистраций и голосов
-						</p>
-						<div className='grid grid-cols-12 gap-1 h-40 items-end max-md:h-32'>
-							{heights.map((height, index) => (
-								<div
-									key={index}
-									className='rounded-sm transition-all duration-300'
-									style={{
-										height: height,
-										backgroundColor: colors[index % colors.length],
-									}}
-								/>
-							))}
-						</div>
-						<div className='flex justify-between max-md:text-sm'>
-							<p className='font-normal text-base text-[#CCCCCC] max-md:text-sm'>01.04</p>
-							<p className='font-normal text-base text-[#CCCCCC] max-md:text-sm'>01.05</p>
-							<p className='font-normal text-base text-[#CCCCCC] max-md:text-sm'>01.06</p>
-							<p className='font-normal text-base text-[#CCCCCC] max-md:text-sm'>01.07</p>
-						</div>
-					</div>
+<div
+  className={`bg-white rounded-[20px] flex flex-col ${
+    role !== 'админ' && 'col-span-2 row-span-1'
+  } justify-between min-h-[300px] md:min-h-[350px] p-5 max-md:p-4 max-sm:col-span-1`}
+>
+  <p className='font-bold text-xl max-md:text-lg'>Регистрация и голосование</p>
+  <p className='font-normal text-base text-[#CCCCCC] max-md:text-sm'>
+    Соотношение регистраций и голосов
+  </p>
+  <div className='grid grid-cols-12 gap-1 h-40 md:h-40 items-end max-md:h-32'>
+    {heights.map((height, index) => (
+      <div
+        key={index}
+        className='rounded-sm transition-all duration-300'
+        style={{
+          height: height,
+          backgroundColor: colors[index % colors.length],
+        }}
+      />
+    ))}
+  </div>
+  <div className='flex justify-between max-md:text-sm pt-2'>
+    <p className='font-normal text-base text-[#CCCCCC] max-md:text-sm'>01.04</p>
+    <p className='font-normal text-base text-[#CCCCCC] max-md:text-sm'>01.05</p>
+    <p className='font-normal text-base text-[#CCCCCC] max-md:text-sm'>01.06</p>
+    <p className='font-normal text-base text-[#CCCCCC] max-md:text-sm'>01.07</p>
+  </div>
+</div>
 					{role !== 'админ' && (
 						<div className='bg-white rounded-[20px] col-span-4 row-span-2 p-5 max-lg:col-span-3 max-md:col-span-2 max-sm:col-span-1 max-md:p-4'>
 							<p className='font-bold text-xl max-md:text-lg'>Календарь голосований</p>
@@ -376,5 +376,4 @@ const MainPage = () => {
 		</>
 	)
 }
-
 export default MainPage
