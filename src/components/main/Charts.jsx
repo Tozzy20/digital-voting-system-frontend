@@ -9,12 +9,15 @@ import Chart from 'react-apexcharts'
 export const Chart1 = ({ series, colors }) => {
 	const chartConfig = {
 		type: 'line',
-		height: 550,
+		height: 300, // Уменьшена высота для мобильных
 		series: series,
 		options: {
 			chart: {
 				toolbar: {
 					show: false,
+				},
+				zoom: {
+					enabled: false, // Отключено для мобильных
 				},
 			},
 			title: {
@@ -30,7 +33,7 @@ export const Chart1 = ({ series, colors }) => {
 				width: 2,
 			},
 			markers: {
-				size: 6,
+				size: 4, // Уменьшен размер маркеров
 			},
 			xaxis: {
 				axisTicks: {
@@ -42,7 +45,7 @@ export const Chart1 = ({ series, colors }) => {
 				labels: {
 					style: {
 						colors: '#000',
-						fontSize: '16px',
+						fontSize: '12px', // Уменьшен размер шрифта
 						fontFamily: 'inherit',
 						fontWeight: 400,
 					},
@@ -60,15 +63,16 @@ export const Chart1 = ({ series, colors }) => {
 					'17:00',
 					'18:00',
 				],
+				tickAmount: 6, // Ограничено количество меток на мобильных
 			},
 			yaxis: {
 				min: 0,
 				max: 100,
-				tickAmount: 10,
+				tickAmount: 5, // Уменьшено количество делений
 				labels: {
 					style: {
 						colors: '#000',
-						fontSize: '16px',
+						fontSize: '12px', // Уменьшен размер шрифта
 						fontFamily: 'inherit',
 						fontWeight: 400,
 					},
@@ -88,39 +92,54 @@ export const Chart1 = ({ series, colors }) => {
 				},
 				padding: {
 					top: 0,
-					right: 20,
+					right: 10, // Уменьшены отступы
+					left: 10,
 				},
 			},
 			fill: {
 				opacity: 0.8,
 			},
-
 			legend: {
-				position: 'top',
-				horizontalAlign: 'left',
+				position: 'bottom', // Перемещено вниз для мобильных
+				horizontalAlign: 'center',
 				markers: {
-					radius: 10,
-					width: 30,
-					height: 6,
+					radius: 6,
+					width: 20,
+					height: 4,
 				},
 				itemMargin: {
-					horizontal: 10,
+					horizontal: 5,
+					vertical: 5, // Добавлен вертикальный отступ
 				},
-				fontSize: '16px',
+				fontSize: '12px', // Уменьшен размер шрифта
 				fontFamily: 'inherit',
 				fontWeight: 400,
 			},
+			responsive: [{ // Добавлена адаптивность
+				breakpoint: 768,
+				options: {
+					legend: {
+						position: 'bottom',
+					},
+					xaxis: {
+						labels: {
+							rotate: -45,
+							rotateAlways: true,
+						},
+					},
+				},
+			}],
 		},
 	}
 	return (
-		<Card>
+		<Card className='w-full'>
 			<CardHeader
 				floated={false}
 				shadow={false}
 				color='transparent'
 				className='flex flex-col gap-4 rounded-none md:flex-row md:items-center'
 			></CardHeader>
-			<CardBody className='px-2 pb-0'>
+			<CardBody className='px-2 md:px-4 pb-0'>
 				<Chart {...chartConfig} />
 			</CardBody>
 		</Card>
@@ -130,7 +149,7 @@ export const Chart1 = ({ series, colors }) => {
 export const Chart2 = ({ chartData, title, deadlines }) => {
 	const chartConfig = {
 		type: 'line',
-		height: 100,
+		height: 80, // Уменьшена высота
 		series: [
 			{
 				name: 'Series',
@@ -141,6 +160,9 @@ export const Chart2 = ({ chartData, title, deadlines }) => {
 			chart: {
 				toolbar: {
 					show: false,
+				},
+				zoom: {
+					enabled: false,
 				},
 			},
 			tooltip: {
@@ -159,7 +181,7 @@ export const Chart2 = ({ chartData, title, deadlines }) => {
 				width: 1,
 			},
 			markers: {
-				size: 3,
+				size: 2, // Уменьшен размер маркеров
 			},
 			xaxis: {
 				axisTicks: {
@@ -191,12 +213,12 @@ export const Chart2 = ({ chartData, title, deadlines }) => {
 	}
 
 	return (
-		<Card className='h-full flex flex-col justify-between p-3 bg-transparent'>
-			<p className='text-base font-normal text-[#212121]'>{title}</p>
+		<Card className='h-full flex flex-col justify-between p-3 md:p-4 bg-transparent'>
+			<p className='text-sm md:text-base font-normal text-[#212121]'>{title}</p>
 			<CardBody className='p-0'>
-				<Chart className='-my-5' {...chartConfig} />
+				<Chart className='md:-my-5 -my-3' {...chartConfig} />
 			</CardBody>
-			<p className='text-base font-normal text-[#ccc]'>{deadlines}</p>
+			<p className='text-xs md:text-base font-normal text-[#ccc]'>{deadlines}</p>
 		</Card>
 	)
 }

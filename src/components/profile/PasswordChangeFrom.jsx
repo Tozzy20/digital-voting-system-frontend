@@ -2,9 +2,7 @@ import { useState } from 'react';
 import { changePassword } from "../../services/api";
 import { useAuth } from '/src/context/AuthProvider.jsx'
 
-
 const PasswordChangeForm = () => {
-
     const { authToken } = useAuth();
 
     const [password, setPassword] = useState({
@@ -15,7 +13,6 @@ const PasswordChangeForm = () => {
 
     const [message, setMessage] = useState('');
     const [isSaving, setIsSaving] = useState(false);
-
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -57,22 +54,24 @@ const PasswordChangeForm = () => {
         }
         catch (error) {
             console.error('Ошибка при сохранении данных:', error.message);
+        } finally {
+            setIsSaving(false);
         }
     };
 
     return (
-        <form onSubmit={handleSubmit} className=" shadow-lg bg-white rounded-[20px] w-[473px]">
-            <div className="p-[32px] space-y-[20px]">
-                <h1 className="text-neutral-800 text-2xl font-semibold">Пароль</h1>
+        <form onSubmit={handleSubmit} className="shadow-lg bg-white rounded-[15px] md:rounded-[20px] w-[473px] ">
+            <div className="p-4 md:p-[32px] space-y-4 md:space-y-[20px]">
+                <h1 className="text-neutral-800 text-xl md:text-2xl font-semibold">Пароль</h1>
 
                 {/* Пароль */}
-                <div className="flex flex-col gap-[10px]">
+                <div className="flex flex-col gap-2 md:gap-[10px]">
                     <label
-                        htmlFor="Пароль"
-                        className="text-[#CCCCCC] text-base font-normal mb-1 flex items-center gap-1"
+                        htmlFor="old_password"
+                        className="text-[#CCCCCC] text-sm md:text-base font-normal mb-1 flex items-center gap-1"
                     >
                         Пароль
-                        <div className="w-2 h-2 rounded-full border border-stone-300"></div>
+                        <div className="w-1.5 h-1.5 md:w-2 md:h-2 rounded-full border border-stone-300"></div>
                     </label>
                     <input
                         type="password"
@@ -81,18 +80,18 @@ const PasswordChangeForm = () => {
                         value={password.old_password}
                         onChange={handleChange}
                         placeholder="hiown9823u0n"
-                        className="border border-black rounded-lg w-full h-[51px] px-4 py-3 text-base font-normal text-neutral-800 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                        className="border border-black rounded-lg w-full h-12 md:h-[51px] px-3 md:px-4 py-2 md:py-3 text-sm md:text-base font-normal text-neutral-800 focus:outline-none focus:ring-1 focus:ring-blue-500"
                     />
                 </div>
 
                 {/* Новый пароль */}
-                <div className="flex flex-col gap-[10px]">
+                <div className="flex flex-col gap-2 md:gap-[10px]">
                     <label
-                        htmlFor="Новый_пароль"
-                        className="text-[#CCCCCC] text-base font-normal mb-1 flex items-center gap-1"
+                        htmlFor="new_password"
+                        className="text-[#CCCCCC] text-sm md:text-base font-normal mb-1 flex items-center gap-1"
                     >
                         Новый пароль
-                        <div className="w-2 h-2 rounded-full border border-stone-300"></div>
+                        <div className="w-1.5 h-1.5 md:w-2 md:h-2 rounded-full border border-stone-300"></div>
                     </label>
                     <input
                         type="password"
@@ -101,18 +100,18 @@ const PasswordChangeForm = () => {
                         value={password.new_password}
                         onChange={handleChange}
                         placeholder="******************"
-                        className="border border-black rounded-lg w-full h-[51px] px-4 py-3 text-base font-normal text-neutral-800 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                        className="border border-black rounded-lg w-full h-12 md:h-[51px] px-3 md:px-4 py-2 md:py-3 text-sm md:text-base font-normal text-neutral-800 focus:outline-none focus:ring-1 focus:ring-blue-500"
                     />
                 </div>
 
                 {/* Подтвердить новый пароль */}
-                <div className="flex flex-col gap-[10px]">
+                <div className="flex flex-col gap-2 md:gap-[10px]">
                     <label
-                        htmlFor="Подтвердить_пароль"
-                        className="text-[#CCCCCC] text-base font-normal mb-1 flex items-center gap-1"
+                        htmlFor="confirm_new_password"
+                        className="text-[#CCCCCC] text-sm md:text-base font-normal mb-1 flex items-center gap-1"
                     >
                         Подтвердите новый пароль
-                        <div className="w-2 h-2 rounded-full border border-stone-300"></div>
+                        <div className="w-1.5 h-1.5 md:w-2 md:h-2 rounded-full border border-stone-300"></div>
                     </label>
                     <input
                         type="password"
@@ -121,16 +120,23 @@ const PasswordChangeForm = () => {
                         value={password.confirm_new_password}
                         onChange={handleChange}
                         placeholder="******************"
-                        className="border border-black rounded-lg w-full h-[51px] px-4 py-3 text-base font-normal text-neutral-800 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                        className="border border-black rounded-lg w-full h-12 md:h-[51px] px-3 md:px-4 py-2 md:py-3 text-sm md:text-base font-normal text-neutral-800 focus:outline-none focus:ring-1 focus:ring-blue-500"
                     />
                 </div>
 
                 <button
-                type="submit"
-                    className="w-full h-[51px] bg-[#437DE9] rounded-lg flex items-center justify-center gap-2.5 text-white text-base font-semibold"
+                    type="submit"
+                    disabled={isSaving}
+                    className="w-full h-12 md:h-[51px] bg-[#437DE9] rounded-lg flex items-center justify-center gap-2 text-white text-sm md:text-base font-semibold disabled:opacity-50"
                 >
-                    <img src="/src/assets/icons/cloud.svg" alt="" />
-                    Сохранить изменения
+                    {isSaving ? (
+                        <span>Сохранение...</span>
+                    ) : (
+                        <>
+                            <img src="/src/assets/icons/cloud.svg" alt="" className="w-5 h-5 md:w-auto md:h-auto" />
+                            Сохранить изменения
+                        </>
+                    )}
                 </button>
             </div>
         </form>

@@ -50,7 +50,7 @@ const Header = ({isAuthorized = true}) => {
       <>
       <div className='h-25 bg-[#212121]'>
         {/* Desktop Header */}
-        <div className='hidden md:flex justify-between py-[18px] md:mx-3 lg:mx-20 xl:mx-40 2xl:mx-80 text-white text-md font-semibold'>
+        <div className='hidden md:flex justify-between py-[18px] md:mx-3 lg:mx-20 xl:mx-40 2xl:mx-[240px] text-white text-md font-semibold'>
           <div className='flex gap-5 items-start'>
             <div className='flex items-start'>
               <img

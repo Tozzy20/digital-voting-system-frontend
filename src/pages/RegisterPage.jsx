@@ -36,7 +36,7 @@ const RegisterPage = () => {
 
         //---------------------------------------------------------------------
         const logMessage = `Обновлены данные формы: ${JSON.stringify(updatedData)}`;
-        console.log(logMessage);
+        //console.log(logMessage);
         // setMessage(logMessage); // Раскомментируйте, если хотите видеть это сообщение
         return updatedData; 
     });

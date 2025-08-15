@@ -8,25 +8,25 @@ export const ProgressCircle = ({ progress }) => {
 
 	return (
 		<div className='w-full h-full flex justify-center items-center'>
-			<div className='w-100 h-100 auto border-dashed border-40 rounded-full border-[#f4f4f4] relative flex justify-center items-center'>
+			<div className='w-64 h-64 md:w-100 md:h-100 auto border-dashed border-4 md:border-40 rounded-full border-[#f4f4f4] relative flex justify-center items-center'>
 				<div
-					className={`w-100 h-100 absolute drop-shadow-xl ${
+					className={`w-64 h-64 md:w-100 md:h-100 absolute drop-shadow-lg md:drop-shadow-xl ${
 						progress <= 25
-							? ' drop-shadow-[#EE5B5B50] stroke-[#EE5B5B]'
+							? ' drop-shadow-[#EE5B5B30] md:drop-shadow-[#EE5B5B50] stroke-[#EE5B5B]'
 							: progress <= 50
-							? 'drop-shadow-[#FFa05a50] stroke-[#FFa05a]'
+							? 'drop-shadow-[#FFa05a30] md:drop-shadow-[#FFa05a50] stroke-[#FFa05a]'
 							: progress <= 75
-							? 'drop-shadow-[#FFD17D50] stroke-[#FFD17D]'
-							: 'drop-shadow-[#5BC25B50] stroke-[#5BC25B]'
+							? 'drop-shadow-[#FFD17D30] md:drop-shadow-[#FFD17D50] stroke-[#FFD17D]'
+							: 'drop-shadow-[#5BC25B30] md:drop-shadow-[#5BC25B50] stroke-[#5BC25B]'
 					} transition-all duration-500`}
 				>
-					<svg className='' viewBox='0 0 100 100' transform='scale(-1, 1)'>
+					<svg className='w-full h-full' viewBox='0 0 100 100' transform='scale(-1, 1)'>
 						<circle
 							cx='50'
 							cy='50'
 							r={radius}
 							fill='none'
-							strokeWidth='10'
+							strokeWidth='8'
 							strokeDasharray={circumference}
 							strokeDashoffset={strokeDashoffset}
 							transform='rotate(-90 50 50)'
@@ -35,10 +35,10 @@ export const ProgressCircle = ({ progress }) => {
 				</div>
 
 				<div className='flex flex-col items-center absolute'>
-					<p className='font-black text-[48px]'>
+					<p className='font-black text-3xl md:text-[48px]'>
 						{Math.round(normalizedProgress)}%
 					</p>
-					<p className='font-normal text-lg text-[#ccc]'>Времени осталось</p>
+					<p className='font-normal text-sm md:text-lg text-[#ccc]'>Времени осталось</p>
 				</div>
 			</div>
 		</div>
@@ -101,51 +101,55 @@ export const StatisticCircle = ({
 	return (
 		<div className='w-full h-full flex justify-center items-center'>
 			<div className='relative flex justify-center items-center'>
-				<div>
-					<svg width='360' height='360' viewBox='0 0 360 360' fill='none'>
+				<div className='w-64 h-64 md:w-[360px] md:h-[360px]'>
+					<svg width='100%' height='100%' viewBox='0 0 360 360' fill='none'>
 						<path
 							d={describeArc(
 								180,
 								180,
-								145,
+								100,
 								registeredStartAngle,
 								registeredEndAngle
 							)}
 							stroke='#FFD17D'
-							strokeWidth='40'
+							strokeWidth='25'
+							className='md:strokeWidth-40'
 						/>
 
 						<path
-							d={describeArc(180, 180, 165, votedStartAngle, votedEndAngle)}
+							d={describeArc(180, 180, 115, votedStartAngle, votedEndAngle)}
 							stroke='#5BC25B'
-							strokeWidth='20'
+							strokeWidth='15'
+							className='md:strokeWidth-20'
 						/>
 
 						<path
 							d={describeArc(
 								180,
 								180,
-								165,
+								115,
 								notVotedStartAngle,
 								notVotedEndAngle
 							)}
 							stroke='#EE5B5B'
-							strokeWidth='20'
+							strokeWidth='15'
+							className='md:strokeWidth-20'
 						/>
 
 						<path
-							d={describeArc(180, 180, 145, registeredEndAngle, fullCircle)}
+							d={describeArc(180, 180, 100, registeredEndAngle, fullCircle)}
 							stroke='#F4F4F4'
-							strokeWidth='40'
+							strokeWidth='25'
+							className='md:strokeWidth-40'
 						/>
 					</svg>
 				</div>
 
-				<div className='flex flex-col items-center absolute'>
-					<p className='font-semibold text-xl'>{registeredCount}</p>
-					<p className='font-normal text-base text-[#ccc]'>Зарегистрировано</p>
-					<p className='font-semibold text-xl mt-5'>{votedCount}</p>
-					<p className='font-normal text-base text-[#ccc]'>Проголосовало</p>
+				<div className='flex flex-col items-center absolute px-4'>
+					<p className='font-semibold text-lg md:text-xl'>{registeredCount}</p>
+					<p className='font-normal text-xs md:text-base text-[#ccc] text-center'>Зарегистрировано</p>
+					<p className='font-semibold text-lg md:text-xl mt-3 md:mt-5'>{votedCount}</p>
+					<p className='font-normal text-xs md:text-base text-[#ccc] text-center'>Проголосовало</p>
 				</div>
 			</div>
 		</div>

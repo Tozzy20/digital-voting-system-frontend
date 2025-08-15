@@ -128,54 +128,55 @@ const VotesPage = () => {
 
 
   return (
-    <div className="  min-h-screen">
-      
-
-      <div className="ml-[240px] mt-[60px] mr-[240px]">
+    <div className="min-h-screen">
+      <div className="mx-4 mt-4 md:ml-[240px] md:mt-[60px] md:mr-[240px]">
         <Breadcrumbs title="Главная / Голосования" />
         <PageTitle title="Голосования" />
 
-        <div className="flex mt-[24px] gap-4">
-          <Button className="outline outline-neutral-400 text-neutral-800 font-normal">
+        <div className="flex mt-6 gap-4 flex-wrap">
+          <Button className="outline outline-neutral-400 text-neutral-800 font-normal px-3 py-2 text-sm md:text-base md:px-4 md:py-2">
             <img
               src="/src/assets/icons/filter.svg"
               alt="Фильтры"
-              className="w-5 h-5"
+              className="w-4 h-4 md:w-5 md:h-5"
             />
-            Фильтры
+            <span className="ml-2">Фильтры</span>
           </Button>
-          <Button className="outline outline-neutral-400 text-neutral-800 font-normal">
+          <Button className="outline outline-neutral-400 text-neutral-800 font-normal px-3 py-2 text-sm md:text-base md:px-4 md:py-2">
             <img
               src="/src/assets/icons/sort.svg"
               alt="Сортировка"
-              className="w-5 h-5"
+              className="w-4 h-4 md:w-5 md:h-5"
             />
-            Сортировка
+            <span className="ml-2">Сортировка</span>
           </Button>
         </div>
 
-        <div className="mt-[10px] flex flex-col gap-[10px]">
-          <div className="flex justify-between bg-white shadow-lg items-center p-6 rounded-[20px]">
-            <div className="flex gap-4">
+        <div className="mt-4 flex flex-col gap-3">
+          <div className="flex flex-col md:flex-row justify-between bg-white shadow-lg items-center p-4 md:p-6 rounded-xl md:rounded-[20px] gap-4">
+            <div className="flex gap-4 w-full md:w-auto">
               <VotingControls />
             </div>
-            <div className="flex items-center gap-4">
+            <div className="flex flex-col md:flex-row items-center gap-3 w-full md:w-auto">
               <PaginationControls
-              currentPage={currentPage}
-              totalPages={totalPages}
-              hasNext={hasNext}
-              hasPrev={hasPrev}
-              onNextPage={handleNextPage}
-              onPrevPage={handlePrevPage}
+                currentPage={currentPage}
+                totalPages={totalPages}
+                hasNext={hasNext}
+                hasPrev={hasPrev}
+                onNextPage={handleNextPage}
+                onPrevPage={handlePrevPage}
               />
-              <SearchInput 
-              value={inputValue}
-              onChange={handleInputChange}
-              onSearch={handleSearchChange}/>
+              <div className="w-full md:w-auto">
+                <SearchInput 
+                  value={inputValue}
+                  onChange={handleInputChange}
+                  onSearch={handleSearchChange}
+                />
+              </div>
             </div>
           </div>
 
-          <div className="flex flex-col gap-[10px]">
+          <div className="flex flex-col gap-3">
             {votings.map((voting) => (
               <VotingCard key={voting.id} voting={voting} />
             ))}
