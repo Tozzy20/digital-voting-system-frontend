@@ -89,3 +89,33 @@ export const getVotingData = async (votingId, authToken) => {
   });
   return response.data;
 }
+
+export const getVotingStats = async (votingId, authToken) => {
+  const response = await axios.get(`${API_URL}/votings/${votingId}/statistics`, {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${authToken}`,
+    },
+  });
+  return response.data;
+}
+
+export const getVotingParticipants = async (votingId, authToken) => {
+  const response = await axios.get(`${API_URL}/votings/${votingId}/participants`, {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${authToken}`,
+    },
+  });
+  return response.data;
+}
+
+export const getVotingResults = async (votingId, authToken) => {
+  const response = await axios.get(`${API_URL}/votings/${votingId}/results`, {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${authToken}`,
+    },
+  });
+  return response.data;
+}

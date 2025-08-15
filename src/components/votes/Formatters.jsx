@@ -15,28 +15,73 @@ export const formatTime = (isoString) => {
   return `${hours}:${minutes}`;
 };
 
-export const getVotingStatus = (voting) => {
-    const now = new Date();
-    const registrationStart = new Date(voting.registration_start);
-    const registrationEnd = new Date(voting.registration_end);
-    const votingEnd = new Date(voting.voting_end);
+// export const getVotingStatus = (voting) => {
+//     const now = new Date();
+//     const registrationStart = new Date(voting.registration_start);
+//     const registrationEnd = new Date(voting.registration_end);
+//     const votingEnd = new Date(voting.voting_end);
 
-    if (now >= registrationStart && now <= registrationEnd) {
-        return 'registration';
-    } else if (now > registrationEnd && now <= votingEnd) {
-        return 'active';
-    } else if (now > votingEnd) {
-        return 'completed';
-    }
+//     if (now >= registrationStart && now <= registrationEnd) {
+//         return 'registration';
+//     } else if (now > registrationEnd && now <= votingEnd) {
+//         return 'active';
+//     } else if (now > votingEnd) {
+//         return 'completed';
+//     }
     
-    return 'completed'; 
-};
+//     return 'completed'; 
+// };
 
 export const getVotingStatusConfig = (voting) => {
+
+
   const now = new Date();
   const registrationStart = new Date(voting.registration_start);
   const votingStart = new Date(voting.voting_start);
   const votingEnd = new Date(voting.voting_end);
+
+  if (now >= votingStart && now <= votingEnd) {
+    return {
+      text: 'Голосование активно',
+      bg: 'bg-[#E6FFDD]',
+      textColor: 'text-[#135615]',
+      icon: '/src/assets/icons/fireGreen.svg',
+    };
+  }
+
+  if (now >= registrationStart && now < votingStart) {
+    return {
+      text: 'Голосование на этапе регистрации',
+      bg: 'bg-[#FFFBD0]',
+      textColor: 'text-[#564E13]',
+      icon: '/src/assets/icons/registration.svg',
+    };
+  }
+  
+  if (now > votingEnd) {
+    return {
+      text: 'Голосование завершено',
+      bg: 'bg-neutral-100',
+      textColor: 'text-neutral-800',
+      icon: '/src/assets/icons/archive.svg',
+    };
+  }
+  
+  return {
+    text: 'Ожидает начала',
+    bg: 'bg-neutral-100',
+    textColor: 'text-neutral-600',
+    icon: '/src/assets/icons/archive.svg',
+  };
+};
+
+export const getVotingStatusConfigDetails = (voting) => {
+
+
+  const now = new Date();
+  const registrationStart = new Date(voting.voting_full_info.registration_start);
+  const votingStart = new Date(voting.voting_full_info.voting_start);
+  const votingEnd = new Date(voting.voting_full_info.voting_end);
 
   if (now >= votingStart && now <= votingEnd) {
     return {

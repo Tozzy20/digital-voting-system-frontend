@@ -3,11 +3,11 @@ import { useParams } from 'react-router-dom';
 import Breadcrumbs from '../components/Breadcrumbs';
 import PageTitle from '../components/PageTitle';
 import GeneralInfo from '../components/details/GeneralInfo';
-import Stats from '../components/details/Stats';
+import VotingStatistic from '../components/details/Stats';
 import Voters from '../components/details/Voters';
 import Results from '../components/details/Results';
 import Sidebar from '../components/constructor/Sidebar';
-import { getVotingData } from '../services/api.js';
+import { getVotingData, getVotingParticipants, getVotingResults, getVotingStats } from '../services/api.js';
 import { useAuth } from '../context/AuthProvider.jsx'
 import { formatDate, formatTime } from '../components/votes/Formatters.jsx';
 
@@ -40,7 +40,10 @@ const Detali0 = () => {
   const [votingData, setVotingData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [activeContent, setActiveContent] = useState("general-info"); // Устанавливаем 'create-poll' как начальное активное состояние
-    const { authToken } = useAuth();
+  const { authToken } = useAuth();
+  const [votingStats, setVotingStats] = useState(null);
+  const [voters, setVoters] = useState([]);
+  const [results, setResults] = useState([]);
 
   // Функция, которая будет вызываться при клике на пункт сайдбара
   const handleMenuItemClick = (itemKey) => {
@@ -50,12 +53,27 @@ const Detali0 = () => {
      useEffect(() => {
         const fetchData = async () => {
             try {
-               
+
+                // Первый запрос на основные данные
                 const rawData = await getVotingData(votingId, authToken);
                 
                 // Преобразуем данные в нужный формат и сохраняем в состояние
                 const formattedData = prepareVotingDataForComponent(rawData);
+                
+                // Второй запрос на статистику
+                const statsData = await getVotingStats(votingId, authToken);
+
+                // Запрос на голосующих
+                const votersData = await getVotingParticipants(votingId, authToken);
+
+                // Запрос на результаты
+                const results = await getVotingResults(votingId, authToken)
+
+
                 setVotingData(formattedData);
+                setResults(results);
+                setVotingStats(statsData);
+                setVoters(votersData);
             } catch (e) {
                 console.error("Ошибка при получении данных:", e);
             }
@@ -106,11 +124,11 @@ const Detali0 = () => {
         case "general-info":
             return <GeneralInfo votingData={votingData} />;
         case "stats":
-            return <Stats votingData={votingData} />;
+            return <VotingStatistic votingStats={votingStats} quorum={votingData.voting_full_info.quorum} />;
         case "voters":
-            return <Voters />;
+            return <Voters voters={voters} />;
         case "results":
-            return <Results />;
+            return <Results results={results} />;
     }
   };
 
