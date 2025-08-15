@@ -1,11 +1,11 @@
-import { Flame, Rocket, ScanFace } from 'lucide-react'
-import { AltBlueButton, BlueButton, RedButton } from '../components/main/Buttons'
-import { GreenTag, YellowTag } from '../components/main/Tags'
-import { useState } from 'react'
-import Calendar from '../components/main/Calendar'
-import { ActualVoteCard, MinInfoVoteCard } from '../components/main/VoteCard'
-import { LinkText } from '../components/main/Components'
-import { Chart2 } from '../components/main/Charts'
+import { Flame, Rocket, ScanFace } from 'lucide-react';
+import { AltBlueButton, BlueButton, RedButton } from '../components/main/Buttons';
+import { GreenTag, YellowTag } from '../components/main/Tags';
+import { useState } from 'react';
+import Calendar from '../components/main/Calendar';
+import { ActualVoteCard, MinInfoVoteCard } from '../components/main/VoteCard';
+import { LinkText } from '../components/main/Components';
+import { Chart2 } from '../components/main/Charts';
 
 const MainPage = () => {
 	const heights = [
@@ -376,4 +376,5 @@ const MainPage = () => {
 		</>
 	)
 }
+
 export default MainPage

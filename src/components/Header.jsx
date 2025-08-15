@@ -18,7 +18,7 @@ const Header = ({isAuthorized = true}) => {
       { title: 'Секретарь', to: '/' }
     ]
     const Voting = [
-      { title: 'Список голосований', to: '/voting' },
+      { title: 'Список голосований', to: '/votes' },
       { title: 'Конструктор голосований', to: '/constructor' }
     ]
     const Add = ['Голосование', 'Шаблон голосований', 'Группу пользователей']
@@ -141,12 +141,18 @@ const Header = ({isAuthorized = true}) => {
           <div className='flex items-center gap-3'>
             {isAuthorized && (
               <>
-                <ScanSearch size={24} className='cursor-pointer' />
-                <Settings2 size={24} className='cursor-pointer' />
+                <div className="w-8 h-8 cursor-pointer">
+                    <img src="/src/assets/icons/search.svg" alt="Search" className="w-full h-full object-contain" />
+                </div>
+                <div className="w-8 h-8 cursor-pointer">
+                    <img src="/src/assets/icons/options.svg" alt="Notifications" className="w-full h-full object-contain" />
+                </div>
               </>
             )}
             <NavLink to={'/profile'}>
-              <CircleUserRound size={24} className='cursor-pointer' />
+              <div className="w-8 h-8 cursor-pointer">
+                    <img src="/src/assets/icons/profile.svg" alt="User" class="w-full h-full object-contain" />
+              </div>
             </NavLink>
             <button 
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
@@ -164,7 +170,7 @@ const Header = ({isAuthorized = true}) => {
           <div className='md:hidden bg-[#212121] px-7 pb-4 absolute top-20 left-0 right-0 z-30'>
             <div className='flex flex-col gap-2'>
               {isAuthorized && (
-                <div className='rounded-2xl bg-neutral-500 overflow-hidden'>
+                <div className='text-white'>
                   <HeaderDropdown 
                     title={'Пользователи'} 
                     options={Users} 
@@ -173,7 +179,7 @@ const Header = ({isAuthorized = true}) => {
                 </div>
               )}
               {isAuthorized ? (
-                <div className='rounded-2xl bg-neutral-500 overflow-hidden'>
+                <div className='text-white'>
                   <HeaderDropdown 
                     title={'Голосования'} 
                     options={Voting} 
@@ -184,7 +190,7 @@ const Header = ({isAuthorized = true}) => {
                 <p className='p-3 text-white'>Голосования</p>
               )}
               {isAuthorized && (
-                <div className='rounded-2xl bg-neutral-500 overflow-hidden w-57'>
+                <div className='rounded-2xl text-white w-57'>
                   <AltHeaderDropdown title={'Добавить'} options={Add} />
                 </div>
               )}
