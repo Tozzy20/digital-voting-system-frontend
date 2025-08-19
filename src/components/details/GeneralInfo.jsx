@@ -2,9 +2,31 @@ import { useNavigate } from 'react-router';
 import { getVotingStatusConfigDetails } from '../votes/Formatters';
 import { Button } from '@material-tailwind/react'
 
-const GeneralInfo = ({ votingData }) => {
+const GeneralInfo = ({ votingData, isRegistered, onRegister, onNavigateToMyBulliten }) => {
   const navigate = useNavigate();
   const status = getVotingStatusConfigDetails(votingData);
+
+    // Определяем текст и обработчик для кнопки
+  let buttonText = '';
+  let onButtonClick = () => {};
+  let isButtonDisabled = false;
+
+  if (status.text === 'Голосование на этапе регистрации') {
+    buttonText = 'Зарегистрироваться';
+    onButtonClick = onRegister;
+  } else if (status.text === 'Голосование активно' && isRegistered) {
+    buttonText = 'Проголосовать';
+    onButtonClick = onNavigateToMyBulliten;
+  } else if (status.text === 'Голосование завершено') {
+    buttonText = 'Результаты';
+    onButtonClick = onNavigateToMyBulliten; // Можно сделать отдельную функцию для навигации на результаты
+  }
+
+  // Если пользователь не зарегистрирован и голосование уже началось, кнопку не показываем
+  if (!isRegistered && status.text !== 'Голосование на этапе регистрации') {
+    return null; 
+  }
+
   // Проверка на наличие данных, чтобы избежать ошибок, если prop не передан
   if (!votingData) {
     return <div>Данные о голосовании не найдены.</div>;
@@ -38,8 +60,9 @@ const GeneralInfo = ({ votingData }) => {
             </div>
           </div>
           
-            <Button className='bg-[#437DE9] text-base px-5 py-4 mt-auto w-full lg:w-96 rounded-lg flex justify-center items-center gap-2.5 self-start'>
-							{status.text === 'Голосование на этапе регистрации' ? 'Зарегестрироваться' : (status.text === 'Голосование активно' ? 'Проголосовать' : 'Результаты')}
+            <Button className='bg-[#437DE9] text-base px-5 py-4 mt-auto w-full lg:w-96 rounded-lg flex justify-center items-center gap-2.5 self-start' onClick={onButtonClick}
+          disabled={isButtonDisabled}>
+							{buttonText}
 						</Button>
           
         </div>
