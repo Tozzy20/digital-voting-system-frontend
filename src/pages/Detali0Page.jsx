@@ -121,7 +121,7 @@ const Detali0 = () => {
       key: 'my-bulletin', 
       label: 'Мой бюллетень', 
       icon: '/src/assets/icons/myBulliten.svg', 
-      roles: [1, 2] 
+      roles: [1, 2, 3] 
     },
     { 
       key: 'user-results', 
@@ -144,7 +144,7 @@ const Detali0 = () => {
         case "results":
             return status.text === 'Голосование завершено' ? <ResultsForAdmin votingId={votingId} /> : <BeforeResults />;
         case "my-bulletin":
-                return <MyBulliten />;
+                return <MyBulliten votingData={votingData}/>;
         case "user-results":
             return status.text === 'Голосование завершено' ? <ResultsForAdmin votingId={votingId} /> : <BeforeResults />;
         default:
