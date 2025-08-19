@@ -23,7 +23,7 @@ const MainPage = () => {
 		'44%',
 	]
 	const colors = ['#BD3636', '#FFE3E3', '#E87C7C', '#F2A4A4']
-	const [role, setRole] = useState('адми')
+	const [role, setRole] = useState('админ')
 	return (
 		<>
 			{role !== 'админ' && (
@@ -331,7 +331,7 @@ const MainPage = () => {
   </div>
 </div>
 					{role !== 'админ' && (
-						<div className='bg-white rounded-[20px] col-span-4 row-span-2 p-5 max-lg:col-span-3 max-md:col-span-2 max-sm:col-span-1 max-md:p-4'>
+						<div className='bg-white rounded-[20px] max-h-[640px] col-span-4 row-span-2 p-5 max-lg:col-span-3 max-md:col-span-2 max-sm:col-span-1 max-md:p-4'>
 							<p className='font-bold text-xl max-md:text-lg'>Календарь голосований</p>
 							<Calendar className='max-md:text-sm' />
 						</div>

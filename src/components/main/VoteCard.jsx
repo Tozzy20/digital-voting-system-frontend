@@ -99,7 +99,7 @@ export const MinInfoVoteCard = ({
 }) => {
 	return (
 		<>
-			<div className='bg-white flex flex-col gap-3 rounded-[15px] md:rounded-[20px] p-4 md:p-5 border-1 border-[#f4f4f4]'>
+			<div className='bg-white flex flex-col gap-1 rounded-[15px] md:rounded-[20px] p-4 md:p-5 border-1 border-[#f4f4f4]'>
 				<p className='text-base md:text-base font-bold'>{title}</p>
 				<div className='flex flex-col md:flex-row md:justify-between gap-2'>
 					<p className='text-sm md:text-base font-normal text-[#ccc]'>{description}</p>
@@ -108,8 +108,8 @@ export const MinInfoVoteCard = ({
 						<p className='text-sm md:text-base font-normal text-[#212121]'>{timezone}</p>
 					</div>
 				</div>
-				<div className='grid grid-cols-1 gap-3'>
-					<div className='flex flex-col gap-2'>
+				<div className='grid grid-cols-1 gap-1'>
+					<div className='flex flex-col gap-1'>
 						<YellowTag wfull={true} px={'px-1'}>
 							<ScanFace size={16} className='md:w-auto' />
 							<p className='whitespace-nowrap text-sm md:text-base font-medium'>
@@ -121,7 +121,7 @@ export const MinInfoVoteCard = ({
 							<p className='whitespace-nowrap text-sm md:text-base font-medium'>Тайное</p>
 						</GrayTag>
 					</div>
-					<div className='bg-[#FFF6F6] rounded-xl px-3 md:px-5 py-2'>
+					<div className='col-span-3 bg-[#FFF6F6] rounded-xl px-3 md:px-5 py-2'>
 						<DateRow
 							title={'Окончание регистрации'}
 							date={date}

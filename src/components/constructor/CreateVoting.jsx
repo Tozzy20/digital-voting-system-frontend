@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import StepHeader from '/src/components/constructor/CreateVoting/StepHeader';
 import InputField from '/src/components/constructor/CreateVoting/InputField';
 import DateTimePicker from '/src/components/constructor/CreateVoting/DateTimePicker';
 import QuestionForm from '/src/components/constructor/CreateVoting/QuestionForm';
 import AddQuestionButton from '/src/components/constructor/CreateVoting/AddQuestionButton';
-import { useAuth }  from '../../context/AuthProvider';
+import { useAuth } from '../../context/AuthProvider';
 import { createVoting } from '../../services/api'
 
 
@@ -96,6 +96,82 @@ const CreateVoting = () => {
     ]);
   };
 
+  const [departments, setDepartments] = useState([]); // Список загруженных департаментов
+  const [selectedDepartmentIds, setSelectedDepartmentIds] = useState([]); // ID выбранных департаментов
+  const [isLoadingDepartments, setIsLoadingDepartments] = useState(false);
+  const [hasMoreDepartments, setHasMoreDepartments] = useState(true); // Есть ли еще страницы
+  const [page, setPage] = useState(1); // Номер текущей страницы для пагинации
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false); // Управление открытием/закрытием выпадающего списка
+
+    // --- ОБРАБОТЧИК ДЛЯ ДЕПАРТАМЕНТОВ ---
+    const handleDepartmentChange = (departmentId) => {
+      setSelectedDepartmentIds(prevIds =>
+        prevIds.includes(departmentId)
+          ? prevIds.filter(id => id !== departmentId) // Удалить, если уже выбран
+          : [...prevIds, departmentId] // Добавить, если не выбран
+      );
+    };
+  
+    // --- ФУНКЦИЯ ДЛЯ ЗАГРУЗКИ ДЕПАРТАМЕНТОВ ---
+    const fetchDepartments = async (pageNum = 1, reset = false) => {
+      if (isLoadingDepartments && !reset) return; // Не загружать, если уже идет загрузка
+  
+      setIsLoadingDepartments(true);
+      try {
+        const response = await fetch(`http://192.168.31.252:5000/api/departments/?page=${pageNum}`, {
+          method: 'GET',
+          headers: {
+            'Authorization': `Bearer ${authToken}`,
+            'Content-Type': 'application/json',
+          },
+        });
+  
+        if (!response.ok) {
+           if (response.status === 401) {
+             throw new Error('Ошибка авторизации при загрузке департаментов');
+           } else {
+             throw new Error(`Ошибка загрузки департаментов: ${response.status}`);
+           }
+        }
+  
+        const data = await response.json();
+        
+        const newHasMore = data.pagination.has_next !== null; 
+        setHasMoreDepartments(newHasMore);
+  
+        const allDepts =  reset ? data.items : [...departments, ...data.items];
+
+        const uniqueDeptsMap = new Map();
+        allDepts.forEach(dept => {
+          if (dept && dept.id) {
+            uniqueDeptsMap.set(dept.id, dept);
+          }
+        });
+        
+        // Преобразуем Map обратно в массив.
+        setDepartments(Array.from(uniqueDeptsMap.values()));
+
+      } catch (error) {
+        console.error('Ошибка при загрузке департаментов:', error);
+        alert(`Не удалось загрузить департаменты: ${error.message}`);
+      } finally {
+        setIsLoadingDepartments(false);
+      }
+    };
+  
+    // --- Загрузка первой страницы при монтировании ---
+    useEffect(() => {
+      fetchDepartments(1, true); 
+    }, []); 
+  
+    const handleLoadMore = () => {
+      if (hasMoreDepartments && !isLoadingDepartments) {
+        const nextPage = page + 1;
+        setPage(nextPage);
+        fetchDepartments(nextPage);
+      }
+    };  
+
   // Функция для объединения даты и времени в ISO-формат
 const combineDateTime = (date, time) => {
 
@@ -120,7 +196,7 @@ const combineDateTime = (date, time) => {
           .filter(opt => opt.trim() !== '')
           .map(opt => ({ option: opt.trim() }))
       })),
-      department_ids: [0] // Замените на реальные ID, если есть выбор групп
+      department_ids: selectedDepartmentIds // Используем выбранные ID департаментов
     };
   
     try {
@@ -160,12 +236,71 @@ const combineDateTime = (date, time) => {
         <option value="unanimous">Единогласно</option>
       </select>
 
-      <InputField
-        label="Группа пользователей"
-        value={groupText1}
-        onChange={handleGroupChange}
-        placeholder="Группа выбрана"
-      />
+      <label className="block text-sm font-medium text-gray-700 mb-1 mt-4">
+        Группа пользователей
+      </label>
+      <div className="relative">
+        {/* Кастомный селект/выпадающий список */}
+        <div
+          className="mt-1 mb-1 p-4 border border-gray-300 rounded-lg text-gray-500 w-full bg-white focus:outline-none focus:ring-2 focus:ring-grey-500 cursor-pointer flex justify-between items-center"
+          onClick={() => setIsDropdownOpen(!isDropdownOpen)} // Переключение открытия
+        >
+          <span>
+            {Array.isArray(selectedDepartmentIds) && selectedDepartmentIds.length > 0
+              ? `${selectedDepartmentIds.length} выбрано`
+              : 'Выберите группы...'}
+          </span>
+          <svg className={`w-5 h-5 text-gray-500 transition-transform ${isDropdownOpen ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"></path>
+          </svg>
+        </div>
+
+        {/* Выпадающий список */}
+        {isDropdownOpen && (
+          <div className="absolute z-10 mt-1 w-full bg-white border border-gray-300 rounded-lg shadow-lg max-h-60 overflow-y-auto">
+            {/* Список департаментов */}
+            {departments.length > 0 ? (
+              departments.map(dept => (
+                <div
+                  key={dept.id}
+                  className="p-3 hover:bg-gray-100 flex items-center"
+                >
+                  <input
+                    type="checkbox"
+                    id={`dept-${dept.id}`}
+                    checked={selectedDepartmentIds.includes(dept.id)}
+                    onChange={() => handleDepartmentChange(dept.id)}
+                    className="mr-3 h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+                  />
+                  <label htmlFor={`dept-${dept.id}`} className="cursor-pointer flex-1">
+                    {dept.name}
+                    {/* Если нужно отобразить поддепартаменты, можно добавить здесь логику рекурсии или отступы */}
+                    {/* Например, если dept.children && dept.children.length > 0 */}
+                  </label>
+                </div>
+              ))
+            ) : (
+              <div className="p-3 text-gray-500">Нет доступных групп.</div>
+            )}
+
+            {/* Индикатор загрузки */}
+            {isLoadingDepartments && (
+              <div className="p-3 text-center text-gray-500">Загрузка...</div>
+            )}
+
+            {/* Кнопка "Загрузить еще" */}
+            {hasMoreDepartments && !isLoadingDepartments && (
+              <button
+                onClick={handleLoadMore}
+                className="w-full p-3 text-center text-blue-500 hover:bg-gray-50 border-t border-gray-200"
+                disabled={isLoadingDepartments}
+              >
+                Загрузить еще
+              </button>
+            )}
+          </div>
+        )}
+      </div>
 
       {/* Даты и время */}
       <div className="flex flex-col md:flex-row justify-between gap-4 mt-4">

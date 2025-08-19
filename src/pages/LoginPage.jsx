@@ -54,12 +54,12 @@ const LoginPage = () => {
 
         const logMessage = `Попытка входа в систему с использованием данных: ${JSON.stringify(formData)}`;
         console.log(logMessage);
-        setMessage(logMessage);
+        //setMessage(logMessage);
 
         try {
             const response = await loginUser(formData.email, formData.password, formData.role_id, formData.remember_flag);
             console.log("Ответ API для входа в систему:", response);
-            setMessage(`Ответ API для входа в систему: ${JSON.stringify(response)}`);
+            //setMessage(`Ответ API для входа в систему: ${JSON.stringify(response)}`);
 
             const { access_token } = response;
 
@@ -81,7 +81,7 @@ const LoginPage = () => {
         } catch (error) {
             console.error('Ошибка при авторизации:', error);
             const errorMsg = error.message || 'Не удалось подключиться к серверу.';
-            setMessage(`Ошибка: ${errorMsg}`);
+            //setMessage(`Ошибка: ${errorMsg}`);
         }
     };
 

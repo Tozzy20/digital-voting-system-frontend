@@ -50,13 +50,13 @@ const RegisterPage = () => {
 
         const logMessage = `Попытка регистрации с использованием данных: ${JSON.stringify(formData)}`;
         console.log(logMessage);
-        setMessage(logMessage);
+        //setMessage(logMessage);
 
         // Клиентская валидация паролей
         if (formData.password !== formData.confirm_password) {
             const errorMsg = 'Пароли не совпадают!';
             console.warn('Не удалось подтвердить пароль',errorMsg);
-            setMessage(errorMsg);
+            //setMessage(errorMsg);
             return;
         }
 
@@ -76,7 +76,7 @@ const RegisterPage = () => {
         } catch (error) {
             console.error('Ошибка при регистрации:', error);
             const errorMsg = error.response?.data?.message || error.message || 'Не удалось подключиться к серверу.';
-            setMessage(`Ошибка: ${errorMsg}`);
+            //setMessage(`Ошибка: ${errorMsg}`);
             console.error('Ошибка регистрации с сообщением:', errorMsg);
         }
     };
