@@ -15,6 +15,34 @@ export const formatTime = (isoString) => {
   return `${hours}:${minutes}`;
 };
 
+export const formatRemainingTime = (endDate) => {
+    // Вычисляем разницу в миллисекундах
+    const diff = endDate.getTime() - new Date().getTime();
+
+    // Если время истекло, возвращаем объект с нулевыми значениями
+    if (diff <= 0) {
+        return {
+            days: 0,
+            hours: 0,
+            minutes: 0,
+            seconds: 0
+        };
+    }
+
+    // Расчет дней, часов, минут и секунд
+    const minutes = Math.floor(diff / (1000 * 60)) % 60;
+    const hours = Math.floor(diff / (1000 * 60 * 60)) % 24;
+    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+
+    // Возвращаем объект с рассчитанными значениями
+    return {
+        days,
+        hours,
+        minutes,
+    };
+};
+
+
 export const getVotingStatusConfig = (voting) => {
   const now = new Date();
   const registrationStart = new Date(voting.registration_start);

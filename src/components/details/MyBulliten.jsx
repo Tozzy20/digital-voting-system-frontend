@@ -1,262 +1,258 @@
-const MyBulliten = () => {
-    return (
-        <>
-        <div className="flex flex-col gap-6">
-        <div className="h-auto p-8 bg-white rounded-[20px] shadow-[0px_2px_10px_0px_rgba(0,0,0,0.25)]">
-          <div className="text-neutral-800 text-xl font-bold mb-4">Название голосования</div>
-          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-            <div className="text-stone-300 text-base font-normal">Название группы людей</div>
-            <div className="flex items-center gap-4">
-              <div className="flex items-center gap-2.5">
-                <div className="w-6 h-6 relative overflow-hidden">
-                  <img src="/src/assets/images/detaliAndMain/longitude.png" alt="Timezone Icon" />
+import { useState } from 'react'
+import { Checkbox, Radio, Typography } from "@material-tailwind/react";
+import { formatRemainingTime } from "../votes/Formatters";
+import { ToastContainer, toast } from 'react-toastify';
+import { sendVote } from '../../services/api';
+
+const MyBulliten = ({ votingData, authToken, votingId }) => {
+
+  const registrationStartDate = new Date(votingData.voting_full_info.registration_start);
+  const registrationEndDate = new Date(votingData.voting_full_info.registration_end);
+  const votingStartDate = new Date(votingData.voting_full_info.voting_start)
+  const now = new Date();
+
+  const timeUntilRegistrationEndObj = formatRemainingTime(registrationEndDate);
+  const timeUntilVotingStartObj = formatRemainingTime(votingStartDate);
+
+  const [selectedAnswers, setSelectedAnswers] = useState({});
+
+  // Обработчик для кнопки "Проголосовать"
+  const handleVote = async () => {
+    const answers = Object.keys(selectedAnswers).map(questionId => {
+      const questionData = votingData.voting_full_info.questions.find(q => q.id === parseInt(questionId));
+      const selectedValue = selectedAnswers[questionId];
+
+      if (!questionData) {
+        return null;
+      }
+
+      if (questionData.type === 'single_choice') {
+        return {
+          question_id: parseInt(questionId),
+          selected_option_id: selectedValue,
+        };
+      } else if (questionData.type === 'multiple_choice') {
+        return {
+          question_id: parseInt(questionId),
+          selected_option_ids: selectedValue,
+        };
+      }
+      return null;
+    }).filter(Boolean);
+
+    const payload = { answers: answers };
+    console.log("JSON для отправки:", JSON.stringify(payload, null, 2));
+    
+    // POST запрос для отправки ответов
+    try {
+      const response = await sendVote(votingId, authToken, payload)
+      toast.success(response.data.message)
+    }
+    catch (error) {
+      if (error.response) {
+        switch (error.response.status) {
+          case 400:
+            toast.error(`Ошибка 400: ${error.response.data.error}`);
+            // запрос неверный
+            break;
+          case 403:
+            toast.error(`Ошибка 403: ${error.response.data.error}`);
+            // голосование неактивно или нет доступа
+            break;
+          case 404:
+            toast.error(`Ошибка 404: ${error.response.data.error}`);
+            // голосование не существует
+            break;
+          case 409:
+            toast.error(`Ошибка 409: ${error.response.data.error}`);
+            // голос уже был учтен
+            break;
+          case 500:
+            toast.error(`Ошибка 500: ${error.response.data.error}`);
+            // на сервере произошла ошибка
+            break;
+          default:
+            toast.error(`Неизвестная ошибка: ${error.response.status}, ${error.response.data.error}`);
+            // Обработка других неожиданных ошибок
+            break;
+        }
+      }
+      else toast.error('Сетевая ошибка. Проверьте ваше подключение.');
+
+    }
+  };
+
+  // Обработчик изменения для Radio
+  const handleRadioChange = (questionId, optionId) => {
+    setSelectedAnswers(prevState => ({
+      ...prevState,
+      [questionId]: optionId,
+    }));
+    console.log("Radio changed:", questionId, optionId);
+  };
+
+  // Обработчик изменения для Checkbox
+  const handleCheckboxChange = (questionId, optionId) => {
+    setSelectedAnswers(prevState => {
+      const currentAnswers = prevState[questionId] || [];
+      const newAnswers = currentAnswers.includes(optionId)
+        ? currentAnswers.filter(id => id !== optionId)
+        : [...currentAnswers, optionId];
+      console.log("Checkbox changed:", questionId, optionId);
+      return {
+        ...prevState,
+        [questionId]: newAnswers,
+
+      };
+
+    });
+  };
+
+  // Функция для рендеринга вариантов ответов
+  const renderOptions = (question) => {
+    const isSingleChoice = question.type === 'single_choice';
+    const selectedValue = selectedAnswers[question.id] || [];
+
+    return question.options.map((option) => (
+      <div key={option.id} className="flex items-center gap-3">
+        {isSingleChoice ? (
+          <Radio
+            name={`question-${question.id}`}
+            id={`radio-${option.id}`}
+            value={option.id}
+            label={<Typography className="text-neutral-800 text-xl">{option.option}</Typography>}
+            checked={selectedValue === option.id}
+            onChange={() => handleRadioChange(question.id, option.id)}
+          />
+        ) : (
+          <Checkbox
+            id={`checkbox-${option.id}`}
+            value={option.id}
+            label={<Typography className="text-neutral-800 text-xl">{option.option}</Typography>}
+            checked={selectedValue && selectedValue.includes(option.id)}
+            onChange={() => handleCheckboxChange(question.id, option.id)}
+          />
+        )}
+        {/* <div className="text-neutral-800 text-xl font-normal">{option.option}</div> */}
+      </div>
+    ));
+  };
+
+
+  // Расчеты для progressBar до конца регистрации
+  let registrationProgress = 0;
+  const totalRegistrationDuration = registrationEndDate.getTime() - registrationStartDate.getTime();
+  const elapsedRegistrationTime = now.getTime() - registrationStartDate.getTime();
+
+  if (totalRegistrationDuration > 0) {
+    // Вычисляем процент и ограничиваем его 100%, чтобы он не превышал это значение
+    registrationProgress = Math.min((elapsedRegistrationTime / totalRegistrationDuration) * 100, 100);
+  } else {
+    // Если длительность 0 или меньше (например, даты совпадают), считаем прогресс 100%
+    registrationProgress = 100;
+  }
+
+
+  // Расчеты для progressBar до начала голосования
+  let overallProgress = 0;
+  const totalEventDuration = votingStartDate.getTime() - registrationStartDate.getTime();
+  const elapsedEventTime = now.getTime() - registrationStartDate.getTime();
+
+  if (totalEventDuration > 0) {
+    // Вычисляем процент и ограничиваем его 100%
+    overallProgress = Math.min((elapsedEventTime / totalEventDuration) * 100, 100);
+  } else {
+    // Если длительность 0 или меньше, считаем прогресс 100%
+    overallProgress = 100;
+  }
+
+
+  return (
+    <>
+    <ToastContainer position="top-center" />
+      <div className="flex flex-col gap-[10px]">
+        <div className="flex flex-col gap-[10px]">
+          <div className="h-auto p-8 bg-white rounded-[20px] shadow-[0px_2px_10px_0px_rgba(0,0,0,0.25)]">
+            <div className="text-neutral-800 text-xl font-bold mb-4">{votingData.voting_full_info.title}</div>
+            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+              <div className="text-stone-300 text-base font-normal">{votingData.voting_full_info.theme}</div>
+              <div className="flex items-center gap-4">
+                <div className="flex items-center gap-2.5">
+                  <div className="w-6 h-6 relative overflow-hidden">
+                    <img src="/src/assets/images/detaliAndMain/longitude.png" alt="Timezone Icon" />
+                  </div>
+                  <div className="text-neutral-800 text-base font-normal">(UTC+3) Россия - Москва</div>
                 </div>
-                <div className="text-neutral-800 text-base font-normal">(UTC+3) Россия - Москва</div>
               </div>
             </div>
           </div>
+
+          {now < votingStartDate && (
+            <div className="flex flex-col md:flex-row gap-6">
+              {/* Таймер до начала регистрации */}
+              <div className="flex-1 h-auto p-8 bg-white rounded-[20px] shadow-[0px_2px_10px_0px_rgba(0,0,0,0.25)]">
+                <div className="flex items-center gap-3 mb-6">
+                  <div className="text-neutral-800 text-4xl sm:text-5xl font-bold">{timeUntilRegistrationEndObj.days} дня</div>
+                  <div className="text-stone-300 text-base font-normal">{timeUntilRegistrationEndObj.hours} часов, {timeUntilRegistrationEndObj.minutes} минут до окончания регистрации</div>
+                </div>
+                <div className="relative w-full h-24">
+                  <div className="absolute inset-0 h-full bg-amber-200 rounded-xl"
+                    style={{ width: `${registrationProgress}`}}></div>
+                  <div className="absolute inset-0 w-full h-full px-5 py-4 rounded-xl border border-stone-300"></div>
+                </div>
+              </div>
+              {/* Таймер до начала голосования */}
+              <div className="flex-1 h-auto p-8 bg-white rounded-[20px] shadow-[0px_2px_10px_0px_rgba(0,0,0,0.25)]">
+                <div className="flex items-center gap-3 mb-6">
+                  <div className="text-neutral-800 text-4xl sm:text-5xl font-bold">{timeUntilVotingStartObj.days} дней</div>
+                  <div className="text-stone-300 text-base font-normal">{timeUntilVotingStartObj.hours} часов, {timeUntilVotingStartObj.minutes} минут до начала голосования</div>
+                </div>
+                <div className="relative w-full h-24">
+                  <div className="absolute inset-0 h-full bg-sky-300 rounded-xl"
+                    style={{ width: `${overallProgress}%` }}></div>
+                  <div className="absolute inset-0 w-full h-full px-5 py-4 rounded-xl border border-stone-300"></div>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
 
-        <div className="flex flex-col md:flex-row gap-6">
-          <div className="flex-1 h-auto p-8 bg-white rounded-[20px] shadow-[0px_2px_10px_0px_rgba(0,0,0,0.25)]">
-            <div className="flex items-center gap-3 mb-6">
-              <div className="text-neutral-800 text-4xl sm:text-5xl font-bold">2 дня</div>
-              <div className="text-stone-300 text-base font-normal">15 часов, 16 минут до окончания регистрации</div>
+        {votingData.voting_full_info.questions.map((question, index) => (
+          <div key={question.id} className="bg-white rounded-[20px] shadow-[0px_2px_10px_0px_rgba(0,0,0,0.25)] p-8">
+            <div className="flex flex-wrap items-center justify-between gap-4 mb-4">
+              <div className="flex items-center gap-2.5">
+                <div className="text-neutral-800 text-xl font-bold">{`№${index + 1}. ${question.title}`}</div>
+                {/* ... Иконка статуса вопроса */}
+              </div>
             </div>
-            <div className="relative w-full h-24">
-              <div className="absolute inset-0 w-[30%] h-full bg-amber-200 rounded-xl"></div>
-              <div className="absolute inset-0 w-full h-full px-5 py-4 rounded-xl border border-stone-300"></div>
+            <div className="text-stone-300 text-base font-normal mb-6">
+              {/* Здесь можно добавить логику для описания типа ответа */}
+              {question.type === 'single_choice' && 'Необходимо выбрать один вариант ответа'}
+              {question.type === 'multiple_choice' && 'Необходимо выбрать несколько вариантов ответа'}
             </div>
-          </div>
 
-          <div className="flex-1 h-auto p-8 bg-white rounded-[20px] shadow-[0px_2px_10px_0px_rgba(0,0,0,0.25)]">
-            <div className="flex items-center gap-3 mb-6">
-              <div className="text-neutral-800 text-4xl sm:text-5xl font-bold">10 дней</div>
-              <div className="text-stone-300 text-base font-normal">15 часов, 16 минут до начала голосования</div>
+            <div className="space-y-4 mb-8">
+              {renderOptions(question)}
             </div>
-            <div className="relative w-full h-24">
-              <div className="absolute inset-0 w-[10%] h-full bg-sky-300 rounded-xl"></div>
-              <div className="absolute inset-0 w-full h-full px-5 py-4 rounded-xl border border-stone-300"></div>
-            </div>
-          </div>
-        </div>
-      </div>
 
-      <div className=" bg-white rounded-[20px] shadow-[0px_2px_10px_0px_rgba(0,0,0,0.25)] p-8">
-        <div className="flex flex-wrap items-center justify-between gap-4 mb-4">
-          <div className="flex items-center gap-2.5">
-            <div className="text-neutral-800 text-xl font-bold">№1. Пример вопроса</div>
-            <div className="w-6 h-6 relative overflow-hidden">
-              <img src="/src/assets/images/detaliAndMain/checkmark-circle-02.svg" alt="Question Status" />
-            </div>
+            {/* Кнопки "Проголосовать" / "Отменить выбор"
+            <div className="w-full sm:w-80 px-5 py-4 bg-zinc-100 rounded-xl inline-flex justify-center items-center gap-4">
+              Проголосовать
+            </div> */}
           </div>
-          <div className="w-full sm:w-96 px-5 py-4 rounded-xl outline outline-1 outline-offset-[-1px] outline-neutral-800 inline-flex justify-between items-center">
-            <div className="flex justify-start items-center gap-4">
-              <div className="text-neutral-800 text-base font-medium">Материалы вопроса</div>
-            </div>
-            <div className="w-2.5 h-2.5 bg-neutral-800 rounded-full"></div>
-          </div>
-        </div>
-        <div className="text-stone-300 text-base font-normal mb-6">Необходимо выбрать один вариант ответа</div>
+        ))}
+        <div className="bg-white rounded-[20px] shadow-[0px_2px_10px_0px_rgba(0,0,0,0.25)] p-8">
+          <button
+            onClick={handleVote}
+            className='w-full py-3 px-3 bg-[#5BC25B] rounded-lg text-lg font-normal text-white flex gap-3 justify-center items-center hover:brightness-90 transition-all cursor-pointer active:scale-98 whitespace-nowrap'
+          >
+            Проголосовать
+          </button>
 
-        <div className="space-y-4 mb-8">
-          <div className="flex items-center gap-3">
-            <div className="w-6 h-6 bg-neutral-800 rounded-full flex-shrink-0"></div>
-            <div className="text-neutral-800 text-xl font-normal">Да</div>
-          </div>
-          <div className="flex items-center gap-3">
-            <div className="w-6 h-6 rounded-full border border-neutral-800 flex-shrink-0"></div>
-            <div className="text-neutral-800 text-xl font-normal">Нет</div>
-          </div>
-          <div className="flex items-center gap-3">
-            <div className="w-6 h-6 rounded-full border border-neutral-800 flex-shrink-0"></div>
-            <div className="text-neutral-800 text-xl font-normal">Не могу ответить</div>
-          </div>
-        </div>
-
-        <div className="w-full sm:w-80 px-5 py-4 bg-neutral-800 rounded-xl inline-flex justify-center items-center gap-4">
-          <div className="w-6 h-6 relative overflow-hidden">
-            <img src="/src/assets/images/detaliAndMain/time-quarter.svg" alt="Cancel Icon" />
-          </div>
-          <div className="text-white text-base font-medium">Отменить выбор</div>
-        </div>
-      </div>
-
-      <div className="bg-white rounded-[20px] shadow-[0px_2px_10px_0px_rgba(0,0,0,0.25)] p-8">
-        <div className="flex flex-wrap items-center justify-between gap-4 mb-4">
-          <div className="flex items-center gap-2.5">
-            <div className="text-neutral-800 text-xl font-bold">№2. Пример вопроса</div>
-            <div className="w-6 h-6 relative overflow-hidden">
-              <img src="/src/assets/images/detaliAndMain/checkmark-circle-03.svg" alt="Question Status" />
-            </div>
-          </div>
-          <div className="w-full sm:w-96 px-5 py-4 rounded-xl outline outline-1 outline-offset-[-1px] outline-neutral-800 inline-flex justify-between items-center">
-            <div className="flex justify-start items-center gap-4">
-              <div className="text-neutral-800 text-base font-medium">Материалы вопроса</div>
-            </div>
-            <div className="w-2.5 h-2.5 bg-neutral-800 rounded-full"></div>
-          </div>
-        </div>
-        <div className="text-stone-300 text-base font-normal mb-6">Необходимо выбрать два варианта ответа</div>
-
-        <div className="space-y-4 mb-8">
-          <div className="flex items-center gap-3">
-            <div className="w-6 h-6 bg-neutral-800 rounded flex-shrink-0"></div>
-            <div className="text-neutral-800 text-xl font-normal">Пример вариант 1</div>
-          </div>
-          <div className="flex items-center gap-3">
-            <div className="w-6 h-6 bg-neutral-800 rounded flex-shrink-0"></div>
-            <div className="text-neutral-800 text-xl font-normal">Вариант 2</div>
-          </div>
-          <div className="flex items-center gap-3">
-            <div className="w-6 h-6 bg-neutral-800 rounded flex-shrink-0"></div>
-            <div className="text-neutral-800 text-xl font-normal">Пример вариант 3</div>
-          </div>
-        </div>
-
-        <div className="w-full sm:w-80 px-5 py-4 bg-zinc-100 rounded-xl inline-flex justify-center items-center gap-4">
-          <div className="w-6 h-6 relative overflow-hidden">
-            <img src="/src/assets/images/detaliAndMain/tap-07.svg" alt="Vote Icon" />
-          </div>
-          <div className="text-neutral-600 text-base font-medium">Проголосовать</div>
         </div>
       </div>
-
-      <div className="bg-white rounded-[20px] shadow-[0px_2px_10px_0px_rgba(0,0,0,0.25)] p-8">
-        <div className="flex flex-wrap items-center justify-between gap-4 mb-4">
-          <div className="flex items-center gap-2.5">
-            <div className="text-neutral-800 text-xl font-bold">№3. Пример вопроса</div>
-            <div className="w-6 h-6 relative overflow-hidden">
-              <img src="/src/assets/images/detaliAndMain/checkmark-circle-04.svg" alt="Question Status" />
-            </div>
-          </div>
-          <div className="w-full sm:w-96 px-5 py-4 rounded-xl outline outline-1 outline-offset-[-1px] outline-neutral-800 inline-flex justify-between items-center">
-            <div className="flex justify-start items-center gap-4">
-              <div className="text-neutral-800 text-base font-medium">Материалы вопроса</div>
-            </div>
-            <div className="w-2.5 h-2.5 bg-neutral-800 rounded-full"></div>
-          </div>
-        </div>
-        <div className="text-stone-300 text-base font-normal mb-8">Необходимо выбрать один вариант ответа</div>
-
-        <div className="mb-2 flex justify-start md:justify-center gap-5 md:gap-10 text-neutral-800 text-xl font-normal">
-          <div className="w-32 md:w-44 text-center">За</div>
-          <div className="w-32 md:w-44 text-center">Против</div>
-          <div className="w-32 md:w-44 text-center">Воздержаться</div>
-        </div>
-
-        <div className="space-y-6 mb-8">
-          <div className="flex items-center justify-between">
-            <div className="text-neutral-800 text-xl font-normal w-40 md:w-60">ФИО 1</div>
-            <div className="flex gap-5 md:gap-50 mr-[300px]">
-              <div className="w-6 h-6 bg-neutral-800 rounded-full"></div>
-              <div className="w-6 h-6 rounded-full border border-neutral-800"></div>
-              <div className="w-6 h-6 rounded-full border border-neutral-800"></div>
-            </div>
-          </div>
-          <div className="flex items-center justify-between">
-            <div className="text-neutral-800 text-xl font-normal w-40 md:w-60">ФИО 2</div>
-            <div className="flex gap-5 md:gap-50 mr-[300px]">
-              <div className="w-6 h-6 rounded-full border border-neutral-800"></div>
-              <div className="w-6 h-6 rounded-full border border-neutral-800"></div>
-              <div className="w-6 h-6 bg-neutral-800 rounded-full"></div>
-            </div>
-          </div>
-          <div className="flex items-center justify-between">
-            <div className="text-neutral-800 text-xl font-normal w-40 md:w-60">ФИО 3</div>
-            <div className="flex gap-5 md:gap-50 mr-[300px]">
-              <div className="w-6 h-6 rounded-full border border-neutral-800"></div>
-              <div className="w-6 h-6 bg-neutral-800 rounded-full"></div>
-              <div className="w-6 h-6 rounded-full border border-neutral-800"></div>
-            </div>
-          </div>
-          <div className="flex items-center justify-between">
-            <div className="text-neutral-800 text-xl font-normal w-40 md:w-60">Никто 4</div>
-            <div className="flex gap-5 md:gap-50 mr-[300px]">
-              <div className="w-6 h-6 rounded-full border border-neutral-800"></div>
-              <div className="w-6 h-6 rounded-full border border-neutral-800"></div>
-              <div className="w-6 h-6 bg-neutral-800 rounded-full"></div>
-            </div>
-          </div>
-        </div>
-
-        <div className="w-full sm:w-80 px-5 py-4 bg-neutral-800 rounded-xl inline-flex justify-center items-center gap-4">
-          <div className="w-6 h-6 relative overflow-hidden">
-            <img src="/src/assets/images/detaliAndMain/time-quarter.svg" alt="Cancel Icon" />
-          </div>
-          <div className="text-white text-base font-medium">Отменить выбор</div>
-        </div>
-      </div>
-
-      <div className="mb-[40px] bg-white rounded-[20px] shadow-[0px_2px_10px_0px_rgba(0,0,0,0.25)] p-8">
-        <div className="flex flex-wrap items-center justify-between gap-4 mb-4">
-          <div className="flex items-center gap-2.5">
-            <div className="text-neutral-800 text-xl font-bold">№4. Пример вопроса</div>
-            <div className="w-6 h-6 relative overflow-hidden">
-              <img src="/src/assets/images/detaliAndMain/checkmark-circle-04.svg" alt="Question Status" />
-            </div>
-          </div>
-          <div className="w-full sm:w-96 px-5 py-4 rounded-xl outline outline-1 outline-offset-[-1px] outline-neutral-800 inline-flex justify-between items-center">
-            <div className="flex justify-start items-center gap-4">
-              <div className="text-neutral-800 text-base font-medium">Материалы вопроса</div>
-            </div>
-            <div className="w-2.5 h-2.5 bg-neutral-800 rounded-full"></div>
-          </div>
-        </div>
-        <div className="text-stone-300 text-base font-normal mb-8">Необходимо выбрать все подходящие варианты ответа</div>
-
-        <div className="mb-2 flex justify-start md:justify-center gap-5 md:gap-10 text-neutral-800 text-xl font-normal">
-          <div className="w-32 md:w-44 text-center">Вариант 1</div>
-          <div className="w-32 md:w-44 text-center">Вариант 2</div>
-          <div className="w-32 md:w-44 text-center">Вариант 3</div>
-        </div>
-
-        <div className="space-y-6 mb-8">
-          <div className="flex items-center justify-between">
-            <div className="text-neutral-800 text-xl font-normal w-40 md:w-60">Вариант 1</div>
-            <div className="flex gap-5 md:gap-50 mr-[300px]">
-              <div className="w-6 h-6 bg-neutral-800 rounded"></div>
-              <div className="w-6 h-6 bg-neutral-800 rounded"></div>
-              <div className="w-6 h-6 rounded border border-neutral-800"></div>
-            </div>
-          </div>
-          <div className="flex items-center justify-between">
-            <div className="text-neutral-800 text-xl font-normal w-40 md:w-60">Вариант 2</div>
-            <div className="flex gap-5 md:gap-50 mr-[300px]">
-              <div className="w-6 h-6 bg-neutral-800 rounded"></div>
-              <div className="w-6 h-6 rounded border border-neutral-800"></div>
-              <div className="w-6 h-6 bg-neutral-800 rounded"></div>
-            </div>
-          </div>
-          <div className="flex items-center justify-between">
-            <div className="text-neutral-800 text-xl font-normal w-40 md:w-60">Вариант 3</div>
-            <div className="flex gap-5 md:gap-50 mr-[300px]">
-              <div className="w-6 h-6 rounded border border-neutral-800"></div>
-              <div className="w-6 h-6 bg-neutral-800 rounded"></div>
-              <div className="w-6 h-6 rounded border border-neutral-800"></div>
-            </div>
-          </div>
-          <div className="flex items-center justify-between">
-            <div className="text-neutral-800 text-xl font-normal w-40 md:w-60">Вариант 4</div>
-            <div className="flex gap-5 md:gap-50 mr-[300px]">
-              <div className="w-6 h-6 rounded border border-neutral-800"></div>
-              <div className="w-6 h-6 rounded border border-neutral-800"></div>
-              <div className="w-6 h-6 bg-neutral-800 rounded"></div>
-            </div>
-          </div>
-        </div>
-
-        <div className="w-full sm:w-80 px-5 py-4 bg-green-400 rounded-xl inline-flex justify-center items-center gap-4">
-          <div className="w-6 h-6 relative overflow-hidden">
-            <img src="/src/assets/images/detaliAndMain/tap-08.svg" alt="Vote Icon" />
-          </div>
-          <div className="text-white text-base font-medium">Проголосовать</div>
-        </div>
-      </div>
-   
-     
-      </>
-    )
+    </>
+  )
 }
 
 export default MyBulliten;
