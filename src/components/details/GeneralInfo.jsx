@@ -2,36 +2,40 @@ import { useNavigate } from 'react-router';
 import { getVotingStatusConfigDetails } from '../votes/Formatters';
 import { Button } from '@material-tailwind/react'
 
-const GeneralInfo = ({ votingData, isRegistered, onRegister, onNavigateToMyBulliten }) => {
+const GeneralInfo = ({ votingData, isRegistered, onRegister, onNavigateToMyBulliten, onNavigateToResults }) => {
   const navigate = useNavigate();
   const status = getVotingStatusConfigDetails(votingData);
 
-    // Определяем текст и обработчик для кнопки
+  // Определяем текст и обработчик для кнопки
   let buttonText = '';
-  let onButtonClick = () => {};
+  let onButtonClick = () => { };
   let isButtonDisabled = false;
 
   if (status.text === 'Голосование на этапе регистрации') {
     buttonText = 'Зарегистрироваться';
     onButtonClick = onRegister;
-  } else if (status.text === 'Голосование активно' && isRegistered) {
+    isButtonDisabled = isRegistered;
+  } else if (status.text === 'Голосование активно') {
     buttonText = 'Проголосовать';
     onButtonClick = onNavigateToMyBulliten;
+    isButtonDisabled = !isRegistered;
   } else if (status.text === 'Голосование завершено') {
     buttonText = 'Результаты';
-    onButtonClick = onNavigateToMyBulliten; // Можно сделать отдельную функцию для навигации на результаты
+    onButtonClick = onNavigateToResults; // Можно сделать отдельную функцию для навигации на результаты
+    isButtonDisabled = !isRegistered;
+
   }
 
-  // Если пользователь не зарегистрирован и голосование уже началось, кнопку не показываем
-  if (!isRegistered && status.text !== 'Голосование на этапе регистрации') {
-    return null; 
-  }
+  // // Если пользователь не зарегистрирован и голосование уже началось, кнопку не показываем
+  // if (!isRegistered && status.text !== 'Голосование на этапе регистрации') {
+  //   return null; 
+  // }
 
   // Проверка на наличие данных, чтобы избежать ошибок, если prop не передан
   if (!votingData) {
     return <div>Данные о голосовании не найдены.</div>;
   }
- 
+
   return (
     <main className="p-6 bg-white rounded-[20px] w-full shadow-lg">
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 h-full">
@@ -59,12 +63,12 @@ const GeneralInfo = ({ votingData, isRegistered, onRegister, onNavigateToMyBulli
               <div className="text-neutral-800 text-base font-medium">{votingData.voting_full_info.public ? 'Публичное' : 'Тайное'}</div>
             </div>
           </div>
-          
-            <Button className='bg-[#437DE9] text-base px-5 py-4 mt-auto w-full lg:w-96 rounded-lg flex justify-center items-center gap-2.5 self-start' onClick={onButtonClick}
-          disabled={isButtonDisabled}>
-							{buttonText}
-						</Button>
-          
+
+          <Button className='bg-[#437DE9] text-base px-5 py-4 mt-auto w-full lg:w-96 rounded-lg flex justify-center items-center gap-2.5 self-start' onClick={onButtonClick}
+            disabled={isButtonDisabled}>
+            {buttonText}
+          </Button>
+
         </div>
 
         {/* Правая колонка */}

@@ -119,3 +119,23 @@ export const getVotingResults = async (votingId, authToken) => {
   });
   return response.data;
 }
+
+export const registerUserForVoting = async (votingId, authToken) => {
+  const response = await axios.post(`${API_URL}/votings/${votingId}/register`, {}, {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${authToken}`,
+    },
+  });
+  return response.data;
+}
+
+export const sendVote = async (votingId, authToken, answer) => {
+  const response = await axios.post(`${API_URL}/votings/${votingId}/vote`, answer, {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${authToken}`,
+    },
+  });
+  return response.data;
+}

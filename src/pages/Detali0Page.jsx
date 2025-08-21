@@ -7,9 +7,10 @@ import VotingStatistic from '../components/details/Stats';
 import Voters from '../components/details/Voters';
 import { ResultsForAdmin, BeforeResults } from '../components/details/Results';
 import Sidebar from '../components/constructor/Sidebar';
-import { getVotingData, getVotingParticipants, getVotingResults, getVotingStats } from '../services/api.js';
+import { getVotingData, getVotingParticipants, getVotingResults, getVotingStats, registerUserForVoting } from '../services/api.js';
 import { useAuth } from '../context/AuthProvider.jsx'
 import { formatDate, formatTime, getVotingStatusConfigDetails } from '../components/votes/Formatters.jsx';
+import { ToastContainer, toast } from 'react-toastify';
 import MyBulliten from '../components/details/MyBulliten.jsx';
 import { jwtDecode } from "jwt-decode";
 
@@ -59,23 +60,40 @@ const Detali0 = () => {
     };
 
     const handleRegistration = async () => {
-        const response = await registerUserForVoting(votingId, authToken);
-
-        // Здесь вы можете обработать ответ от сервера, например, 
-        // проверить, что регистрация прошла успешно.
-        if (response.success) {
-            // 2. После успешной регистрации обновляем состояния
+        try {
+            const response = await registerUserForVoting(votingId, authToken);
             setIsRegistered(true);
             setActiveContent('my-bulletin');
-            console.log('Пользователь успешно зарегистрирован!');
-        } else {
-            console.error('Ошибка регистрации:', response.message);
-            // Обработка ошибки
+            toast.success('Пользователь успешно зарегистрирован!');
+        }
+        catch (error) {
+            if (error.response) {
+                switch (error.response.status) {
+                    case 400:
+                        toast.error(`Ошибка 400: ${error.response.data.error}`);
+                        // запрос неверный
+                        break;
+                    case 404:
+                        toast.error(`Ошибка 404: Голосование или пользователь не найден`);
+                        // голосование не существует
+                        break;
+                    case 409:
+                        toast.error(`Ошибка 409: Пользователь зарегестрирован или регистрация закрыта`);
+                        // голос уже был учтен
+                        break;
+                }
+            }
+            else toast.error('Сетевая ошибка. Проверьте ваше подключение.');
+
         }
     };
 
     const handleNavigateToMyBulliten = () => {
         setActiveContent('my-bulletin');
+    };
+
+    const handleNavigateToResults = () => {
+        setActiveContent('results');
     };
 
 
@@ -95,14 +113,10 @@ const Detali0 = () => {
                 // Запрос на голосующих
                 const votersData = await getVotingParticipants(votingId, authToken);
 
-                // const decodedToken = jwtDecode(authToken)
-                // console.log(decodedToken);
-                // const userId = decodedToken.sub;
-                // console.log('User ID:', userId);
-                // const role_id = decodedToken.role_id;
+                const isUserRegistered = votersData.participants.some(voter => voter.id === userId);
+                setIsRegistered(isUserRegistered);
+
                 setUserRole(role_id)
-
-
                 setVotingData(formattedData);
                 setVotingStats(statsData);
                 setVoters(votersData);
@@ -117,7 +131,7 @@ const Detali0 = () => {
         if (votingId) {
             fetchData();
         }
-    }, [votingId, authToken, userId]); // Зависимости: запрос повторится при смене ID или токена
+    }, [votingId, authToken]); // Зависимости: запрос повторится при смене ID или токена
 
     if (loading) {
         return <div>Загрузка...</div>;
@@ -135,20 +149,20 @@ const Detali0 = () => {
         ];
 
         // Пункты для создателя/админа
-        if (userRole === 3 || votingData.voting_full_info.creator.id === userId) {
+        if (role_id === 3 || votingData.voting_full_info.creator.id === userId) {
             baseItems.push(
                 { key: 'stats', label: 'Статистика голосования', icon: '/src/assets/icons/statistics.svg' },
                 { key: 'voters', label: 'Голосующие', icon: '/src/assets/icons/voters.svg' }
             );
         }
 
-        // "Мой бюллетень" доступен только зарегистрированным пользователям
-        if (isRegistered) {
+        // "Мой бюллетень" доступен только зарегистрированным пользователям и админу 
+        if (isRegistered || role_id === 3) {
             baseItems.push({ key: 'my-bulletin', label: 'Мой бюллетень', icon: '/src/assets/icons/myBulliten.svg' });
         }
 
-        // "Результаты" доступны всем, но только после завершения голосования
-        if (isRegistered || votingData.voting_full_info.creator.id === userId || userRole === 3) {
+        // "Результаты" доступны только зарегетсрированым на голосование или админу
+        if (isRegistered || votingData.voting_full_info.creator.id === userId || role_id === 3) {
             baseItems.push({ key: 'results', label: 'Результаты', icon: '/src/assets/icons/results.svg' });
         }
         return baseItems;
@@ -163,7 +177,8 @@ const Detali0 = () => {
                 return <GeneralInfo votingData={votingData}
                     isRegistered={isRegistered}
                     onRegister={handleRegistration}
-                    onNavigateToMyBulliten={handleNavigateToMyBulliten} />;
+                    onNavigateToMyBulliten={handleNavigateToMyBulliten}
+                    onNavigateToResults={handleNavigateToResults} />;
             case "stats":
                 return <VotingStatistic votingStats={votingStats} quorum={votingData.voting_full_info.quorum} />;
             case "voters":
@@ -171,7 +186,7 @@ const Detali0 = () => {
             case "results":
                 return status.text === 'Голосование завершено' ? <ResultsForAdmin votingId={votingId} /> : <BeforeResults />;
             case "my-bulletin":
-                return <MyBulliten votingData={votingData} />;
+                return <MyBulliten votingData={votingData} authToken={authToken} votingId={votingId} />;
             case "user-results":
                 return status.text === 'Голосование завершено' ? <ResultsForAdmin votingId={votingId} /> : <BeforeResults />;
             default:
@@ -181,7 +196,7 @@ const Detali0 = () => {
 
     return (
         <>
-
+            <ToastContainer />
             <div className="h-full flex flex-col ml-[240px] mt-[60px] mr-[240px]">
 
                 <Breadcrumbs title='Администратор / Детали голосования / Общая информация' />
