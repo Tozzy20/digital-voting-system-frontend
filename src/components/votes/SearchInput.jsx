@@ -1,5 +1,6 @@
+import React from 'react';
+
 const SearchInput = ({value, onChange, onSearch}) => {
-    
     const handleKeyDown = (e) => {
         if (e.key === 'Enter') {
             onSearch();
@@ -7,11 +8,11 @@ const SearchInput = ({value, onChange, onSearch}) => {
     };
     
     return (
-        <div className="px-3 py-2 sm:px-[20px] sm:py-[16px] rounded-lg border border-[#CCCCCC] flex items-center gap-2">
+        <div className="px-3 py-2 sm:px-[20px] sm:py-[16px] rounded-lg border border-[#CCCCCC] flex items-center gap-2 w-full">
             <img 
                 src="/src/assets/icons/searchBlack.svg" 
-                alt="" 
-                className="w-4 h-4 sm:w-auto sm:h-auto"
+                alt="Поиск" 
+                className="w-4 h-4 sm:w-5 sm:h-5"
             />
             <input
                 type="text"

@@ -153,7 +153,7 @@ const CreateVoting = () => {
 
       } catch (error) {
         console.error('Ошибка при загрузке департаментов:', error);
-        alert(`Не удалось загрузить департаменты: ${error.message}`);
+        //alert(`Не удалось загрузить департаменты: ${error.message}`);
       } finally {
         setIsLoadingDepartments(false);
       }
@@ -175,8 +175,18 @@ const CreateVoting = () => {
   // Функция для объединения даты и времени в ISO-формат
 const combineDateTime = (date, time) => {
 
-  const dateTimeString = `${date}T${time}:00`;
-  return new Date(dateTimeString).toISOString().slice(0, 19).replace('T', ' ');
+  const dateTimeString = `${date}T${time}:00.000Z`;
+
+  const utcDate = new Date(dateTimeString);
+
+  const year = utcDate.getUTCFullYear();
+  const month = (utcDate.getUTCMonth() + 1).toString().padStart(2, '0');
+  const day = utcDate.getUTCDate().toString().padStart(2, '0');
+  const hours = utcDate.getUTCHours().toString().padStart(2, '0');
+  const minutes = utcDate.getUTCMinutes().toString().padStart(2, '0');
+  const seconds = utcDate.getUTCSeconds().toString().padStart(2, '0');
+
+  return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
 };
 
   const sendToServer = async () => {
@@ -202,10 +212,10 @@ const combineDateTime = (date, time) => {
     try {
       const result = await createVoting(data, authToken);
       console.log('Успех:', result);
-      alert('Голосование успешно отправлено на сервер!');
+      //alert('Голосование успешно отправлено на сервер!');
     } catch (error) {
       console.error('Ошибка отправки:', error);
-      alert('Не удалось отправить данные. Проверьте подключение или попробуйте позже.');
+     // alert('Не удалось отправить данные. Проверьте подключение или попробуйте позже.');
     }
   };
 

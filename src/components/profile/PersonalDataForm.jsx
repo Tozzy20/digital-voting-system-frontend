@@ -4,7 +4,7 @@ import { getProfileData, updateProfileData } from '/src/services/api.js'
 
 const PersonalData = () => {
     const { authToken } = useAuth();
-
+  
     const [formData, setFormData] = useState({
         last_name: '',
         first_name: '',
@@ -80,7 +80,7 @@ const PersonalData = () => {
 
     return (
         <form 
-            className="shadow-lg bg-white rounded-[15px] md:rounded-[20px] w-[473px]"
+            className="shadow-lg bg-white rounded-[15px] md:rounded-[20px] xl:w-[473px]"
             onSubmit={handleSubmit}
         >
             <div className="p-4 md:p-[32px] space-y-4 md:space-y-[20px]">

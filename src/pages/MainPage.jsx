@@ -23,7 +23,7 @@ const MainPage = () => {
 		'44%',
 	]
 	const colors = ['#BD3636', '#FFE3E3', '#E87C7C', '#F2A4A4']
-	const [role, setRole] = useState('админ')
+	const [role, setRole] = useState('адми')
 	return (
 		<>
 			{role !== 'админ' && (
@@ -52,7 +52,7 @@ const MainPage = () => {
 				{role === 'админ' && <p className='mak text-[40px] mb-5 max-md:text-[32px]'>Главная</p>}
 
 				<div className='grid grid-cols-6 gap-2 max-lg:grid-cols-3 max-md:grid-cols-2 max-sm:grid-cols-1'>
-					<div className='bg-white col-span-1 h-50 rounded-[20px] flex flex-col justify-center p-5 max-sm:col-span-1'>
+					<div className='bg-white col-span-1 h-50 rounded-[20px] flex flex-col justify-center p-5 max-sm:col-span-1 max-md:col-span-2'>
 						<p className='text-[38px] font-bold max-md:text-[32px] max-sm:text-[28px]'>3.000</p>
 						<p className='text-base font-light max-sm:text-sm'>Голосований</p>
 					</div>
@@ -299,13 +299,13 @@ const MainPage = () => {
 
 				<div
 					className={`grid ${
-						role === 'админ' ? 'grid-cols-3' : 'grid-cols-6 grid-rows-2 mt-2'
+						role === 'админ' ? 'grid-cols-3' : 'grid-cols-6 grid-rows-1 mt-2'
 					}  gap-2 max-lg:grid-cols-3 max-md:grid-cols-2 max-sm:grid-cols-1`}
 				>
 <div
   className={`bg-white rounded-[20px] flex flex-col ${
     role !== 'админ' && 'col-span-2 row-span-1'
-  } justify-between min-h-[300px] md:min-h-[350px] p-5 max-md:p-4 max-sm:col-span-1`}
+  } justify-between h-86 p-5 max-md:p-4 max-sm:col-span-3 w-auto`}
 >
   <p className='font-bold text-xl max-md:text-lg'>Регистрация и голосование</p>
   <p className='font-normal text-base text-[#CCCCCC] max-md:text-sm'>
@@ -331,7 +331,7 @@ const MainPage = () => {
   </div>
 </div>
 					{role !== 'админ' && (
-						<div className='bg-white rounded-[20px] max-h-[640px] col-span-4 row-span-2 p-5 max-lg:col-span-3 max-md:col-span-2 max-sm:col-span-1 max-md:p-4'>
+						<div className='bg-white rounded-[20px] max-h-[640px] col-span-4 row-span-2 sm:top-[-40px] p-5 max-lg:col-span-3 max-md:col-span-2 max-sm:col-span-3 max-md:p-4'>
 							<p className='font-bold text-xl max-md:text-lg'>Календарь голосований</p>
 							<Calendar className='max-md:text-sm' />
 						</div>
@@ -339,7 +339,7 @@ const MainPage = () => {
 					<div
 						className={`bg-white rounded-[20px] flex flex-col ${
 							role !== 'админ' && 'col-span-2 row-span-1'
-						} justify-between h-70 p-5 max-md:p-4 max-sm:col-span-1`}
+						} justify-between h-86 p-5 max-md:p-4 max-sm:col-span-3 w-auto`}
 					>
 						<p className='font-bold text-xl max-md:text-lg'>Количество голосующих</p>
 						<p className='font-normal text-base text-[#CCCCCC] max-md:text-sm'>
@@ -357,7 +357,7 @@ const MainPage = () => {
 					</div>
 
 					{role === 'админ' && (
-						<div className='bg-white rounded-[20px] flex flex-col justify-between h-70 p-5 max-md:p-4 max-lg:col-span-3'>
+						<div className='bg-white rounded-[20px] flex flex-col justify-between h-86 p-5 max-md:p-4 max-lg:col-span-3'>
 							<p className='font-bold text-xl max-md:text-lg'>Регистрация и голосование</p>
 							<p className='font-normal text-base text-[#CCCCCC] max-md:text-sm'>
 								Соотношение регистраций и голосов

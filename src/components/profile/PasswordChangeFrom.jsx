@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { changePassword } from "../../services/api";
 import { useAuth } from '/src/context/AuthProvider.jsx'
 
-const PasswordChangeForm = () => {
+const PasswordChangeForm = () => {  
     const { authToken } = useAuth();
 
     const [password, setPassword] = useState({
@@ -60,7 +60,7 @@ const PasswordChangeForm = () => {
     };
 
     return (
-        <form onSubmit={handleSubmit} className="shadow-lg bg-white rounded-[15px] md:rounded-[20px] w-[473px] ">
+        <form onSubmit={handleSubmit} className="ml-[240px]shadow-lg bg-white rounded-[15px] md:rounded-[20px] xl:w-[473px]">
             <div className="p-4 md:p-[32px] space-y-4 md:space-y-[20px]">
                 <h1 className="text-neutral-800 text-xl md:text-2xl font-semibold">Пароль</h1>
 
