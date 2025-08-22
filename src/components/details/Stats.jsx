@@ -1,128 +1,3 @@
-// import { useEffect } from 'react';
-// import { PieChart, Pie, Cell } from 'recharts';
-// import { Progress } from "@material-tailwind/react";
-// import { getVotingStats } from '../../services/api';
-
-// const data = [
-//   { name: 'Зарегистрировано', value: 10000, color: '#f0f0f0' }, // Серый фон
-//   { name: 'Проголосовало', value: 7000, color: '#8884d8' }, // Часть, которая заполнена
-// ];
-
-// const COLORS = ['#f0f0f0', '#ffc658', '#82ca9d', '#ff8042']; // Цвета для сегментов
-
-
-// const Stats = ({ votingStats, quorum }) => {
-
-//   const registered = votingStats.total_registered_users;
-//   const voted = votingStats.total_votes_cast;
-
-//   const pieData = [
-//     { value: voted, color: COLORS[1] }, // Проголосовало
-//     { value: registered - voted, color: COLORS[0] } // Остаток (не проголосовало)
-//   ];
-
-//   return (
-//     <div className="p-8 bg-white rounded-[20px] w-full shadow-lg">
-//       <div className="flex flex-col lg:flex-row gap-8">
-//         <div className="flex flex-col items-start gap-4 w-full lg:w-1/2">
-//           <div className="text-black text-xl font-bold">Ход регистрации и голосования</div>
-//           <div className="flex items-center gap-4">
-//             <div className="text-black text-base font-normal">Обновлено:</div>
-//             <div className="flex items-center gap-2.5">
-//               <div className="w-6 h-6 relative overflow-hidden">
-//                 <img src="/src/assets/images/detaliAndMain/elements0.png" alt="Updated Date" />
-//               </div>
-//               <div className="text-black text-base font-normal">11.08.2025</div>
-//             </div>
-//             <div className="flex items-center gap-2.5">
-//               <div className="w-6 h-6 relative overflow-hidden">
-//                 <img src="/src/assets/images/detaliAndMain/elements1.png" alt="Updated Time" />
-//               </div>
-//               <div className="text-black text-base font-normal">10:48</div>
-//             </div>
-//           </div> 
-
-//           <div className="flex flex-wrap items-end gap-5">
-//             <div className="flex items-end gap-2.5">
-//               <div className="w-5 h-5 bg-amber-200 rounded-full"></div>
-//               <div className="text-black text-base font-normal">Зарегистрированы ({votingStats.total_registered_users})</div>
-//             </div>
-
-//             <div className="flex items-end gap-2.5">
-//               <div className="w-5 h-5 bg-green-400 rounded-full"></div>
-//               <div className="text-black text-base font-normal">Проголосовали ({votingStats.total_votes_cast})</div>
-//             </div>
-//             <div className="flex items-end gap-2.5">
-//               <div className="w-5 h-5 bg-rose-500 rounded-full"></div>
-//               <div className="text-black text-base font-normal">Не проголосовали ({votingStats.total_registered_users - votingStats.total_votes_cast})</div>
-//             </div>
-//           </div>
-
-
-//             <PieChart width={400} height={400}>
-//       <Pie
-//         data={pieData}
-//         cx={200}
-//         cy={200}
-//         innerRadius={140}
-//         outerRadius={160}
-//         fill="#8884d8"
-//         paddingAngle={0}
-//         dataKey="value"
-//         startAngle={90}
-//         endAngle={450}
-//       >
-//         {pieData.map((entry, index) => (
-//           <Cell key={`cell-${index}`} fill={entry.color} />
-//         ))}
-//       </Pie>
-//       <text x={200} y={180} textAnchor="middle" dominantBaseline="middle" className="text-3xl font-bold">
-//         {registered.toLocaleString()}
-//       </text>
-//       <text x={200} y={210} textAnchor="middle" dominantBaseline="middle" className="text-sm text-gray-500">
-//         зарегистрировано
-//       </text>
-//       <text x={200} y={250} textAnchor="middle" dominantBaseline="middle" className="text-3xl font-bold">
-//         {voted.toLocaleString()}
-//       </text>
-//       <text x={200} y={280} textAnchor="middle" dominantBaseline="middle" className="text-sm text-gray-500">
-//         проголосовало
-//       </text>
-//     </PieChart>
-
-//         </div>
-
-//         <div className="flex flex-col items-start gap-6 w-full lg:w-1/2">
-//           <div>
-//             <div className="text-stone-300 text-base font-normal">Условия кворума:</div>
-//             <div className="text-black text-base font-semibold mt-2">
-//               {quorum}%
-//             </div>
-//           </div>
-//           <div>
-//             <div className="text-stone-300 text-base font-normal">Статус:</div>
-//             <div className="flex items-center gap-2.5 mt-2">
-//               <div className="w-6 h-6 relative overflow-hidden">
-//                 <img src="/src/assets/images/detaliAndMain/Component 114.png" alt="Status Icon" />
-//               </div>
-//               <div className={`text-green-400 text-base font-semibold`}>
-//                 Условия выполнены
-//               </div>
-//             </div>
-//           </div>
-//           <div className="w-full">
-//             <div className="text-stone-300 text-base font-normal mb-2">Электронная явка ({votingStats.turnout_percentage.toFixed(1)})</div>
-//              <div className="flex-start flex h-2.5 w-full overflow-hidden rounded-full bg-gray-200 font-sans text-xs font-medium">
-//       <div className={`flex h-full w-[${votingStats.turnout_percentage}%] items-center justify-center overflow-hidden break-all rounded-full bg-gray-900 text-white`}></div>
-//     </div>
-//           </div>
-//         </div>
-//       </div>
-//     </div>
-//   );
-// };
-
-
 import { useEffect, useState } from 'react'
 import { StatisticCircle } from '../details/ProgressCircle'
 import { AlarmClock, Calendar1, Check, X } from 'lucide-react'
@@ -130,14 +5,11 @@ import { Chart1 } from '../Charts'
 
 
 const VotingStatistic = ({
-	conditionPercent,
 	UpdateDate,
 	UpdateTime,
-	totalPeople,
-	registeredCount,
-	votedCount,
 	votingStats,
-	quorum
+	quorum,
+	votingData
 }) => {
 	const [conditionStatus, setConditionStatus] = useState(false)
 
@@ -151,6 +23,20 @@ const VotingStatistic = ({
 			}
 		}
 	}, [votingStats.total_votes_cast, votingStats.total_registered_users, quorum])
+
+	const votesPerHour = votingData.votes_per_hour.map(item => item.votes)
+	const registrationsPerHour = votingData.registrations_per_hour.map(item => item.votes)
+
+	const chartSeriesData = [
+    {
+        name: 'Количество регистраций', // Название серии
+        data: registrationsPerHour, // Массив значений голосов
+    },
+    {
+        name: 'Количество голосов', // Название серии
+        data: votesPerHour, // Массив значений регистраций
+    }
+];
 
 	return (
 		<div className='flex flex-col gap-3'>
@@ -237,16 +123,8 @@ const VotingStatistic = ({
 				<div className='flex flex-col gap-2'>
 					<p className='text-xl font-bold'>Ход регистрации и голосования</p>
 					<Chart1
-						series={[
-							{
-								name: 'Общая явка',
-								data: [95, 82, 65, 59, 55, 52, 49, 39, 30, 32, 35, 30, 30, 35, 40, 36, 50],
-							},
-							{
-								name: 'Явка голосующих',
-								data: [25, 22, 20, 28, 38, 42, 45, 48, 53, 70, 88, 45, 45, 55, 64, 64, 50],
-							},
-						]}
+						votingData={votingData}
+						series={chartSeriesData}
 						colors={['#7DD4FF', '#5BC25B']}
 					/>
 				</div>

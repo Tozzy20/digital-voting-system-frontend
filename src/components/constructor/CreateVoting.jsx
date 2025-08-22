@@ -6,6 +6,7 @@ import QuestionForm from '/src/components/constructor/CreateVoting/QuestionForm'
 import AddQuestionButton from '/src/components/constructor/CreateVoting/AddQuestionButton';
 import { useAuth } from '../../context/AuthProvider';
 import { createVoting } from '../../services/api'
+import { toast } from 'react-toastify';
 
 
 const CreateVoting = () => {
@@ -118,7 +119,7 @@ const CreateVoting = () => {
   
       setIsLoadingDepartments(true);
       try {
-        const response = await fetch(`http://192.168.31.252:5000/api/departments/?page=${pageNum}`, {
+        const response = await fetch(`http://192.168.31.241:8000/api/departments/?page=${pageNum}`, {
           method: 'GET',
           headers: {
             'Authorization': `Bearer ${authToken}`,
@@ -211,7 +212,7 @@ const combineDateTime = (date, time) => {
   
     try {
       const result = await createVoting(data, authToken);
-      console.log('Успех:', result);
+      toast.success("Успех");
       //alert('Голосование успешно отправлено на сервер!');
     } catch (error) {
       console.error('Ошибка отправки:', error);
