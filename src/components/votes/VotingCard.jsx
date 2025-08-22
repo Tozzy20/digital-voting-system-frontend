@@ -1,10 +1,34 @@
-import React from 'react';
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { getVotingStatusConfig } from './Formatters';
+import { useAuth } from '../../context/AuthProvider';
+import { Modal, Box, Button, Typography } from '@mui/material';
+import { deleteVote } from '../../services/api';
+import { toast } from 'react-toastify';
 
 const VotingCard = ({ voting }) => {
     const status = getVotingStatusConfig(voting);
 
+    const { user, authToken } = useAuth();
+
+    const [isModalOpen, setIsModalOpen] = useState(false)
+
+    // Обработчики
+    const handleOpenModal = () => setIsModalOpen(true);
+    const handleCloseModal = () => setIsModalOpen(false);
+
+
+    const handleDelete = async () => {
+        try {
+            await deleteVote(voting.id, authToken);
+            toast.success("Голосование успешно удалено!");
+            handleCloseModal();
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    
     return (
         <div className="bg-white rounded-[15px] sm:rounded-[20px] w-full shadow-lg p-4 sm:p-6 flex flex-col gap-3 sm:gap-4 relative">
             {/* Заголовок, группа и часовой пояс */}
@@ -93,10 +117,74 @@ const VotingCard = ({ voting }) => {
                     <Link to={`/votes/${voting.id}`} className="block">
                         <img src="/src/assets/icons/details.svg" alt="Edit" className="w-8 h-8 sm:w-[36px] sm:h-[36px] cursor-pointer" />
                     </Link>
-                    <img src="/src/assets/icons/delete.svg" alt="Delete" className="w-8 h-8 sm:w-[36px] sm:h-[36px] cursor-pointer" />
+
+                    {(user.userId === voting.creator.id || user.roleId === 3) &&
+                        <img src="/src/assets/icons/delete.svg" alt="Delete" className="w-8 h-8 sm:w-[36px] sm:h-[36px] cursor-pointer" onClick={handleOpenModal} />
+                    }
                 </div>
+                <ConfirmationModal
+                    open={isModalOpen}
+                    handleClose={handleCloseModal}
+                    onConfirm={handleDelete}
+                    message={`Вы уверены, что хотите удалить голосование "${voting.title}"?`}
+                />
             </div>
         </div>
+    );
+};
+
+const style = {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+};
+
+const ConfirmationModal = ({ open, handleClose, onConfirm, message }) => {
+    return (
+        <Modal
+            open={open}
+            onClose={handleClose}
+            aria-labelledby="modal-title"
+            aria-describedby="modal-description"
+            className="flex items-center justify-center p-4" // Tailwind классы для центрирования
+        >
+            <Box
+                sx={style}
+                className="bg-white rounded-xl shadow-2xl p-6 sm:p-8 max-w-sm w-full mx-auto" // Tailwind классы
+            >
+                <Typography
+                    id="modal-title"
+                    variant="h6"
+                    component="h2"
+                    className="text-xl sm:text-2xl font-bold mb-4 text-center" // Tailwind классы
+                >
+                    Подтверждение
+                </Typography>
+                <Typography
+                    id="modal-description"
+                    className="text-gray-700 text-center mb-6" // Tailwind классы
+                >
+                    {message}
+                </Typography>
+                <div className="flex justify-around gap-4">
+                    <Button
+                        variant="outlined"
+                        onClick={handleClose}
+                        className="w-full py-2 px-4 rounded-lg border-2 border-gray-300 text-gray-700 font-semibold hover:bg-gray-100 transition-colors"
+                    >
+                        Отмена
+                    </Button>
+                    <Button
+                        variant="contained"
+                        onClick={onConfirm}
+                        className="w-full py-2 px-4 rounded-lg bg-red-500 text-white font-semibold hover:bg-red-600 transition-colors"
+                    >
+                        Удалить
+                    </Button>
+                </div>
+            </Box>
+        </Modal>
     );
 };
 

@@ -6,7 +6,7 @@ import QuestionForm from '/src/components/constructor/CreateVoting/QuestionForm'
 import AddQuestionButton from '/src/components/constructor/CreateVoting/AddQuestionButton';
 import { useAuth } from '../../context/AuthProvider';
 import { createVoting } from '../../services/api'
-import { toast } from 'react-toastify';
+import { toast, ToastContainer } from 'react-toastify';
 
 
 const CreateVoting = () => {
@@ -222,6 +222,8 @@ const combineDateTime = (date, time) => {
 
   // --- JSX ---
   return (
+    <>
+    <ToastContainer />
     <div className="bg-white p-6 rounded-[20px] shadow-lg ">
       <StepHeader stepNumber={1} title="Настройки" />
 
@@ -396,6 +398,7 @@ const combineDateTime = (date, time) => {
   </button>
 </div>
     </div>
+    </>
   );
 };
 

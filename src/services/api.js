@@ -190,3 +190,13 @@ export const sendVote = async (votingId, authToken, answer) => {
   });
   return response.data;
 }
+
+export const deleteVote = async (votingId, authToken) => {
+  const response = await api.delete(`/votings/${votingId}`, {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${authToken}`,
+    },
+  });
+  return response.data;
+}

@@ -4,7 +4,6 @@ import { AuthProvider } from './context/AuthProvider';
 import AppContent from './AppContent';
 import { ToastContainer } from 'react-toastify';
 
-
 function App() {
   return (
     <AuthProvider>

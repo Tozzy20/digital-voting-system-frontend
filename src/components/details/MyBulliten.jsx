@@ -114,7 +114,7 @@ const MyBulliten = ({ votingData, authToken, votingId }) => {
       <ToastContainer position="top-center" />
       <div className="flex flex-col gap-[10px]">
         <div className="flex flex-col gap-[10px]">
-          <div className="h-auto p-8 bg-white rounded-[20px] shadow-[0px_2px_10px_0px_rgba(0,0,0,0.25)]">
+          <div className="h-auto p-8 bg-white rounded-[20px] shadow-lg">
             <div className="text-neutral-800 text-xl font-bold mb-4">{votingData.voting_full_info.title}</div>
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
               <div className="text-stone-300 text-base font-normal">{votingData.voting_full_info.theme}</div>
@@ -132,7 +132,7 @@ const MyBulliten = ({ votingData, authToken, votingId }) => {
           {now < votingStartDate && (
             <div className="flex flex-col md:flex-row gap-6">
               {/* Таймер до начала регистрации */}
-              <div className="flex-1 h-auto p-8 bg-white rounded-[20px] shadow-[0px_2px_10px_0px_rgba(0,0,0,0.25)]">
+              <div className="flex-1 h-auto p-8 bg-white rounded-[20px] shadow-lg">
                 <div className="flex items-center gap-3 mb-6">
                   <div className="text-neutral-800 text-4xl sm:text-5xl font-bold">{timeUntilRegistrationEndObj.days} дня</div>
                   <div className="text-stone-300 text-base font-normal">{timeUntilRegistrationEndObj.hours} часов, {timeUntilRegistrationEndObj.minutes} минут до окончания регистрации</div>
@@ -144,7 +144,7 @@ const MyBulliten = ({ votingData, authToken, votingId }) => {
                 </div>
               </div>
               {/* Таймер до начала голосования */}
-              <div className="flex-1 h-auto p-8 bg-white rounded-[20px] shadow-[0px_2px_10px_0px_rgba(0,0,0,0.25)]">
+              <div className="flex-1 h-auto p-8 bg-white rounded-[20px] shadow-lg">
                 <div className="flex items-center gap-3 mb-6">
                   <div className="text-neutral-800 text-4xl sm:text-5xl font-bold">{timeUntilVotingStartObj.days} дней</div>
                   <div className="text-stone-300 text-base font-normal">{timeUntilVotingStartObj.hours} часов, {timeUntilVotingStartObj.minutes} минут до начала голосования</div>
@@ -160,7 +160,7 @@ const MyBulliten = ({ votingData, authToken, votingId }) => {
         </div>
 
         {votingData.voting_full_info.questions.map((question, index) => (
-          <div key={question.id} className="bg-white rounded-[20px] shadow-[0px_2px_10px_0px_rgba(0,0,0,0.25)] p-8">
+          <div key={question.id} className="bg-white rounded-[20px] shadow-lg p-8">
             <div className="flex flex-wrap items-center justify-between gap-4 mb-4">
               <div className="flex items-center gap-2.5">
                 <div className="text-neutral-800 text-xl font-bold">{`№${index + 1}. ${question.title}`}</div>
@@ -207,7 +207,7 @@ const MyBulliten = ({ votingData, authToken, votingId }) => {
           </div>
         ))}
 
-        <div className="bg-white rounded-[20px] shadow-[0px_2px_10px_0px_rgba(0,0,0,0.25)] p-8">
+        <div className="bg-white rounded-[20px] shadow-lg p-8">
           <button
             onClick={handleVote}
             className='w-full py-3 px-3 bg-[#5BC25B] rounded-lg text-lg font-normal text-white flex gap-3 justify-center items-center hover:brightness-90 transition-all cursor-pointer active:scale-98 whitespace-nowrap'
