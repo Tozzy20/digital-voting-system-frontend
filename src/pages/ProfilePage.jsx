@@ -28,7 +28,7 @@ const ProfilePage = () => {
           </div>
 
           {/* Правая колонка (настройки) */}
-          <div className="flex flex-col md:mt-3 lg:mt-3 xl:mt-0 w-full gap-4 lg:gap-[10px]">
+          <div className="flex flex-col mt-4 md:mt-3 lg:mt-3 sm:mt-3 xl:mt-0 w-full gap-4 lg:gap-[10px]">
             <TimezoneSettings />
           </div>
         </main>
