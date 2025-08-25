@@ -7,41 +7,43 @@ export const ProgressCircle = ({ progress }) => {
 	const strokeDashoffset = circumference * (1 - normalizedProgress / 100)
 
 	return (
-		<div className='w-full h-full flex justify-center items-center'>
-			<div className='w-100 h-100 auto border-dashed border-40 rounded-full border-[#f4f4f4] relative flex justify-center items-center'>
-				<div
-					className={`w-100 h-100 absolute drop-shadow-xl ${
-						progress <= 25
-							? 'drop-shadow-[#EE5B5B50] stroke-[#EE5B5B]'
-							: progress <= 50
-							? 'drop-shadow-[#FFa05a50] stroke-[#FFa05a]'
-							: progress <= 75
-							? 'drop-shadow-[#FFD17D50] stroke-[#FFD17D]'
-							: 'drop-shadow-[#5BC25B50] stroke-[#5BC25B]'
-					} transition-all duration-500`}
-				>
-					<svg className='' viewBox='0 0 100 100' transform='scale(-1, 1)'>
-						<circle
-							cx='50'
-							cy='50'
-							r={radius}
-							fill='none'
-							strokeWidth='10'
-							strokeDasharray={circumference}
-							strokeDashoffset={strokeDashoffset}
-							transform='rotate(-90 50 50)'
-						/>
-					</svg>
-				</div>
+       <div className='w-full h-full flex justify-center items-center p-4'>
+            <div className='relative flex justify-center items-center w-full max-w-[250px] aspect-square'>
+                <div className='absolute w-full h-full border-4 border-dashed rounded-full border-[#f4f4f4]'></div>
+                
+                <div
+                    className={`absolute w-full h-full drop-shadow-xl ${
+                        progress <= 25
+                            ? 'drop-shadow-[#EE5B5B50] stroke-[#EE5B5B]'
+                            : progress <= 50
+                            ? 'drop-shadow-[#FFa05a50] stroke-[#FFa05a]'
+                            : progress <= 75
+                            ? 'drop-shadow-[#FFD17D50] stroke-[#FFD17D]'
+                            : 'drop-shadow-[#5BC25B50] stroke-[#5BC25B]'
+                    } transition-all duration-500`}
+                >
+                    <svg className='w-full h-full' viewBox='0 0 100 100' transform='scale(-1, 1)'>
+                        <circle
+                            cx='50'
+                            cy='50'
+                            r={radius}
+                            fill='none'
+                            strokeWidth='10'
+                            strokeDasharray={circumference}
+                            strokeDashoffset={strokeDashoffset}
+                            transform='rotate(-90 50 50)'
+                        />
+                    </svg>
+                </div>
 
-				<div className='flex flex-col items-center absolute'>
-					<p className='font-black text-[48px]'>
-						{Math.round(normalizedProgress)}%
-					</p>
-					<p className='font-normal text-lg text-[#ccc]'>Времени осталось</p>
-				</div>
-			</div>
-		</div>
+                <div className='flex flex-col items-center absolute'>
+                    <p className='font-black text-2xl sm:text-3xl lg:text-4xl text-neutral-800'>
+                        {Math.round(normalizedProgress)}%
+                    </p>
+                    <p className='font-normal text-sm sm:text-base text-neutral-400 text-center'>Времени осталось</p>
+                </div>
+            </div>
+        </div>
 	)
 }
 
@@ -102,14 +104,12 @@ export const StatisticCircle = ({
 		<div className='w-full h-full flex justify-center items-center'>
 			<div className='relative flex justify-center items-center'>
 				<div>
-					<svg width='360' height='360' viewBox='0 0 360 360' fill='none'>
+					<svg className='w-full h full' width='360' height='360' viewBox='0 0 360 360' fill='none'>
 						<path
                             d={describeArc(180, 180, 145, 0, 359.99)}
                             stroke='#FFD17D'
                             strokeWidth='40'
                         />
-
-						
 
 						{/* Внутренний круг: Проголосовавшие и непроголосовавшие */}
                         {votedCount === registeredCount ? (

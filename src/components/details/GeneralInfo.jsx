@@ -37,7 +37,7 @@ const GeneralInfo = ({ votingData, isRegistered, onRegister, onNavigateToMyBulli
   }
 
   return (
-    <main className="p-6 bg-white rounded-[20px] w-full shadow-lg">
+    <main className="p-4 sm:p-6 bg-white rounded-[20px] w-full shadow-lg"> {/* Уменьшаем padding на маленьких экранах */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 h-full">
         {/* Левая колонка */}
         <div className="flex flex-col gap-6">
@@ -64,8 +64,11 @@ const GeneralInfo = ({ votingData, isRegistered, onRegister, onNavigateToMyBulli
             </div>
           </div>
 
-          <Button className='bg-[#437DE9] text-base px-5 py-4 mt-auto w-full lg:w-96 rounded-lg flex justify-center items-center gap-2.5 self-start' onClick={onButtonClick}
-            disabled={isButtonDisabled}>
+          <Button 
+            className='bg-[#437DE9] text-base px-5 lg:mt-auto py-4 w-full rounded-lg flex justify-center items-center gap-2.5' // Удаляем w-96 и mt-auto для лучшей адаптивности
+            onClick={onButtonClick}
+            disabled={isButtonDisabled}
+          >
             {buttonText}
           </Button>
 
@@ -73,7 +76,8 @@ const GeneralInfo = ({ votingData, isRegistered, onRegister, onNavigateToMyBulli
 
         {/* Правая колонка */}
         <div className="flex flex-col gap-6">
-          <div className="flex flex-wrap gap-4">
+          {/* Flexbox-контейнер для дат, чтобы они переносились на новую строку */}
+          <div className="flex flex-wrap gap-4"> 
             <div className="flex-1 min-w-[45%] px-4 py-2.5 bg-green-50 rounded-lg flex flex-col items-start gap-2.5">
               <div className="text-stone-300 text-base font-normal">Начало регистрации</div>
               <div className="flex flex-col gap-4">
@@ -129,7 +133,7 @@ const GeneralInfo = ({ votingData, isRegistered, onRegister, onNavigateToMyBulli
               </div>
             </div>
           </div>
-          <div className="px-5 py-4 mt-auto rounded-xl outline outline-neutral-800 flex justify-between items-center">
+          <div className="px-5 py-4 rounded-xl outline outline-neutral-800 flex justify-between items-center">
             <div className="flex items-center gap-4">
               <div className="text-neutral-800 text-base font-medium">Материалы голосования</div>
             </div>
