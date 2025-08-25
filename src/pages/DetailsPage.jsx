@@ -1,24 +1,25 @@
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import Breadcrumbs from '../components/Breadcrumbs';
-import PageTitle from '../components/PageTitle';
-import GeneralInfo from '../components/details/GeneralInfo';
-import VotingStatistic from '../components/details/Stats';
-import Voters from '../components/details/Voters';
-import { ResultsForAdmin, BeforeResults } from '../components/details/Results';
-import Sidebar from '../components/constructor/Sidebar';
+import Breadcrumbs from '../components/Breadcrumbs.jsx';
+import PageTitle from '../components/PageTitle.jsx';
+import GeneralInfo from '../components/details/GeneralInfo.jsx';
+import VotingStatistic from '../components/details/Stats.jsx';
+import Voters from '../components/details/Voters.jsx';
+import { ResultsForAdmin, BeforeResults } from '../components/details/Results.jsx';
+import Sidebar from '../components/constructor/Sidebar.jsx';
 import { getVotingData, getVotingParticipants, getVotingStats, registerUserForVoting } from '../services/api.js';
 import { useAuth } from '../context/AuthProvider.jsx'
 import { formatDate, formatTime, getVotingStatusConfigDetails } from '../components/votes/Formatters.jsx';
 import { ToastContainer, toast } from 'react-toastify';
 import MyBulliten from '../components/details/MyBulliten.jsx';
 import { jwtDecode } from "jwt-decode";
+import { CiCircleInfo } from "react-icons/ci";
+import { IoMdStats } from "react-icons/io"; //stats
+import { GoPeople } from "react-icons/go"; //voters
+import { LuClipboardList } from "react-icons/lu"; // results
+import { TbChecklist } from "react-icons/tb"; // bulliten
 
-/**
- * @description Подготавливает данные голосования для отображения в компоненте.
- * @param {object} rawData - Необработанные данные голосования, полученные из API.
- * @returns {object|null} - Отформатированные данные или null, если исходные данные отсутствуют.
- */
+
 const prepareVotingDataForComponent = (rawData) => {
     if (!rawData) return null;
 
@@ -42,12 +43,12 @@ const prepareVotingDataForComponent = (rawData) => {
     };
 };
 
-const Detali0 = () => {
+const Details = () => {
     const { votingId } = useParams();
     const [votingData, setVotingData] = useState(null);
     const [loading, setLoading] = useState(true);
     // Инициализируем mobileMenuOpen, чтобы избежать ошибок
-    const [mobileMenuOpen, setMobileMenuOpen] = useState(false); 
+    const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
     const [activeContent, setActiveContent] = useState("general-info");
     const { authToken } = useAuth();
     const [votingStats, setVotingStats] = useState(null);
@@ -155,25 +156,65 @@ const Detali0 = () => {
     // Определяем пункты меню на основе userRole и isRegistered
     const getMenuItems = () => {
         const baseItems = [
-            { key: 'general-info', label: 'Общая информация', icon: '/src/assets/icons/general-info.svg' },
+            {
+                key: 'general-info',
+                label: 'Общая информация',
+                icon: (isActive) => <CiCircleInfo
+                    size={24}
+                    color={isActive ? '#437DE9' : '#4B5563'}
+                    strokeWidth={isActive ? 1 : 0.5}
+                />
+            },
         ];
 
-        // Пункты для создателя/админа
+        
         if (role_id === 3 || votingData.voting_full_info.creator.id === userId) {
             baseItems.push(
-                { key: 'stats', label: 'Статистика голосования', icon: '/src/assets/icons/statistics.svg' },
-                { key: 'voters', label: 'Голосующие', icon: '/src/assets/icons/voters.svg' }
+                {
+                    key: 'stats',
+                    label: 'Статистика голосования',
+                    icon: (isActive) => <IoMdStats
+                        size={24}
+                        color={isActive ? '#437DE9' : '#4B5563'}
+                        strokeWidth={isActive ? 0.5 : 0}
+                    />
+                },
+                {
+                    key: 'voters',
+                    label: 'Голосующие',
+                    icon: (isActive) => <GoPeople
+                        size={24}
+                        color={isActive ? '#437DE9' : '#4B5563'}
+                        strokeWidth={isActive ? 0.5 : 0}
+                    />
+                }
             );
         }
 
-        // "Мой бюллетень" доступен только зарегистрированным пользователям и админу 
+        
         if (isRegistered || role_id === 3) {
-            baseItems.push({ key: 'my-bulletin', label: 'Мой бюллетень', icon: '/src/assets/icons/myBulliten.svg' });
+            baseItems.push({
+                key: 'my-bulletin',
+                label: 'Мой бюллетень',
+                icon: (isActive) => <TbChecklist
+                    size={24}
+                    color={isActive ? '#437DE9' : '#4B5563'}
+                    strokeWidth={isActive ? 1.5 : 0.5}
+                />
+            });
         }
 
-        // "Результаты" доступны только зарегетсрированым на голосование или админу
+        
         if (isRegistered || votingData.voting_full_info.creator.id === userId || role_id === 3) {
-            baseItems.push({ key: 'results', label: 'Результаты', icon: '/src/assets/icons/results.svg' });
+            baseItems.push({
+                key: 'results',
+                label: 'Результаты',
+                icon: (isActive) => <LuClipboardList
+                    size={24}
+                    color={isActive ? '#437DE9' : '#4B5563'}
+                    strokeWidth={isActive ? 1.5 : 0.5}
+                />
+            });
         }
         return baseItems;
     };
@@ -197,7 +238,6 @@ const Detali0 = () => {
                 return status.text === 'Голосование завершено' ? <ResultsForAdmin votingId={votingId} /> : <BeforeResults />;
             case "my-bulletin":
                 return <MyBulliten votingData={votingData} authToken={authToken} votingId={votingId} />;
-            // Удаляем "user-results", так как его нет в sidebar
             default:
                 return null;
         }
@@ -206,12 +246,12 @@ const Detali0 = () => {
     return (
         <div className="min-h-screen">
             <ToastContainer />
-            <div className="px-4 2xl:mx-[200px] mt-[60px]">
+            <div className="2xl:mx-[240px] mt-[60px]">
                 <Breadcrumbs title='Администратор / Детали голосования / Общая информация' />
                 <div className="flex items-center justify-between">
                     <PageTitle title="Детали голосования" />
                     {/* Кнопка меню только на экранах меньше 2xl */}
-                    <button 
+                    <button
                         onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
                         className="2xl:hidden mt-[20px] flex items-center gap-2 p-2 bg-white rounded-md hover:bg-gray-200 transition-colors z-20"
                     >
@@ -225,7 +265,7 @@ const Detali0 = () => {
                         </svg>
                     </button>
                 </div>
-                
+
                 <main className="flex flex-col 2xl:flex-row mt-6 gap-6 relative">
                     {/* Мобильный оверлей */}
                     {mobileMenuOpen && (
@@ -234,7 +274,7 @@ const Detali0 = () => {
                             onClick={() => setMobileMenuOpen(false)}
                         ></div>
                     )}
-                    
+
                     {/* Сайдбар - адаптивная позиция и видимость */}
                     <div className={`${mobileMenuOpen ? 'top-0 left-0 h-full w-full block' : 'hidden'} 
                         2xl:block 2xl:relative 2xl:w-64 z-20 transition-transform transform
@@ -245,7 +285,7 @@ const Detali0 = () => {
                             onMenuItemClick={handleMenuItemClick}
                         />
                     </div>
-                    
+
                     {/* Основное содержимое */}
                     <div className="flex-1 w-full 2xl:ml-31">
                         {renderContent()}
@@ -256,4 +296,4 @@ const Detali0 = () => {
     );
 };
 
-export default Detali0;
+export default Details;

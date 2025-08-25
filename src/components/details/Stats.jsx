@@ -108,7 +108,7 @@ const VotingStatistic = ({
                         </div>
                         <div className='flex flex-col gap-4'>
                             <p className='font-normal text-base text-[#ccc]'>
-                                Электронная явка [{votingStats.turnout_percentage}%]
+                                Электронная явка [{votingStats.turnout_percentage.toFixed(1)}%]
                             </p>
                             <div className='rounded-full w-full bg-[#F4F4F4] h-4 overflow-hidden'>
                                 <div

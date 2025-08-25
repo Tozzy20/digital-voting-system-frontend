@@ -138,6 +138,8 @@ const VotingCard = ({ voting }) => {
     );
 };
 
+
+// Модальное окно
 const style = {
     position: 'absolute',
     top: '50%',

@@ -5,7 +5,7 @@ import RegisterPage from './pages/RegisterPage';
 import MainPage from './pages/MainPage';
 import ProfilePage from './pages/ProfilePage';
 import ConstructorPage from './pages/ConstructorPage';
-import Detali0 from './pages/Detali0Page';
+import Details from './pages/DetailsPage';
 import VotesPage from './pages/VotesPage';
 import Header from './components/Header';
 import HeaderLogin from './components/HeaderLogin';
@@ -23,8 +23,8 @@ function AppContent() {
         <Route path='/main' element={<MainPage />} />
         <Route path='/profile' element={<ProfilePage />} />
         <Route path='/constructor' element={<ConstructorPage />} />
-        <Route path='/detali0' element={<Detali0 />} />
-        <Route path='/votes/:votingId' element={<Detali0 />} />
+        <Route path='/details' element={<Details />} />
+        <Route path='/votes/:votingId' element={<Details />} />
       </Routes>
     </>
   );

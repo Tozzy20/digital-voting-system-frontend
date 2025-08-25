@@ -78,6 +78,7 @@ const LoginPage = () => {
 
     return (
         <>
+            <ToastContainer />
             <div className=" ">
                 <div className="flex flex-col items-center justify-center min-h-[calc(100vh-100px)] bg-gray-100">
 

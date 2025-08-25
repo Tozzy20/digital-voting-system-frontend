@@ -3,6 +3,7 @@ import { formatRemainingTime } from "../votes/Formatters";
 import { ToastContainer, toast } from 'react-toastify';
 import { sendVote } from '../../services/api';
 import { RadioGroup, Radio, FormControlLabel, Checkbox, FormGroup, Typography } from '@mui/material';
+import { TbTimezone } from "react-icons/tb";
 
 
 
@@ -121,7 +122,7 @@ const MyBulliten = ({ votingData, authToken, votingId }) => {
               <div className="flex items-center gap-4">
                 <div className="flex items-center gap-2.5">
                   <div className="w-6 h-6 relative overflow-hidden">
-                    <img src="/src/assets/images/detaliAndMain/longitude.png" alt="Timezone Icon" />
+                    <TbTimezone className='w-6 h-6'/>
                   </div>
                   <div className="text-neutral-800 text-base font-normal">(UTC+3) Россия - Москва</div>
                 </div>
