@@ -6,7 +6,16 @@ import {
 } from '@material-tailwind/react'
 import Chart from 'react-apexcharts'
 
-export const Chart1 = ({ series, colors }) => {
+export const Chart1 = ({ votingData, series, colors }) => {
+	// Получаем категории (часы) динамически из данных
+	const categories = votingData.votes_per_hour.map(item => item.hour);
+
+	// Вычисляем максимальное значение для оси Y
+	const allData = series.flatMap(s => s.data);
+	const maxYValue = Math.max(...allData, 10);
+	const yAxisMax = maxYValue > 0 ? maxYValue + maxYValue * 0.2 : 10; // Добавляем 20% для отступа, но не менее 10
+
+	
 	const chartConfig = {
 		type: 'line',
 		height: 550,
@@ -47,29 +56,11 @@ export const Chart1 = ({ series, colors }) => {
 						fontWeight: 400,
 					},
 				},
-				categories: [
-					'8:00',
-					'9:00',
-					'10:00',
-					'11:00',
-					'12:00',
-					'13:00',
-					'14:00',
-					'15:00',
-					'16:00',
-					'17:00',
-					'18:00',
-					'19:00',
-					'20:00',
-					'21:00',
-					'22:00',
-					'23:00',
-					'00:00',
-				],
+				categories: categories
 			},
 			yaxis: {
 				min: 0,
-				max: 100,
+				max: yAxisMax,
 				tickAmount: 10,
 				labels: {
 					style: {

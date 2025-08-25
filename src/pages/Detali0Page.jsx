@@ -190,7 +190,7 @@ const Detali0 = () => {
                     onNavigateToMyBulliten={handleNavigateToMyBulliten}
                     onNavigateToResults={handleNavigateToResults} />;
             case "stats":
-                return <VotingStatistic votingStats={votingStats} quorum={votingData.voting_full_info.quorum} />;
+                return <VotingStatistic votingData={votingData} votingStats={votingStats} quorum={votingData.voting_full_info.quorum} />;
             case "voters":
                 return <Voters voters={voters} />;
             case "results":

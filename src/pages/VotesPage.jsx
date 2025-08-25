@@ -8,7 +8,6 @@ import PaginationControls from "../components/votes/PaginationControls";
 import SearchInput from "../components/votes/SearchInput";
 import VotingCard from "../components/votes/VotingCard";
 import Button from "../components/Button";
-
 import { getVotings } from '../services/api';
 import { useAuth } from '../context/AuthProvider';
 import { formatDate, formatTime, getVotingStatusConfig } from '../components/votes/Formatters';

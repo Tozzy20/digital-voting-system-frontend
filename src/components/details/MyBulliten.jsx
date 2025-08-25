@@ -1,8 +1,10 @@
 import { useState } from 'react'
-import { Checkbox, Radio, Typography } from "@material-tailwind/react";
 import { formatRemainingTime } from "../votes/Formatters";
 import { ToastContainer, toast } from 'react-toastify';
 import { sendVote } from '../../services/api';
+import { RadioGroup, Radio, FormControlLabel, Checkbox, FormGroup, Typography } from '@mui/material';
+
+
 
 const MyBulliten = ({ votingData, authToken, votingId }) => {
 
@@ -19,7 +21,7 @@ const MyBulliten = ({ votingData, authToken, votingId }) => {
   // Обработчик для кнопки "Проголосовать"
   const handleVote = async () => {
     const answers = Object.keys(selectedAnswers).map(questionId => {
-      const questionData = votingData.voting_full_info.questions.find(q => q.id === parseInt(questionId));
+      const questionData = votingData.voting_full_info.questions.find(q => q.id === Number(questionId));
       const selectedValue = selectedAnswers[questionId];
 
       if (!questionData) {
@@ -28,13 +30,13 @@ const MyBulliten = ({ votingData, authToken, votingId }) => {
 
       if (questionData.type === 'single_choice') {
         return {
-          question_id: parseInt(questionId),
-          selected_option_id: selectedValue,
+          question_id: Number(questionId),
+          selected_option_id: Number(selectedValue),
         };
       } else if (questionData.type === 'multiple_choice') {
         return {
-          question_id: parseInt(questionId),
-          selected_option_ids: selectedValue,
+          question_id: Number(questionId),
+          selected_option_ids: selectedValue.map(id => Number(id)),
         };
       }
       return null;
@@ -42,46 +44,17 @@ const MyBulliten = ({ votingData, authToken, votingId }) => {
 
     const payload = { answers: answers };
     console.log("JSON для отправки:", JSON.stringify(payload, null, 2));
-    
+
     // POST запрос для отправки ответов
     try {
       const response = await sendVote(votingId, authToken, payload)
       toast.success(response.data.message)
     }
     catch (error) {
-      if (error.response) {
-        switch (error.response.status) {
-          case 400:
-            toast.error(`Ошибка 400: ${error.response.data.error}`);
-            // запрос неверный
-            break;
-          case 403:
-            toast.error(`Ошибка 403: ${error.response.data.error}`);
-            // голосование неактивно или нет доступа
-            break;
-          case 404:
-            toast.error(`Ошибка 404: ${error.response.data.error}`);
-            // голосование не существует
-            break;
-          case 409:
-            toast.error(`Ошибка 409: ${error.response.data.error}`);
-            // голос уже был учтен
-            break;
-          case 500:
-            toast.error(`Ошибка 500: ${error.response.data.error}`);
-            // на сервере произошла ошибка
-            break;
-          default:
-            toast.error(`Неизвестная ошибка: ${error.response.status}, ${error.response.data.error}`);
-            // Обработка других неожиданных ошибок
-            break;
-        }
-      }
-      else toast.error('Сетевая ошибка. Проверьте ваше подключение.');
-
+      console.log(error)
     }
   };
-
+  
   // Обработчик изменения для Radio
   const handleRadioChange = (questionId, optionId) => {
     setSelectedAnswers(prevState => ({
@@ -107,37 +80,6 @@ const MyBulliten = ({ votingData, authToken, votingId }) => {
 
     });
   };
-
-  // Функция для рендеринга вариантов ответов
-  const renderOptions = (question) => {
-    const isSingleChoice = question.type === 'single_choice';
-    const selectedValue = selectedAnswers[question.id] || [];
-
-    return question.options.map((option) => (
-      <div key={option.id} className="flex items-center gap-3">
-        {isSingleChoice ? (
-          <Radio
-            name={`question-${question.id}`}
-            id={`radio-${option.id}`}
-            value={option.id}
-            label={<Typography className="text-neutral-800 text-xl">{option.option}</Typography>}
-            checked={selectedValue === option.id}
-            onChange={() => handleRadioChange(question.id, option.id)}
-          />
-        ) : (
-          <Checkbox
-            id={`checkbox-${option.id}`}
-            value={option.id}
-            label={<Typography className="text-neutral-800 text-xl">{option.option}</Typography>}
-            checked={selectedValue && selectedValue.includes(option.id)}
-            onChange={() => handleCheckboxChange(question.id, option.id)}
-          />
-        )}
-        {/* <div className="text-neutral-800 text-xl font-normal">{option.option}</div> */}
-      </div>
-    ));
-  };
-
 
   // Расчеты для progressBar до конца регистрации
   let registrationProgress = 0;
@@ -169,10 +111,10 @@ const MyBulliten = ({ votingData, authToken, votingId }) => {
 
   return (
     <>
-    <ToastContainer position="top-center" />
+      <ToastContainer position="top-center" />
       <div className="flex flex-col gap-[10px]">
         <div className="flex flex-col gap-[10px]">
-          <div className="h-auto p-8 bg-white rounded-[20px] shadow-[0px_2px_10px_0px_rgba(0,0,0,0.25)]">
+          <div className="h-auto p-8 bg-white rounded-[20px] shadow-lg">
             <div className="text-neutral-800 text-xl font-bold mb-4">{votingData.voting_full_info.title}</div>
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
               <div className="text-stone-300 text-base font-normal">{votingData.voting_full_info.theme}</div>
@@ -190,19 +132,19 @@ const MyBulliten = ({ votingData, authToken, votingId }) => {
           {now < votingStartDate && (
             <div className="flex flex-col md:flex-row gap-6">
               {/* Таймер до начала регистрации */}
-              <div className="flex-1 h-auto p-8 bg-white rounded-[20px] shadow-[0px_2px_10px_0px_rgba(0,0,0,0.25)]">
+              <div className="flex-1 h-auto p-8 bg-white rounded-[20px] shadow-lg">
                 <div className="flex items-center gap-3 mb-6">
                   <div className="text-neutral-800 text-4xl sm:text-5xl font-bold">{timeUntilRegistrationEndObj.days} дня</div>
                   <div className="text-stone-300 text-base font-normal">{timeUntilRegistrationEndObj.hours} часов, {timeUntilRegistrationEndObj.minutes} минут до окончания регистрации</div>
                 </div>
                 <div className="relative w-full h-24">
                   <div className="absolute inset-0 h-full bg-amber-200 rounded-xl"
-                    style={{ width: `${registrationProgress}`}}></div>
+                    style={{ width: `${registrationProgress}` }}></div>
                   <div className="absolute inset-0 w-full h-full px-5 py-4 rounded-xl border border-stone-300"></div>
                 </div>
               </div>
               {/* Таймер до начала голосования */}
-              <div className="flex-1 h-auto p-8 bg-white rounded-[20px] shadow-[0px_2px_10px_0px_rgba(0,0,0,0.25)]">
+              <div className="flex-1 h-auto p-8 bg-white rounded-[20px] shadow-lg">
                 <div className="flex items-center gap-3 mb-6">
                   <div className="text-neutral-800 text-4xl sm:text-5xl font-bold">{timeUntilVotingStartObj.days} дней</div>
                   <div className="text-stone-300 text-base font-normal">{timeUntilVotingStartObj.hours} часов, {timeUntilVotingStartObj.minutes} минут до начала голосования</div>
@@ -218,30 +160,54 @@ const MyBulliten = ({ votingData, authToken, votingId }) => {
         </div>
 
         {votingData.voting_full_info.questions.map((question, index) => (
-          <div key={question.id} className="bg-white rounded-[20px] shadow-[0px_2px_10px_0px_rgba(0,0,0,0.25)] p-8">
+          <div key={question.id} className="bg-white rounded-[20px] shadow-lg p-8">
             <div className="flex flex-wrap items-center justify-between gap-4 mb-4">
               <div className="flex items-center gap-2.5">
                 <div className="text-neutral-800 text-xl font-bold">{`№${index + 1}. ${question.title}`}</div>
-                {/* ... Иконка статуса вопроса */}
               </div>
             </div>
             <div className="text-stone-300 text-base font-normal mb-6">
-              {/* Здесь можно добавить логику для описания типа ответа */}
               {question.type === 'single_choice' && 'Необходимо выбрать один вариант ответа'}
               {question.type === 'multiple_choice' && 'Необходимо выбрать несколько вариантов ответа'}
             </div>
 
             <div className="space-y-4 mb-8">
-              {renderOptions(question)}
+              {question.type === 'single_choice' ? (
+                <RadioGroup
+                  name={`question-${question.id}`}
+                  value={selectedAnswers[question.id] || ''}
+                  onChange={(e) => handleRadioChange(question.id, e.target.value)}
+                >
+                  {question.options.map((option) => (
+                    <FormControlLabel
+                      key={option.id}
+                      value={option.id}
+                      control={<Radio />}
+                      label={<Typography className="text-neutral-800 text-xl">{option.option}</Typography>}
+                    />
+                  ))}
+                </RadioGroup>
+              ) : (
+                <FormGroup>
+                  {question.options.map((option) => (
+                    <FormControlLabel
+                      key={option.id}
+                      control={
+                        <Checkbox
+                          checked={selectedAnswers[question.id]?.includes(option.id) || false}
+                          onChange={() => handleCheckboxChange(question.id, option.id)}
+                        />
+                      }
+                      label={<Typography className="text-neutral-800 text-xl">{option.option}</Typography>}
+                    />
+                  ))}
+                </FormGroup>
+              )}
             </div>
-
-            {/* Кнопки "Проголосовать" / "Отменить выбор"
-            <div className="w-full sm:w-80 px-5 py-4 bg-zinc-100 rounded-xl inline-flex justify-center items-center gap-4">
-              Проголосовать
-            </div> */}
           </div>
         ))}
-        <div className="bg-white rounded-[20px] shadow-[0px_2px_10px_0px_rgba(0,0,0,0.25)] p-8">
+
+        <div className="bg-white rounded-[20px] shadow-lg p-8">
           <button
             onClick={handleVote}
             className='w-full py-3 px-3 bg-[#5BC25B] rounded-lg text-lg font-normal text-white flex gap-3 justify-center items-center hover:brightness-90 transition-all cursor-pointer active:scale-98 whitespace-nowrap'

@@ -1,9 +1,60 @@
 import axios from "axios";
+import { toast } from 'react-toastify';
 
 const API_URL = import.meta.env.VITE_API_URL;
 
+// Экземпляр Axios с базовым URL
+const api = axios.create({
+  baseURL: API_URL,
+});
+// Перехватчик ответа
+api.interceptors.response.use(
+  // Если ответ успешен, просто возвращаем его
+  (response) => response,
+  (error) => {
+    if (error.response) {
+      const { status, data } = error.response;
+
+      switch (status) {
+        case 400:
+          if(data.errors){
+            toast.error(`Введены неверные данные`)
+          }
+          else toast.error(`Ошибка 400: ${data.error}`);
+          break;
+        case 401:
+          toast.error(data.error)
+          break;
+        case 403:
+          toast.error(`Ошибка 403: ${data.error}`);
+          break;
+        case 404:
+          toast.error(`Ошибка 404: Голосование не найдено.`);
+          break;
+        case 409:
+          toast.error(`Ошибка 409: ${data.error}`);
+          break;
+        case 500:
+          toast.error(`Ошибка 500: ${data.error}`);
+          break;
+        default:
+          if (status >= 500) {
+            toast.error(`Произошла ошибка на сервере (${status}). Пожалуйста, попробуйте позже.`);
+          } else {
+            toast.error(`Неизвестная ошибка: ${status}, ${data.error}`);
+          }
+          break;
+      }
+    } else {
+      toast.error('Сетевая ошибка. Проверьте ваше подключение.');
+    }
+
+    return Promise.reject(error);
+  }
+)
+
 export const register = async (formData) => {
-  const response = await axios.post(`${API_URL}/auth/register`, formData, {
+  const response = await api.post(`/auth/register`, formData, {
     headers: {
       "Content-Type": "application/json",
     },
@@ -12,7 +63,7 @@ export const register = async (formData) => {
 };
 
 export const loginUser = async (email, password, role_id, remember_flag) => {
-  const response = await axios.post(`${API_URL}/auth/login`, {
+  const response = await api.post(`/auth/login`, {
     email,
     password,
     role_id,
@@ -22,7 +73,7 @@ export const loginUser = async (email, password, role_id, remember_flag) => {
 };
 
 export const getProfileData = async (authToken) => {
-  const response = await axios.get(`${API_URL}/users/profile`, {
+  const response = await api.get(`/users/profile`, {
     headers: {
       Authorization: `Bearer ${authToken}`,
       "Content-Type": "application/json",
@@ -33,7 +84,7 @@ export const getProfileData = async (authToken) => {
 };
 
 export const updateProfileData = async (authToken, profileData) => {
-  const response = await axios.put(`${API_URL}/users/profile`, profileData, {
+  const response = await api.put(`/users/profile`, profileData, {
     headers: {
       Authorization: `Bearer ${authToken}`,
       "Content-Type": "application/json",
@@ -43,8 +94,8 @@ export const updateProfileData = async (authToken, profileData) => {
 };
 
 export const changePassword = async (authToken, passwords) => {
-  const response = await axios.put(
-    `${API_URL}/users/change-password/`,
+  const response = await api.put(
+    `/users/change-password/`,
     passwords,
     {
       headers: {
@@ -57,7 +108,7 @@ export const changePassword = async (authToken, passwords) => {
 };
 
 export const getVotings = async (authToken, page = 1, find='') => {
-  const response = await axios.get(`${API_URL}/votings/`, {
+  const response = await api.get(`/votings/`, {
     headers: {
       Authorization: `Bearer ${authToken}`,
       "Content-Type": "application/json",
@@ -71,7 +122,7 @@ export const getVotings = async (authToken, page = 1, find='') => {
 };
 
 export const createVoting = async (votingData, authToken) => {
-  const response = await axios.post(`${API_URL}/votings/`, votingData, {
+  const response = await api.post(`/votings/`, votingData, {
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bearer ${authToken}`,
@@ -81,7 +132,7 @@ export const createVoting = async (votingData, authToken) => {
 };
 
 export const getVotingData = async (votingId, authToken) => {
-  const response = await axios.get(`${API_URL}/votings/${votingId}`, {
+  const response = await api.get(`/votings/${votingId}`, {
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bearer ${authToken}`,
@@ -91,7 +142,7 @@ export const getVotingData = async (votingId, authToken) => {
 }
 
 export const getVotingStats = async (votingId, authToken) => {
-  const response = await axios.get(`${API_URL}/votings/${votingId}/statistics`, {
+  const response = await api.get(`/votings/${votingId}/statistics`, {
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bearer ${authToken}`,
@@ -101,7 +152,7 @@ export const getVotingStats = async (votingId, authToken) => {
 }
 
 export const getVotingParticipants = async (votingId, authToken) => {
-  const response = await axios.get(`${API_URL}/votings/${votingId}/participants`, {
+  const response = await api.get(`/votings/${votingId}/participants`, {
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bearer ${authToken}`,
@@ -111,7 +162,7 @@ export const getVotingParticipants = async (votingId, authToken) => {
 }
 
 export const getVotingResults = async (votingId, authToken) => {
-  const response = await axios.get(`${API_URL}/votings/${votingId}/results`, {
+  const response = await api.get(`/votings/${votingId}/results`, {
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bearer ${authToken}`,
@@ -121,7 +172,7 @@ export const getVotingResults = async (votingId, authToken) => {
 }
 
 export const registerUserForVoting = async (votingId, authToken) => {
-  const response = await axios.post(`${API_URL}/votings/${votingId}/register`, {}, {
+  const response = await api.post(`/votings/${votingId}/register`, {}, {
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bearer ${authToken}`,
@@ -131,7 +182,17 @@ export const registerUserForVoting = async (votingId, authToken) => {
 }
 
 export const sendVote = async (votingId, authToken, answer) => {
-  const response = await axios.post(`${API_URL}/votings/${votingId}/vote`, answer, {
+  const response = await api.post(`/votings/${votingId}/vote`, answer, {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${authToken}`,
+    },
+  });
+  return response.data;
+}
+
+export const deleteVote = async (votingId, authToken) => {
+  const response = await api.delete(`/votings/${votingId}`, {
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bearer ${authToken}`,
