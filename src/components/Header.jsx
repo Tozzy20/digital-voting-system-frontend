@@ -2,7 +2,9 @@ import { useState, useEffect, useRef } from 'react';
 import { useAuth } from '/src/context/AuthProvider.jsx'
 import { getProfileData } from '../services/api'
 import DropdownMenu from '../components/DropdownMenu'
-
+import { CgProfile } from "react-icons/cg";
+import { VscSettings } from "react-icons/vsc";
+import { LuScanSearch } from "react-icons/lu";
 import { NavLink, useNavigate, Link } from 'react-router-dom'
 import { CircleUserRound, ScanSearch, Settings2 } from 'lucide-react'
 import HeaderDropdown from './Header/HeaderDropdown';
@@ -103,10 +105,10 @@ const Header = ({isAuthorized = true}) => {
             {isAuthorized && (
               <>
                 <div className="w-8 h-8 cursor-pointer">
-                    <img src="/src/assets/icons/search.svg" alt="Search" className="w-full h-full object-contain" />
+                    <LuScanSearch size={32} />
                 </div>
                 <div className="w-8 h-8 cursor-pointer">
-                    <img src="/src/assets/icons/options.svg" alt="Notifications" className="w-full h-full object-contain" />
+                    <VscSettings size={32} />
                 </div>
               </>
             )}
@@ -121,7 +123,7 @@ const Header = ({isAuthorized = true}) => {
             )}
             <NavLink to={'/profile'}>
               <div className="w-8 h-8 cursor-pointer">
-                    <img src="/src/assets/icons/profile.svg" alt="User" class="w-full h-full object-contain" />
+                  <CgProfile size={32} />
               </div>
             </NavLink>
           </div>
@@ -147,16 +149,16 @@ const Header = ({isAuthorized = true}) => {
             {isAuthorized && (
               <>
                 <div className="w-8 h-8 cursor-pointer">
-                    <img src="/src/assets/icons/search.svg" alt="Search" className="w-full h-full object-contain" />
+                    <LuScanSearch size={32} />
                 </div>
                 <div className="w-8 h-8 cursor-pointer">
-                    <img src="/src/assets/icons/options.svg" alt="Notifications" className="w-full h-full object-contain" />
+                    <VscSettings size={32} />
                 </div>
               </>
             )}
             <NavLink to={'/profile'}>
               <div className="w-8 h-8 cursor-pointer">
-                    <img src="/src/assets/icons/profile.svg" alt="User" class="w-full h-full object-contain" />
+                    <CgProfile size={32} />
               </div>
             </NavLink>
             <button 

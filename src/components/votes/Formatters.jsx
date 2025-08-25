@@ -1,3 +1,9 @@
+import { PiBooksLight } from "react-icons/pi";
+import { ImFire } from "react-icons/im";
+import { LiaFireAltSolid } from "react-icons/lia";
+import { BsPersonBoundingBox } from "react-icons/bs";
+
+
 export const formatDate = (isoString) => {
   if (!isoString) return 'Нет данных';
   const date = new Date(isoString);
@@ -55,7 +61,7 @@ export const getVotingStatusConfig = (voting) => {
       text: 'Ошибка данных',
       bg: 'bg-neutral-100',
       textColor: 'text-neutral-800',
-      icon: '/src/assets/icons/archive.svg',
+      icon: <PiBooksLight/>,
     };
   }
 
@@ -64,7 +70,7 @@ export const getVotingStatusConfig = (voting) => {
       text: 'Голосование активно',
       bg: 'bg-[#E6FFDD]',
       textColor: 'text-[#135615]',
-      icon: '/src/assets/icons/fireGreen.svg',
+      icon: <LiaFireAltSolid size={24} color="#135617" />,
     };
   }
 
@@ -73,7 +79,7 @@ export const getVotingStatusConfig = (voting) => {
       text: 'Голосование на этапе регистрации',
       bg: 'bg-[#FFFBD0]',
       textColor: 'text-[#564E13]',
-      icon: '/src/assets/icons/registration.svg',
+      icon: <BsPersonBoundingBox color="#564E13" />,
     };
   }
   
@@ -82,7 +88,7 @@ export const getVotingStatusConfig = (voting) => {
       text: 'Голосование завершено',
       bg: 'bg-neutral-100',
       textColor: 'text-neutral-800',
-      icon: '/src/assets/icons/archive.svg',
+      icon: <PiBooksLight/>,
     };
   }
   
@@ -91,7 +97,7 @@ export const getVotingStatusConfig = (voting) => {
     text: 'Ожидает начала',
     bg: 'bg-neutral-100',
     textColor: 'text-neutral-600',
-    icon: '/src/assets/icons/archive.svg',
+    icon: <PiBooksLight/>,
   };
 };
 
@@ -102,7 +108,7 @@ export const getVotingStatusConfigDetails = (voting) => {
       text: 'Нет данных',
       bg: 'bg-neutral-100',
       textColor: 'text-neutral-800',
-      icon: '/src/assets/icons/archive.svg',
+      icon: <PiBooksLight/>,
     };
   }
 
@@ -117,7 +123,7 @@ export const getVotingStatusConfigDetails = (voting) => {
       text: 'Ошибка данных',
       bg: 'bg-neutral-100',
       textColor: 'text-neutral-800',
-      icon: '/src/assets/icons/archive.svg',
+      icon: <PiBooksLight/>,
     };
   }
 
@@ -126,7 +132,7 @@ export const getVotingStatusConfigDetails = (voting) => {
       text: 'Голосование активно',
       bg: 'bg-[#E6FFDD]',
       textColor: 'text-[#135615]',
-      icon: '/src/assets/icons/fireGreen.svg',
+      icon: <LiaFireAltSolid color="#135617" />,
     };
   }
 
@@ -135,7 +141,7 @@ export const getVotingStatusConfigDetails = (voting) => {
       text: 'Голосование на этапе регистрации',
       bg: 'bg-[#FFFBD0]',
       textColor: 'text-[#564E13]',
-      icon: '/src/assets/icons/registration.svg',
+      icon: <BsPersonBoundingBox color="#564E13"/>,
     };
   }
   
@@ -144,7 +150,7 @@ export const getVotingStatusConfigDetails = (voting) => {
       text: 'Голосование завершено',
       bg: 'bg-neutral-100',
       textColor: 'text-neutral-800',
-      icon: '/src/assets/icons/archive.svg',
+      icon: <PiBooksLight/>,
     };
   }
   
@@ -153,7 +159,7 @@ export const getVotingStatusConfigDetails = (voting) => {
     text: 'Ожидает начала',
     bg: 'bg-neutral-100',
     textColor: 'text-neutral-600',
-    icon: '/src/assets/icons/archive.svg',
+    icon: <PiBooksLight/>,
   };
 };
 

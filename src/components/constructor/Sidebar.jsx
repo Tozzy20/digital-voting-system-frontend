@@ -16,12 +16,8 @@ const Sidebar = ({ menuItems, activeItem, onMenuItemClick }) => {
             }`}
             onClick={() => handleItemClick(item.key)}
           >
-            <img 
-              src={item.icon} 
-              alt={item.label} 
-              className="w-5 h-5 sm:w-auto sm:h-auto"
-            />
-            <span className={`px-3 sm:px-[20.76px] text-sm sm:text-base ${activeItem === item.key ? 'text-blue-800' : 'text-gray-700'}`}>
+            {typeof item.icon === 'function' ? item.icon(activeItem === item.key) : item.icon}
+            <span className={`px-3 text-sm sm:text-base ${activeItem === item.key ? 'text-blue-800' : 'text-gray-700'}`}>
               {item.label} 
             </span>
           </li>

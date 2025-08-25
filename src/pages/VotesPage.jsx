@@ -11,6 +11,8 @@ import Button from "../components/Button";
 import { getVotings } from '../services/api';
 import { useAuth } from '../context/AuthProvider';
 import { formatDate, formatTime, getVotingStatusConfig } from '../components/votes/Formatters';
+import { TbFilterEdit, TbSortDescending } from "react-icons/tb";
+
 
 const VotesPage = () => {
   const [votings, setVotings] = useState([]);
@@ -101,11 +103,11 @@ const VotesPage = () => {
 
         <div className="flex mt-6 gap-4 flex-wrap">
           <Button className="outline outline-neutral-400 text-neutral-800 font-normal px-3 py-2 text-sm md:text-base md:px-4 md:py-2 flex items-center justify-center gap-2">
-            <img src="/src/assets/icons/filter.svg" alt="Фильтры" className="w-4 h-4 md:w-5 md:h-5" />
+            <TbFilterEdit size={32} />
             <span>Фильтры</span>
           </Button>
           <Button className="outline outline-neutral-400 text-neutral-800 font-normal px-3 py-2 text-sm md:text-base md:px-4 md:py-2 flex items-center justify-center gap-2">
-            <img src="/src/assets/icons/sort.svg" alt="Сортировка" className="w-4 h-4 md:w-5 md:h-5" />
+            <TbSortDescending size={32} />
             <span>Сортировка</span>
           </Button>
         </div>

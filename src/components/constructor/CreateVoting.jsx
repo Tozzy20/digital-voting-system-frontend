@@ -7,6 +7,10 @@ import AddQuestionButton from '/src/components/constructor/CreateVoting/AddQuest
 import { useAuth } from '../../context/AuthProvider';
 import { createVoting } from '../../services/api'
 import { toast, ToastContainer } from 'react-toastify';
+import { CiViewList } from "react-icons/ci";
+import { MdOutlineRocketLaunch } from "react-icons/md";
+
+
 
 
 const CreateVoting = () => {
@@ -374,13 +378,7 @@ const combineDateTime = (date, time) => {
     onClick={sendToServer}
     className="w-full sm:w-auto bg-blue-500 text-white px-3 py-2 sm:px-4 sm:py-2 rounded-lg flex items-center justify-center sm:justify-start space-x-2 text-sm sm:text-base"
   >
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="sm:w-6 sm:h-6">
-      <path d="M6.59961 11.923C11.6722 2.46869 17.9886 2.35967 20.5127 3.48695C21.64 6.01105 21.531 12.3274 12.0767 17.4C11.9786 16.8364 11.4334 15.3599 10.0365 13.9631C8.63973 12.5663 7.16325 12.021 6.59961 11.923Z" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-      <path d="M13.3496 16.95C15.1881 17.85 15.3844 19.4638 15.6391 21C15.6391 21 19.4897 18.1535 17.0266 14.25" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-      <path d="M7.04996 10.7265C6.14996 8.88795 4.53615 8.69166 3 8.43697C3 8.43697 5.8465 4.58633 9.74997 7.04944" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-      <path d="M6.01808 14.912C5.50625 15.4238 4.63613 16.9081 5.25033 18.7507C7.09293 19.3649 8.57725 18.4948 9.08909 17.983" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-      <path d="M17.3008 8.44922C17.3008 7.48272 16.5173 6.69922 15.5508 6.69922C14.5843 6.69922 13.8008 7.48272 13.8008 8.44922C13.8008 9.41572 14.5843 10.1992 15.5508 10.1992C16.5173 10.1992 17.3008 9.41572 17.3008 8.44922Z" stroke="white" strokeWidth="1.5"/>
-    </svg>
+    <MdOutlineRocketLaunch size={24} />
     <span>Запустить голосование</span>
   </button>
 
@@ -388,12 +386,7 @@ const combineDateTime = (date, time) => {
     onClick={sendToServer}
     className="w-full sm:w-auto border border-blue-500 text-blue-500 px-3 py-2 sm:px-4 sm:py-2 rounded-lg flex items-center justify-center sm:justify-start space-x-2 hover:bg-blue-50 transition text-sm sm:text-base"
   >
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="sm:w-6 sm:h-6">
-      <path d="M2 11.5C2 7.02166 2 4.78249 3.39124 3.39124C4.78249 2 7.02166 2 11.5 2C15.9783 2 18.2175 2 19.6088 3.39124C21 4.78249 21 7.02166 21 11.5C21 15.9783 21 18.2175 19.6088 19.6088C18.2175 21 15.9783 21 11.5 21C7.02166 21 4.78249 21 3.39124 19.6088C2 18.2175 2 15.9783 2 11.5Z" stroke="#437DE9" strokeWidth="1.5"/>
-      <path d="M8.5 11.5L14.5001 11.5" stroke="#437DE9" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-      <path d="M9.5 15H13.5" stroke="#437DE9" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-      <path d="M7.5 8H15.5" stroke="#437DE9" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-    </svg>
+    <CiViewList size={24} />
     <span>Сохранить шаблон</span>
   </button>
 </div>

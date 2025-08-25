@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { CgProfile } from "react-icons/cg";
 
 const HeaderLogin = () => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -37,6 +38,7 @@ const HeaderLogin = () => {
                 {/* Правая часть - авторизация и профиль */}
                 <div className="flex items-center space-x-2 sm:space-x-4">
                     <span className="hidden sm:inline text-sm sm:text-base">Авторизация</span>
+                    <CgProfile size={32} />
 
                     {/* Бургер-меню для мобильных */}
                     <button
@@ -56,34 +58,26 @@ const HeaderLogin = () => {
                 <div className="sm:hidden absolute top-[80px] left-0 right-0 bg-[#212121] shadow-lg z-50">
                     <div className="px-4 py-4 space-y-4">
                         <div className="flex flex-col space-y-2 pb-4 border-b border-gray-700">
-                            <a 
-                                href="#" 
+                            <a
+                                href="#"
                                 className="py-3 px-4 text-white text-base leading-normal hover:bg-gray-700 rounded transition-colors"
                                 onClick={closeMenu}
                             >
                                 Главная
                             </a>
-                            <a 
-                                href="#" 
+                            <a
+                                href="#"
                                 className="py-3 px-4 hover:bg-gray-700 rounded transition-colors"
                                 onClick={closeMenu}
                             >
                                 Голосования
                             </a>
                         </div>
-                        
+
                         <div className="flex items-center justify-between pt-2">
                             <span className="text-base">Авторизация</span>
                             <a href="#" className="flex items-center">
-                                <svg width="24" height="24" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-6 h-6">
-                                    <circle cx="15.0013" cy="14.9993" r="13.3333" stroke="white" strokeWidth="2" />
-                                    <path
-                                        d="M9 21.6673C12.1089 18.4111 17.8576 18.2578 21 21.6673M18.3268 11.6673C18.3268 13.5083 16.8323 15.0007 14.9887 15.0007C13.1451 15.0007 11.6506 13.5083 11.6506 11.6673C11.6506 9.82637 13.1451 8.33398 14.9887 8.33398C16.8323 8.33398 18.3268 9.82637 18.3268 11.6673Z"
-                                        stroke="white"
-                                        strokeWidth="2"
-                                        strokeLinecap="round"
-                                    />
-                                </svg>
+                                <CgProfile size={32} />
                             </a>
                         </div>
                     </div>

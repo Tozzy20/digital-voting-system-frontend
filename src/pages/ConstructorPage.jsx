@@ -4,6 +4,8 @@ import PageTitle from "../components/PageTitle";
 import Sidebar from '../components/constructor/Sidebar';
 import Constructor from '../components/constructor/CreateVoting';
 import Templates from "../components/constructor/Templates";
+import { CiSquarePlus, CiViewList } from "react-icons/ci";
+
 
 const ConstructorPage = () => {
   const [activeContent, setActiveContent] = useState("create-poll");
@@ -18,12 +20,12 @@ const ConstructorPage = () => {
     { 
       key: 'create-poll', 
       label: 'Добавить голосование', 
-      icon: '/src/assets/icons/plus.svg' 
+      icon: (isActive) => <CiSquarePlus size={24} strokeWidth={isActive ? 1 : 0.5} color={isActive ? '#4385E9' : "#6B7280"} />
     },
     { 
       key: 'poll-templates', 
       label: 'Шаблоны голосований', 
-      icon: '/src/assets/icons/template.svg' 
+      icon: (isActive) => <CiViewList size={24} strokeWidth={isActive ? 1 : 0.5} color={isActive ? '#4385E9' : "#6B7280"} />
     },
   ];
 

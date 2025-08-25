@@ -1,4 +1,7 @@
 import React from 'react';
+import { CiSearch } from "react-icons/ci";
+
+
 
 const SearchInput = ({value, onChange, onSearch}) => {
     const handleKeyDown = (e) => {
@@ -9,11 +12,7 @@ const SearchInput = ({value, onChange, onSearch}) => {
     
     return (
         <div className="px-3 py-2 sm:px-[20px] sm:py-[16px] rounded-lg border border-[#CCCCCC] flex items-center gap-2 w-full">
-            <img 
-                src="/src/assets/icons/searchBlack.svg" 
-                alt="Поиск" 
-                className="w-4 h-4 sm:w-5 sm:h-5"
-            />
+            <CiSearch size={32} />
             <input
                 type="text"
                 placeholder="Поиск по таблице"

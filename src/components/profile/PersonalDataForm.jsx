@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
 import { useAuth } from '/src/context/AuthProvider.jsx'
 import { getProfileData, updateProfileData } from '/src/services/api.js'
+import { TbCloudDownload } from "react-icons/tb";
+
 
 const PersonalData = () => {
     const { authToken } = useAuth();
@@ -171,7 +173,7 @@ const PersonalData = () => {
                         <span>Сохранение...</span>
                     ) : (
                         <>
-                            <img src="/src/assets/icons/cloud.svg" alt="" className="w-5 h-5 md:w-auto md:h-auto" />
+                            <TbCloudDownload size={24}/>
                             Сохранить изменения
                         </>
                     )}

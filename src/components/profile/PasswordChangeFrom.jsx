@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import { changePassword } from "../../services/api";
 import { useAuth } from '/src/context/AuthProvider.jsx'
+import { TbCloudDownload } from "react-icons/tb";
+
 
 const PasswordChangeForm = () => {  
     const { authToken } = useAuth();
@@ -133,7 +135,7 @@ const PasswordChangeForm = () => {
                         <span>Сохранение...</span>
                     ) : (
                         <>
-                            <img src="/src/assets/icons/cloud.svg" alt="" className="w-5 h-5 md:w-auto md:h-auto" />
+                            <TbCloudDownload size={24} />
                             Сохранить изменения
                         </>
                     )}
