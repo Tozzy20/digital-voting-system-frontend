@@ -25,6 +25,8 @@ const VotesPage = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [inputValue, setInputValue] = useState('');
 
+  const [activeTab, setActiveTab] = useState('active')
+
   const { authToken } = useAuth();
 
   const handleNextPage = () => {
@@ -48,16 +50,26 @@ const VotesPage = () => {
     setCurrentPage(1);
   };
 
+  // Функция для смены вкладки
+  const handleTabChange = (tab) => {
+    setActiveTab(tab);
+    setCurrentPage(1);
+  };
+
   useEffect(() => {
     const fetchVotings = async () => {
       try {
         if (!authToken) {
           throw new Error("Пользователь не авторизован.");
         }
-        
-        const responseData = await getVotings(authToken, currentPage, searchQuery);
+
+        const status = activeTab === 'archived' ? 'archived' : '';
+
+        // Запрос на получение всех голосований
+        const responseData = await getVotings(authToken, currentPage, searchQuery, status);
+        console.log("Response Data:", responseData);
         const { items, pagination } = responseData;
-        
+
         const formattedVotings = items.map((voting) => ({
           ...voting,
           registrationStart: {
@@ -80,7 +92,7 @@ const VotesPage = () => {
           groupName: voting.departments?.[0]?.name || "Общая группа",
           timezone: "(UTC+3) Россия - Москва",
         }));
- 
+
         setVotings(formattedVotings);
         setTotalPages(pagination.total_pages);
         setHasNext(pagination.has_next);
@@ -93,11 +105,11 @@ const VotesPage = () => {
       }
     };
     fetchVotings();
-  }, [authToken, currentPage, searchQuery]);
+  }, [authToken, currentPage, searchQuery, activeTab]);
 
   return (
     <div className="min-h-screen">
-      <div className="mx-4 mt-4 2xl:ml-[240px] mt-[60px] 2xl:mr-[240px] lg:ml-[40px] lg:mr-[40px]">
+      <div className="mx-4 2xl:ml-[240px] mt-[60px] 2xl:mr-[240px] lg:ml-[40px] lg:mr-[40px]">
         <Breadcrumbs title="Главная / Голосования" />
         <PageTitle title="Голосования" />
 
@@ -115,7 +127,7 @@ const VotesPage = () => {
         <div className="mt-4 flex flex-col gap-3">
           <div className="flex flex-col md:flex-row md:justify-between bg-white shadow-lg items-center p-4 md:p-6 rounded-xl md:rounded-[20px] gap-4 lg:flex-nowrap">
             <div className="flex gap-4 w-full justify-center md:w-auto md:justify-start">
-              <VotingControls />
+              <VotingControls activeTab={activeTab} onTabChange={handleTabChange} />
             </div>
             <div className="flex flex-col md:flex-row items-center gap-3 w-full md:w-auto">
               <PaginationControls
@@ -127,7 +139,7 @@ const VotesPage = () => {
                 onPrevPage={handlePrevPage}
               />
               <div className="w-full md:w-auto">
-                <SearchInput 
+                <SearchInput
                   value={inputValue}
                   onChange={handleInputChange}
                   onSearch={handleSearchChange}

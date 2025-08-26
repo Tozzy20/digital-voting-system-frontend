@@ -107,16 +107,22 @@ export const changePassword = async (authToken, passwords) => {
   return response.data;
 };
 
-export const getVotings = async (authToken, page = 1, find='') => {
+export const getVotings = async (authToken, page = 1, find='', status='') => {
+  const params = {
+    page: page,
+    find: find,
+  }
+
+  if (status != '') {
+    params.status = status
+  }
+
   const response = await api.get(`/votings/`, {
     headers: {
       Authorization: `Bearer ${authToken}`,
       "Content-Type": "application/json",
     },
-    params: {
-      page: page,
-      find: find,
-    },
+    params
   });
   return response.data;
 };

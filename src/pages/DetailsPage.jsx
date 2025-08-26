@@ -1,23 +1,23 @@
-import { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import {useState, useEffect} from 'react';
+import {useParams} from 'react-router-dom';
 import Breadcrumbs from '../components/Breadcrumbs.jsx';
 import PageTitle from '../components/PageTitle.jsx';
 import GeneralInfo from '../components/details/GeneralInfo.jsx';
 import VotingStatistic from '../components/details/Stats.jsx';
 import Voters from '../components/details/Voters.jsx';
-import { ResultsForAdmin, BeforeResults } from '../components/details/Results.jsx';
+import {ResultsForAdmin, BeforeResults} from '../components/details/Results.jsx';
 import Sidebar from '../components/constructor/Sidebar.jsx';
-import { getVotingData, getVotingParticipants, getVotingStats, registerUserForVoting } from '../services/api.js';
-import { useAuth } from '../context/AuthProvider.jsx'
-import { formatDate, formatTime, getVotingStatusConfigDetails } from '../components/votes/Formatters.jsx';
-import { ToastContainer, toast } from 'react-toastify';
+import {getVotingData, getVotingParticipants, getVotingStats, registerUserForVoting} from '../services/api.js';
+import {useAuth} from '../context/AuthProvider.jsx'
+import {formatDate, formatTime, getVotingStatusConfigDetails} from '../components/votes/Formatters.jsx';
+import {ToastContainer, toast} from 'react-toastify';
 import MyBulliten from '../components/details/MyBulliten.jsx';
-import { jwtDecode } from "jwt-decode";
-import { CiCircleInfo } from "react-icons/ci";
-import { IoMdStats } from "react-icons/io"; //stats
-import { GoPeople } from "react-icons/go"; //voters
-import { LuClipboardList } from "react-icons/lu"; // results
-import { TbChecklist } from "react-icons/tb"; // bulliten
+import {jwtDecode} from "jwt-decode";
+import {CiCircleInfo} from "react-icons/ci";
+import {IoMdStats} from "react-icons/io"; //stats
+import {GoPeople} from "react-icons/go"; //voters
+import {LuClipboardList} from "react-icons/lu"; // results
+import {TbChecklist} from "react-icons/tb"; // bulliten
 
 
 const prepareVotingDataForComponent = (rawData) => {
@@ -44,13 +44,13 @@ const prepareVotingDataForComponent = (rawData) => {
 };
 
 const Details = () => {
-    const { votingId } = useParams();
+    const {votingId} = useParams();
     const [votingData, setVotingData] = useState(null);
     const [loading, setLoading] = useState(true);
     // Инициализируем mobileMenuOpen, чтобы избежать ошибок
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
     const [activeContent, setActiveContent] = useState("general-info");
-    const { authToken } = useAuth();
+    const {authToken} = useAuth();
     const [votingStats, setVotingStats] = useState(null);
     const [voters, setVoters] = useState([]);
     const [isRegistered, setIsRegistered] = useState(false);
@@ -76,8 +76,7 @@ const Details = () => {
             setIsRegistered(true);
             setActiveContent('my-bulletin');
             toast.success('Пользователь успешно зарегистрирован!');
-        }
-        catch (error) {
+        } catch (error) {
             if (error.response) {
                 switch (error.response.status) {
                     case 400:
@@ -133,8 +132,7 @@ const Details = () => {
                 console.error("Ошибка при получении данных:", e);
                 // Можно добавить тост, чтобы показать ошибку пользователю
                 toast.error('Не удалось загрузить данные о голосовании.');
-            }
-            finally {
+            } finally {
                 setLoading(false);
             }
         };
@@ -167,7 +165,7 @@ const Details = () => {
             },
         ];
 
-        
+
         if (role_id === 3 || votingData.voting_full_info.creator.id === userId) {
             baseItems.push(
                 {
@@ -191,7 +189,7 @@ const Details = () => {
             );
         }
 
-        
+
         if (isRegistered || role_id === 3) {
             baseItems.push({
                 key: 'my-bulletin',
@@ -204,7 +202,7 @@ const Details = () => {
             });
         }
 
-        
+
         if (isRegistered || votingData.voting_full_info.creator.id === userId || role_id === 3) {
             baseItems.push({
                 key: 'results',
@@ -226,18 +224,20 @@ const Details = () => {
         switch (activeContent) {
             case "general-info":
                 return <GeneralInfo votingData={votingData}
-                    isRegistered={isRegistered}
-                    onRegister={handleRegistration}
-                    onNavigateToMyBulliten={handleNavigateToMyBulliten}
-                    onNavigateToResults={handleNavigateToResults} />;
+                                    isRegistered={isRegistered}
+                                    onRegister={handleRegistration}
+                                    onNavigateToMyBulliten={handleNavigateToMyBulliten}
+                                    onNavigateToResults={handleNavigateToResults}/>;
             case "stats":
-                return <VotingStatistic votingData={votingData} votingStats={votingStats} quorum={votingData.voting_full_info.quorum} />;
+                return <VotingStatistic votingData={votingData} votingStats={votingStats}
+                                        quorum={votingData.voting_full_info.quorum}/>;
             case "voters":
-                return <Voters voters={voters} />;
+                return <Voters voters={voters}/>;
             case "results":
-                return status.text === 'Голосование завершено' ? <ResultsForAdmin votingId={votingId} /> : <BeforeResults />;
+                return status.text === 'Голосование завершено' ? <ResultsForAdmin votingId={votingId}/> :
+                    <BeforeResults/>;
             case "my-bulletin":
-                return <MyBulliten votingData={votingData} authToken={authToken} votingId={votingId} />;
+                return <MyBulliten votingData={votingData} authToken={authToken} votingId={votingId}/>;
             default:
                 return null;
         }
@@ -245,11 +245,11 @@ const Details = () => {
 
     return (
         <div className="min-h-screen">
-            <ToastContainer />
+            <ToastContainer/>
             <div className="2xl:mx-[240px] mt-[60px]">
-                <Breadcrumbs title='Администратор / Детали голосования / Общая информация' />
+                <Breadcrumbs title='Администратор / Детали голосования / Общая информация'/>
                 <div className="flex items-center justify-between">
-                    <PageTitle title="Детали голосования" />
+                    <PageTitle title="Детали голосования"/>
                     {/* Кнопка меню только на экранах меньше 2xl */}
                     <button
                         onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
@@ -258,9 +258,11 @@ const Details = () => {
                         <span>Меню</span>
                         <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             {mobileMenuOpen ? (
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
+                                      d="M6 18L18 6M6 6l12 12"/>
                             ) : (
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
+                                      d="M4 6h16M4 12h16M4 18h16"/>
                             )}
                         </svg>
                     </button>

@@ -175,7 +175,7 @@ const CreateVoting = () => {
         setPage(nextPage);
         fetchDepartments(nextPage);
       }
-    };  
+    };
 
   // Функция для объединения даты и времени в ISO-формат
 const combineDateTime = (date, time) => {
