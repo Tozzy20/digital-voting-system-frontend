@@ -113,7 +113,7 @@ export const getVotings = async (authToken, page = 1, find='', status='') => {
     find: find,
   }
 
-  if (status != '') {
+  if (status !== '') {
     params.status = status
   }
 
@@ -237,5 +237,35 @@ export const unArchive = async (votingId, authToken) => {
             Authorization: `Bearer ${authToken}`,
         },
     });
+    return response.data;
+}
+
+export const requestVerificationCode = async (email, authToken) => {
+    const data = {
+        email: email
+    };
+
+    const response = await api.post('/auth/request-verification-code', data, {
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${authToken}`,
+        }
+    })
+    return response.data;
+}
+
+export const confirmEmail = async (email, code, authToken) => {
+    const data = {
+        code: code,
+        email: email
+
+    };
+
+    const response = await api.post('/auth/confirm-email', data, {
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${authToken}`,
+        }
+    })
     return response.data;
 }

@@ -4,39 +4,12 @@ import { getProfileData, updateProfileData } from '/src/services/api.js'
 import { TbCloudDownload } from "react-icons/tb";
 
 
-const PersonalData = () => {
+const PersonalData = ({formData, setFormData}) => {
     const { authToken } = useAuth();
-  
-    const [formData, setFormData] = useState({
-        last_name: '',
-        first_name: '',
-        surname: '',
-        email: ''
-    });
 
-    const [loading, setLoading] = useState(true);
     const [isSaving, setIsSaving] = useState(false);
 
-    // GET-запрос
-    useEffect(() => {
-        
-        if (!authToken) { 
-            return;
-        }
 
-         const fetchUserProfile = async () => {
-            setLoading(true);
-            try {
-                const data = await getProfileData(authToken);
-                setFormData(data);
-            } catch (error) {
-                console.error('Ошибка при получении данных профиля:', error);
-            } finally {
-                setLoading(false);
-            }
-        };
-        fetchUserProfile();
-    }, [authToken]);
 
     // Обработчик изменений в полях формы
     const handleChange = (e) => {
@@ -76,9 +49,6 @@ const PersonalData = () => {
         }
     };
 
-    if (loading) {
-        return <div className="text-center mt-8 md:mt-10 text-base md:text-lg">Загрузка персональных данных...</div>;
-    }
 
     return (
         <form 
