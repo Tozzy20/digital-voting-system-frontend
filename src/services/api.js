@@ -219,3 +219,23 @@ export const getDepartments = async (pageNum = 1, authToken) => {
   });
   return response.data;
 }
+
+export const sendToArchive = async (votingId, authToken) => {
+    const response = await api.put(`/votings/${votingId}/archive`, null, {
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${authToken}`,
+        },
+    });
+    return response.data;
+}
+
+export const unArchive = async (votingId, authToken) => {
+    const response = await api.put(`/votings/${votingId}/unarchive`, null, {
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${authToken}`,
+        },
+    });
+    return response.data;
+}

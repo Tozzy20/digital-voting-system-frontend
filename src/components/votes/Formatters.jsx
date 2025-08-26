@@ -132,7 +132,7 @@ export const getVotingStatusConfigDetails = (voting) => {
       text: 'Голосование активно',
       bg: 'bg-[#E6FFDD]',
       textColor: 'text-[#135615]',
-      icon: <LiaFireAltSolid color="#135617" />,
+      icon: <LiaFireAltSolid size={24} color="#135617" />,
     };
   }
 
@@ -141,7 +141,7 @@ export const getVotingStatusConfigDetails = (voting) => {
       text: 'Голосование на этапе регистрации',
       bg: 'bg-[#FFFBD0]',
       textColor: 'text-[#564E13]',
-      icon: <BsPersonBoundingBox color="#564E13"/>,
+      icon: <BsPersonBoundingBox size={24} color="#564E13"/>,
     };
   }
   
@@ -150,7 +150,7 @@ export const getVotingStatusConfigDetails = (voting) => {
       text: 'Голосование завершено',
       bg: 'bg-neutral-100',
       textColor: 'text-neutral-800',
-      icon: <PiBooksLight/>,
+      icon: <PiBooksLight size={24} />,
     };
   }
   
@@ -159,7 +159,7 @@ export const getVotingStatusConfigDetails = (voting) => {
     text: 'Ожидает начала',
     bg: 'bg-neutral-100',
     textColor: 'text-neutral-600',
-    icon: <PiBooksLight/>,
+    icon: <PiBooksLight size={24} />,
   };
 };
 
