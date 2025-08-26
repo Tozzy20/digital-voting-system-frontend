@@ -200,3 +200,16 @@ export const deleteVote = async (votingId, authToken) => {
   });
   return response.data;
 }
+
+export const getDepartments = async (pageNum = 1, authToken) => {
+  const response = await api.get(`/departments/`, {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${authToken}`,
+    },
+    params:{
+      page: pageNum,
+    }
+  });
+  return response.data;
+}

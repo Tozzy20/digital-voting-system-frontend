@@ -5,10 +5,11 @@ import DateTimePicker from '/src/components/constructor/CreateVoting/DateTimePic
 import QuestionForm from '/src/components/constructor/CreateVoting/QuestionForm';
 import AddQuestionButton from '/src/components/constructor/CreateVoting/AddQuestionButton';
 import { useAuth } from '../../context/AuthProvider';
-import { createVoting } from '../../services/api'
+import { createVoting, getDepartments } from '../../services/api'
 import { toast, ToastContainer } from 'react-toastify';
 import { CiViewList } from "react-icons/ci";
 import { MdOutlineRocketLaunch } from "react-icons/md";
+import { da } from 'date-fns/locale';
 
 
 
@@ -119,27 +120,11 @@ const CreateVoting = () => {
   
     // --- ФУНКЦИЯ ДЛЯ ЗАГРУЗКИ ДЕПАРТАМЕНТОВ ---
     const fetchDepartments = async (pageNum = 1, reset = false) => {
-      if (isLoadingDepartments && !reset) return; // Не загружать, если уже идет загрузка
+      if (isLoadingDepartments && !reset) return; 
   
       setIsLoadingDepartments(true);
       try {
-        const response = await fetch(`http://192.168.31.241:8000/api/departments/?page=${pageNum}`, {
-          method: 'GET',
-          headers: {
-            'Authorization': `Bearer ${authToken}`,
-            'Content-Type': 'application/json',
-          },
-        });
-  
-        if (!response.ok) {
-           if (response.status === 401) {
-             throw new Error('Ошибка авторизации при загрузке департаментов');
-           } else {
-             throw new Error(`Ошибка загрузки департаментов: ${response.status}`);
-           }
-        }
-  
-        const data = await response.json();
+        const data = await getDepartments(pageNum, authToken);
         
         const newHasMore = data.pagination.has_next !== null; 
         setHasMoreDepartments(newHasMore);
@@ -152,13 +137,23 @@ const CreateVoting = () => {
             uniqueDeptsMap.set(dept.id, dept);
           }
         });
-        
-        // Преобразуем Map обратно в массив.
-        setDepartments(Array.from(uniqueDeptsMap.values()));
 
+        setDepartments(Array.from(uniqueDeptsMap.values()));
       } catch (error) {
         console.error('Ошибка при загрузке департаментов:', error);
-        //alert(`Не удалось загрузить департаменты: ${error.message}`);
+        
+        if (error.response) {
+          const status = error.response.status;
+            if (error.response.status === 401) {
+                toast.error('Ошибка авторизации при загрузке департаментов.');
+            } else {
+                toast.error(`Ошибка загрузки департаментов: ${status}`);
+            }
+        } else if (error.request) {
+            toast.error('Сетевая ошибка: нет ответа от сервера.');    
+        } else {
+            toast.error('Произошла непредвиденная ошибка при запросе.');
+        }
       } finally {
         setIsLoadingDepartments(false);
       }

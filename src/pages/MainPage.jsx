@@ -28,6 +28,8 @@ const MainPage = () => {
     "44%",
   ];
 
+  
+
   const colors = ["#BD3636", "#FFE3E3", "#E87C7C", "#F2A4A4"];
   const {user} = useAuth();
 
