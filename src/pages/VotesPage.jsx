@@ -12,6 +12,7 @@ import { getVotings } from '../services/api';
 import { useAuth } from '../context/AuthProvider';
 import { formatDate, formatTime, getVotingStatusConfig } from '../components/votes/Formatters';
 import { TbFilterEdit, TbSortDescending } from "react-icons/tb";
+import {ToastContainer} from "react-toastify";
 
 
 const VotesPage = () => {
@@ -59,14 +60,10 @@ const VotesPage = () => {
   useEffect(() => {
     const fetchVotings = async () => {
       try {
-        if (!authToken) {
-          throw new Error("Пользователь не авторизован.");
-        }
-
         const status = activeTab === 'archived' ? 'archived' : '';
 
         // Запрос на получение всех голосований
-        const responseData = await getVotings(authToken, currentPage, searchQuery, status);
+        const responseData = await getVotings(currentPage, searchQuery, status);
         console.log("Response Data:", responseData);
         const { items, pagination } = responseData;
 
@@ -108,6 +105,8 @@ const VotesPage = () => {
   }, [authToken, currentPage, searchQuery, activeTab]);
 
   return (
+      <>
+          <ToastContainer />
     <div className="min-h-screen">
       <div className="mx-4 2xl:ml-[240px] mt-[60px] 2xl:mr-[240px] lg:ml-[40px] lg:mr-[40px]">
         <Breadcrumbs title="Главная / Голосования" />
@@ -159,6 +158,7 @@ const VotesPage = () => {
         </div>
       </div>
     </div>
+      </>
   );
 };
 

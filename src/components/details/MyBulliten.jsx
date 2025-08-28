@@ -48,7 +48,7 @@ const MyBulliten = ({ votingData, authToken, votingId }) => {
 
     // POST запрос для отправки ответов
     try {
-      const response = await sendVote(votingId, authToken, payload)
+      const response = await sendVote(votingId, payload)
       toast.success(response.data.message)
     }
     catch (error) {

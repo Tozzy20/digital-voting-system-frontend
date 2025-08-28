@@ -120,12 +120,12 @@ const VotingCard = ({ voting }) => {
                     <Link to={`/votes/${voting.id}`} className=' bg-[#f4f4f4] hover:bg-[#ccc] transition-all rounded-lg p-2 cursor-pointer'>
                         <IoMdStats />
                     </Link>
-
-                    {(user.userId === voting.creator.id || user.roleId === 3) &&
+                    {/*user.userId === voting.creator.id*/}
+                    {/*{user.roleId === 3 &&*/}
                         <div className=' bg-[#f4f4f4] hover:bg-[#EE5B5B] hover:text-[#FFE3E3] transition-all rounded-lg p-2 cursor-pointer' onClick={handleOpenModal} >
                             <LuTrash2 />
                         </div>
-                    }
+
                 </div>
                 <ConfirmationModal
                     open={isModalOpen}

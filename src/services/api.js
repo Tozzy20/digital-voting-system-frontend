@@ -1,17 +1,116 @@
 import axios from "axios";
-import { toast } from 'react-toastify';
+import {toast} from 'react-toastify';
 
 const API_URL = import.meta.env.VITE_API_URL;
 
 // Экземпляр Axios с базовым URL
 const api = axios.create({
   baseURL: API_URL,
+    withCredentials: true,
 });
-// Перехватчик ответа
+
+let isRefreshing = false;
+let failedQueue = [];
+
+// Функция для обработки очереди ожидающих запросов
+const processQueue = (error, token = null) => {
+    failedQueue.forEach(prom => {
+        if (error) {
+            prom.reject(error);
+        } else {
+            prom.resolve(token);
+        }
+    });
+    failedQueue = [];
+};
+
+// Перехватчик запросов
+api.interceptors.request.use(config => {
+    // const csrfToken1 = getCookie('csrf_refresh_token');
+    const csrfRefreshToken = localStorage.getItem('x-csrf-refresh-token');
+    const csrfAccessToken = localStorage.getItem('x-csrf-access-token');
+    const isSafeMethod = ['get', 'head', 'options'].includes(config.method);
+
+
+
+    if (!isSafeMethod && csrfAccessToken) {
+        config.headers['X-CSRF-TOKEN'] = csrfAccessToken;
+    }
+
+    if (config.url === '/auth/refresh' && csrfRefreshToken) {
+        config.headers['X-CSRF-REFRESH-TOKEN'] = csrfRefreshToken;
+    }
+    return config;
+}, error => {
+    return Promise.reject(error);
+});
+
+// Перехватчик ответов
 api.interceptors.response.use(
-  // Если ответ успешен, просто возвращаем его
-  (response) => response,
-  (error) => {
+    (response) => response,
+    async (error) => {
+        const originalRequest = error.config;
+
+        if (error.response?.status === 401 &&
+            !originalRequest._isRetry &&
+            originalRequest.url !== '/auth/refresh'
+        ) {
+
+            // Если процесс обновления уже идет, добавляем запрос в очередь
+            if (isRefreshing) {
+                return new Promise((resolve, reject) => {
+                    failedQueue.push({ resolve, reject });
+                }).then(() => {
+                    return api(originalRequest);
+                }).catch(err => Promise.reject(err));
+            }
+
+            originalRequest._isRetry = true;
+            isRefreshing = true;
+
+            try {
+
+                // Запрос на refresh
+                const refreshResponse = await api.post('/auth/refresh', {}, {
+
+                });
+
+                let newCsrfRefreshToken;
+                newCsrfRefreshToken = refreshResponse.headers['x-csrf-refresh-token'];
+
+                let newCsrfAccessToken;
+                newCsrfAccessToken = refreshResponse.headers['x-csrf-access-token'];
+
+                // Или в теле ответа, если сервер так настроен
+                // const newCsrfToken = refreshResponse.data.csrf_token;
+
+                if (newCsrfRefreshToken && newCsrfAccessToken) {
+                    // Перезаписываем токен в localStorage новым значением
+                    localStorage.setItem('x-csrf-refresh-token', newCsrfRefreshToken);
+                    localStorage.setItem('x-csrf-refresh-token', newCsrfAccessToken);
+                }
+
+                // Обрабатываем все запросы в очереди с новым токеном
+                processQueue(null);
+
+                // Повторно отправляем оригинальный запрос
+                return api(originalRequest);
+
+            } catch (refreshError) {
+                processQueue(refreshError, null);
+                toast.warn('Требуется авторизация');
+                console.log('Требуется авторизация');
+
+                localStorage.removeItem('x-csrf-refresh-token');
+                window.location.replace('/');
+                return Promise.reject(refreshError);
+            } finally {
+                isRefreshing = false; // Сбрасываем флаг
+
+            }
+        }
+
+        // Обработка ошибок
     if (error.response) {
       const { status, data } = error.response;
 
@@ -21,9 +120,6 @@ api.interceptors.response.use(
             toast.error(`Введены неверные данные`)
           }
           else toast.error(`Ошибка 400: ${data.error}`);
-          break;
-        case 401:
-          toast.error(data.error)
           break;
         case 403:
           toast.error(`Ошибка 403: ${data.error}`);
@@ -63,43 +159,41 @@ export const register = async (formData) => {
 };
 
 export const loginUser = async (email, password, role_id, remember_flag) => {
-  const response = await api.post(`/auth/login`, {
-    email,
-    password,
-    role_id,
-    remember_flag,
+    return await api.post(`/auth/login`, {
+      email,
+      password,
+      role_id,
+      remember_flag,
   });
-  return response.data;
 };
 
-export const getProfileData = async (authToken) => {
+export const getProfileData = async () => {
   const response = await api.get(`/users/profile`, {
     headers: {
-      Authorization: `Bearer ${authToken}`,
+
       "Content-Type": "application/json",
     },
+
   });
 
   return response.data;
 };
 
-export const updateProfileData = async (authToken, profileData) => {
+export const updateProfileData = async (profileData) => {
   const response = await api.put(`/users/profile`, profileData, {
     headers: {
-      Authorization: `Bearer ${authToken}`,
       "Content-Type": "application/json",
     },
   });
   return response.data;
 };
 
-export const changePassword = async (authToken, passwords) => {
+export const changePassword = async (passwords) => {
   const response = await api.put(
     `/users/change-password/`,
     passwords,
     {
       headers: {
-        Authorization: `Bearer ${authToken}`,
         "Content-Type": "application/json",
       },
     }
@@ -107,7 +201,7 @@ export const changePassword = async (authToken, passwords) => {
   return response.data;
 };
 
-export const getVotings = async (authToken, page = 1, find='', status='') => {
+export const getVotings = async (page = 1, find='', status='') => {
   const params = {
     page: page,
     find: find,
@@ -119,7 +213,6 @@ export const getVotings = async (authToken, page = 1, find='', status='') => {
 
   const response = await api.get(`/votings/`, {
     headers: {
-      Authorization: `Bearer ${authToken}`,
       "Content-Type": "application/json",
     },
     params
@@ -127,91 +220,82 @@ export const getVotings = async (authToken, page = 1, find='', status='') => {
   return response.data;
 };
 
-export const createVoting = async (votingData, authToken) => {
+export const createVoting = async (votingData) => {
   const response = await api.post(`/votings/`, votingData, {
     headers: {
       "Content-Type": "application/json",
-      Authorization: `Bearer ${authToken}`,
     },
   });
   return response.data;
 };
 
-export const getVotingData = async (votingId, authToken) => {
+export const getVotingData = async (votingId) => {
   const response = await api.get(`/votings/${votingId}`, {
     headers: {
       "Content-Type": "application/json",
-      Authorization: `Bearer ${authToken}`,
     },
   });
   return response.data;
 }
 
-export const getVotingStats = async (votingId, authToken) => {
+export const getVotingStats = async (votingId) => {
   const response = await api.get(`/votings/${votingId}/statistics`, {
     headers: {
       "Content-Type": "application/json",
-      Authorization: `Bearer ${authToken}`,
     },
   });
   return response.data;
 }
 
-export const getVotingParticipants = async (votingId, authToken) => {
+export const getVotingParticipants = async (votingId) => {
   const response = await api.get(`/votings/${votingId}/participants`, {
     headers: {
       "Content-Type": "application/json",
-      Authorization: `Bearer ${authToken}`,
     },
   });
   return response.data;
 }
 
-export const getVotingResults = async (votingId, authToken) => {
+export const getVotingResults = async (votingId) => {
   const response = await api.get(`/votings/${votingId}/results`, {
     headers: {
       "Content-Type": "application/json",
-      Authorization: `Bearer ${authToken}`,
     },
   });
   return response.data;
 }
 
-export const registerUserForVoting = async (votingId, authToken) => {
+export const registerUserForVoting = async (votingId) => {
   const response = await api.post(`/votings/${votingId}/register`, {}, {
     headers: {
       "Content-Type": "application/json",
-      Authorization: `Bearer ${authToken}`,
     },
   });
   return response.data;
 }
 
-export const sendVote = async (votingId, authToken, answer) => {
+export const sendVote = async (votingId, answer) => {
   const response = await api.post(`/votings/${votingId}/vote`, answer, {
     headers: {
       "Content-Type": "application/json",
-      Authorization: `Bearer ${authToken}`,
     },
   });
   return response.data;
 }
 
-export const deleteVote = async (votingId, authToken) => {
+export const deleteVote = async (votingId) => {
   const response = await api.delete(`/votings/${votingId}`, {
     headers: {
       "Content-Type": "application/json",
-      Authorization: `Bearer ${authToken}`,
     },
   });
   return response.data;
 }
 
-export const getDepartments = async (pageNum = 1, authToken) => {
+export const getDepartments = async (pageNum = 1) => {
   const response = await api.get(`/departments/`, {
     headers: {
       "Content-Type": "application/json",
-      Authorization: `Bearer ${authToken}`,
     },
     params:{
       page: pageNum,
@@ -220,27 +304,25 @@ export const getDepartments = async (pageNum = 1, authToken) => {
   return response.data;
 }
 
-export const sendToArchive = async (votingId, authToken) => {
+export const sendToArchive = async (votingId) => {
     const response = await api.put(`/votings/${votingId}/archive`, null, {
         headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${authToken}`,
         },
     });
     return response.data;
 }
 
-export const unArchive = async (votingId, authToken) => {
+export const unArchive = async (votingId) => {
     const response = await api.put(`/votings/${votingId}/unarchive`, null, {
         headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${authToken}`,
         },
     });
     return response.data;
 }
 
-export const requestVerificationCode = async (email, authToken) => {
+export const requestVerificationCode = async (email) => {
     const data = {
         email: email
     };
@@ -248,13 +330,12 @@ export const requestVerificationCode = async (email, authToken) => {
     const response = await api.post('/auth/request-verification-code', data, {
         headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${authToken}`,
         }
     })
     return response.data;
 }
 
-export const confirmEmail = async (email, code, authToken) => {
+export const confirmEmail = async (email, code) => {
     const data = {
         code: code,
         email: email
@@ -264,7 +345,6 @@ export const confirmEmail = async (email, code, authToken) => {
     const response = await api.post('/auth/confirm-email', data, {
         headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${authToken}`,
         }
     })
     return response.data;

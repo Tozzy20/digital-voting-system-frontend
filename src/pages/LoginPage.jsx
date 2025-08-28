@@ -52,20 +52,20 @@ const LoginPage = () => {
         try {
             const response = await loginUser(formData.email, formData.password, formData.role_id, formData.remember_flag);
             // console.log("Ответ API для входа в систему:", response);
+            console.log(response.headers);
             //setMessage(`Ответ API для входа в систему: ${JSON.stringify(response)}`);
+            const csrfRefreshToken = response.headers['x-csrf-refresh-token'];
+            const csrfAccessToken = response.headers['x-csrf-access-token'];
+            console.log(csrfRefreshToken);
+            localStorage.setItem('x-csrf-refresh-token', csrfRefreshToken);
+            localStorage.setItem('x-csrf-access-token', csrfAccessToken);
+            toast.success('Авторизация прошла успешно')
 
-            const { access_token } = response;
-
-            if (access_token) {
-                login(access_token);
-                toast.success('Авторизация прошла успешно!');
 
                 setTimeout(() => {
                     navigate('/constructor');
                 }, 1000);
-            } else {
-                toast.warn('Вход в систему прошел успешно, но токен не получен:');
-            }
+
 
         } catch (error) {
             console.log('Полный error:', error);

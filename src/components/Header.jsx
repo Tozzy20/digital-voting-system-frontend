@@ -30,7 +30,7 @@ const Header = ({isAuthorized = true}) => {
     useEffect(() => {
     const fetchAndSetUserData = async () => {
         try {
-          const fullProfileData = await getProfileData(authToken);
+          const fullProfileData = await getProfileData();
           setUser({
             last_name: fullProfileData.last_name,
             first_name: fullProfileData.first_name,

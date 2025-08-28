@@ -72,7 +72,7 @@ const Details = () => {
 
     const handleRegistration = async () => {
         try {
-            await registerUserForVoting(votingId, authToken);
+            await registerUserForVoting(votingId);
             setIsRegistered(true);
             setActiveContent('my-bulletin');
             toast.success('Пользователь успешно зарегистрирован!');
@@ -110,16 +110,16 @@ const Details = () => {
             setLoading(true);
             try {
                 // Первый запрос на основные данные
-                const rawData = await getVotingData(votingId, authToken);
+                const rawData = await getVotingData(votingId);
 
                 // Преобразуем данные в нужный формат и сохраняем в состояние
                 const formattedData = prepareVotingDataForComponent(rawData);
 
                 // Запрос на статистику
-                const statsData = await getVotingStats(votingId, authToken);
+                const statsData = await getVotingStats(votingId);
 
                 // Запрос на голосующих
-                const votersData = await getVotingParticipants(votingId, authToken);
+                const votersData = await getVotingParticipants(votingId);
 
                 const isUserRegistered = votersData.participants.some(voter => voter.id === userId);
                 setIsRegistered(isUserRegistered);
@@ -140,7 +140,7 @@ const Details = () => {
         if (votingId) {
             fetchData();
         }
-    }, [votingId, authToken, userId, role_id]); // Зависимости: запрос повторится при смене ID, токена, или данных пользователя.
+    }, [votingId, userId, role_id]); // Зависимости: запрос повторится при смене ID, токена, или данных пользователя.
 
     if (loading) {
         return <div className="text-center py-10">Загрузка...</div>;
