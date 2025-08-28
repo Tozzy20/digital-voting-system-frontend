@@ -4,7 +4,6 @@ import InputField from '/src/components/constructor/CreateVoting/InputField';
 import DateTimePicker from '/src/components/constructor/CreateVoting/DateTimePicker';
 import QuestionForm from '/src/components/constructor/CreateVoting/QuestionForm';
 import AddQuestionButton from '/src/components/constructor/CreateVoting/AddQuestionButton';
-import { useAuth } from '../../context/AuthProvider';
 import { createVoting, getDepartments } from '../../services/api'
 import { toast, ToastContainer } from 'react-toastify';
 import { CiViewList } from "react-icons/ci";
@@ -22,7 +21,6 @@ const CreateVoting = () => {
   const [votingStart, setVotingStart] = useState({ date: '2025-07-06', time: '10:00' });
   const [votingEnd, setVotingEnd] = useState({ date: '2025-07-06', time: '10:00' });
 
-  const { authToken } = useAuth();
 
   const [questions, setQuestions] = useState([
     {
@@ -124,7 +122,7 @@ const CreateVoting = () => {
   
       setIsLoadingDepartments(true);
       try {
-        const data = await getDepartments(pageNum, authToken);
+        const data = await getDepartments(pageNum);
         
         const newHasMore = data.pagination.has_next !== null; 
         setHasMoreDepartments(newHasMore);
@@ -210,7 +208,7 @@ const combineDateTime = (date, time) => {
     };
   
     try {
-      const result = await createVoting(data, authToken);
+      const result = await createVoting(data);
       toast.success("Успех");
       //alert('Голосование успешно отправлено на сервер!');
     } catch (error) {
@@ -222,7 +220,7 @@ const combineDateTime = (date, time) => {
   // --- JSX ---
   return (
     <>
-    <ToastContainer />
+
     <div className="bg-white p-6 rounded-[20px] shadow-lg ">
       <StepHeader stepNumber={1} title="Настройки" />
 

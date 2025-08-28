@@ -7,23 +7,26 @@ import VotingStatistic from '../components/details/Stats.jsx';
 import Voters from '../components/details/Voters.jsx';
 import {ResultsForAdmin, BeforeResults} from '../components/details/Results.jsx';
 import Sidebar from '../components/constructor/Sidebar.jsx';
-import {getVotingData, getVotingParticipants, getVotingStats, registerUserForVoting} from '../services/api.js';
-import {useAuth} from '../context/AuthProvider.jsx'
+import {
+    getVotingData,
+    getVotingParticipants,
+    getVotingStats,
+    registerUserForVoting,
+    userInfo
+} from '../services/api.js';
 import {formatDate, formatTime, getVotingStatusConfigDetails} from '../components/votes/Formatters.jsx';
 import {ToastContainer, toast} from 'react-toastify';
 import MyBulliten from '../components/details/MyBulliten.jsx';
-import {jwtDecode} from "jwt-decode";
 import {CiCircleInfo} from "react-icons/ci";
 import {IoMdStats} from "react-icons/io"; //stats
-import {GoPeople} from "react-icons/go"; //voters
-import {LuClipboardList} from "react-icons/lu"; // results
-import {TbChecklist} from "react-icons/tb"; // bulliten
+import {GoPeople} from "react-icons/go"; // icon-voters
+import {LuClipboardList} from "react-icons/lu"; // icon-results
+import {TbChecklist} from "react-icons/tb"; // icon-bulliten
 
 
 const prepareVotingDataForComponent = (rawData) => {
     if (!rawData) return null;
 
-    // Предполагаем, что rawData содержит поля `registration_start_date` и `voting_end_date`
     return {
         // Копируем все исходные поля
         ...rawData,
@@ -50,15 +53,23 @@ const Details = () => {
     // Инициализируем mobileMenuOpen, чтобы избежать ошибок
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
     const [activeContent, setActiveContent] = useState("general-info");
-    const {authToken} = useAuth();
     const [votingStats, setVotingStats] = useState(null);
     const [voters, setVoters] = useState([]);
     const [isRegistered, setIsRegistered] = useState(false);
-    const [userRole, setUserRole] = useState(null);
 
-    const decodedToken = authToken ? jwtDecode(authToken) : null;
-    const userId = decodedToken ? decodedToken.sub : null;
-    const role_id = decodedToken ? decodedToken.role_id : null;
+    // для role_id и user_id
+    const [user_id, setUserId] = useState(null);
+    const [role_id, setRoleId] = useState(null);
+
+    // запрос на получение role_id и user_id
+    useEffect(() => {
+        const fetchUser = async () => {
+            const user = await userInfo();
+            setUserId(user.user_id);
+            setRoleId(user.role_id);
+        };
+        fetchUser();
+    }, []);
 
 
     // Функция, которая будет вызываться при клике на пункт сайдбара
@@ -121,10 +132,10 @@ const Details = () => {
                 // Запрос на голосующих
                 const votersData = await getVotingParticipants(votingId);
 
-                const isUserRegistered = votersData.participants.some(voter => voter.id === userId);
+                const isUserRegistered = votersData.participants.some(voter => voter.id === user_id);
                 setIsRegistered(isUserRegistered);
 
-                setUserRole(role_id)
+
                 setVotingData(formattedData);
                 setVotingStats(statsData);
                 setVoters(votersData);
@@ -140,7 +151,7 @@ const Details = () => {
         if (votingId) {
             fetchData();
         }
-    }, [votingId, userId, role_id]); // Зависимости: запрос повторится при смене ID, токена, или данных пользователя.
+    }, [votingId, user_id, role_id]); // Зависимости: запрос повторится при смене ID, токена, или данных пользователя.
 
     if (loading) {
         return <div className="text-center py-10">Загрузка...</div>;
@@ -166,7 +177,7 @@ const Details = () => {
         ];
 
 
-        if (role_id === 3 || votingData.voting_full_info.creator.id === userId) {
+        if (role_id === 3 || votingData.voting_full_info.creator.id === user_id) {
             baseItems.push(
                 {
                     key: 'stats',
@@ -203,7 +214,7 @@ const Details = () => {
         }
 
 
-        if (isRegistered || votingData.voting_full_info.creator.id === userId || role_id === 3) {
+        if (isRegistered || votingData.voting_full_info.creator.id === user_id || role_id === 3) {
             baseItems.push({
                 key: 'results',
                 label: 'Результаты',
@@ -227,7 +238,9 @@ const Details = () => {
                                     isRegistered={isRegistered}
                                     onRegister={handleRegistration}
                                     onNavigateToMyBulliten={handleNavigateToMyBulliten}
-                                    onNavigateToResults={handleNavigateToResults}/>;
+                                    onNavigateToResults={handleNavigateToResults}
+                                    user_id = {user_id}
+                                    role_id = {role_id}/>;
             case "stats":
                 return <VotingStatistic votingData={votingData} votingStats={votingStats}
                                         quorum={votingData.voting_full_info.quorum}/>;
@@ -237,7 +250,7 @@ const Details = () => {
                 return status.text === 'Голосование завершено' ? <ResultsForAdmin votingId={votingId}/> :
                     <BeforeResults/>;
             case "my-bulletin":
-                return <MyBulliten votingData={votingData} authToken={authToken} votingId={votingId}/>;
+                return <MyBulliten votingData={votingData} votingId={votingId}/>;
             default:
                 return null;
         }

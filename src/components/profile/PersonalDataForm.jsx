@@ -1,11 +1,9 @@
 import { useState, useEffect } from "react";
-import { useAuth } from '/src/context/AuthProvider.jsx'
 import { getProfileData, updateProfileData } from '/src/services/api.js'
 import { TbCloudDownload } from "react-icons/tb";
 
 
 const PersonalData = ({formData, setFormData}) => {
-    const { authToken } = useAuth();
 
     const [isSaving, setIsSaving] = useState(false);
 
@@ -23,12 +21,6 @@ const PersonalData = ({formData, setFormData}) => {
     // PUT-запрос
     const handleSubmit = async (e) => {
         e.preventDefault();
-        
-        if (!authToken) {
-            console.error('Ошибка: Токен авторизации не найден.');
-            return;
-        }
-
         setIsSaving(true);
         try {
             const updatableData = {
@@ -38,7 +30,7 @@ const PersonalData = ({formData, setFormData}) => {
                 email: formData.email
             };
 
-            await updateProfileData(authToken, updatableData);
+            await updateProfileData(updatableData);
             console.log('Данные успешно сохранены!');
             
         } catch (error) {

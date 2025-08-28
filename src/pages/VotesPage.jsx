@@ -9,7 +9,6 @@ import SearchInput from "../components/votes/SearchInput";
 import VotingCard from "../components/votes/VotingCard";
 import Button from "../components/Button";
 import { getVotings } from '../services/api';
-import { useAuth } from '../context/AuthProvider';
 import { formatDate, formatTime, getVotingStatusConfig } from '../components/votes/Formatters';
 import { TbFilterEdit, TbSortDescending } from "react-icons/tb";
 import {ToastContainer} from "react-toastify";
@@ -28,7 +27,6 @@ const VotesPage = () => {
 
   const [activeTab, setActiveTab] = useState('active')
 
-  const { authToken } = useAuth();
 
   const handleNextPage = () => {
     if (hasNext) {
@@ -102,7 +100,7 @@ const VotesPage = () => {
       }
     };
     fetchVotings();
-  }, [authToken, currentPage, searchQuery, activeTab]);
+  }, [currentPage, searchQuery, activeTab]);
 
   return (
       <>

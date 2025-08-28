@@ -5,11 +5,9 @@ import PasswordChangeForm from "../components/profile/PasswordChangeFrom";
 import TimezoneSettings from "../components/profile/TimezoneSetting";
 import {useEffect, useRef, useState} from "react";
 import {confirmEmail, getProfileData, requestVerificationCode} from "../services/api.js";
-import {useAuth} from "../context/AuthProvider.jsx";
 import {toast, ToastContainer} from "react-toastify";
 
 const ProfilePage = () => {
-    const {authToken} = useAuth();
     const inputRef = useRef();
     const [isInputVisible, setIsInputVisible] = useState(false)
     const [formData, setFormData] = useState({
@@ -21,15 +19,12 @@ const ProfilePage = () => {
 
     // GET-запрос
     useEffect(() => {
-        if (!authToken) {
-            setLoading(false);
-            return;
-        }
+
 
         const fetchUserProfile = async () => {
             setLoading(true);
             try {
-                const data = await getProfileData(authToken);
+                const data = await getProfileData();
                 setFormData(data);
                 setProfileData(data);
             } catch (error) {
@@ -39,12 +34,12 @@ const ProfilePage = () => {
             }
         };
         fetchUserProfile();
-    }, [authToken]);
+    }, []);
 
 
     const handleRequestCode = async () => {
         setIsInputVisible(true)
-        await requestVerificationCode(formData.email, authToken)
+        await requestVerificationCode(formData.email)
         setResendTimer(120)
     }
 
@@ -63,8 +58,9 @@ const ProfilePage = () => {
 
     const handleConfirmCode = async () => {
         const code = inputRef.current.value;
-        await confirmEmail(formData.email, code, authToken)
+        await confirmEmail(formData.email, code)
         setIsInputVisible(false)
+        setProfileData(prev => ({ ...prev, is_email_verified: true }));
         toast.success("Почта успешно подтверждена")
     }
 

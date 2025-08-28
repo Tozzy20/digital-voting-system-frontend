@@ -167,6 +167,12 @@ export const loginUser = async (email, password, role_id, remember_flag) => {
   });
 };
 
+export const userInfo = async () => {
+    const response = await api.get(`/users/user-info`, {
+    });
+    return response.data;
+};
+
 export const getProfileData = async () => {
   const response = await api.get(`/users/profile`, {
     headers: {
@@ -190,7 +196,7 @@ export const updateProfileData = async (profileData) => {
 
 export const changePassword = async (passwords) => {
   const response = await api.put(
-    `/users/change-password/`,
+    `/users/change-password`,
     passwords,
     {
       headers: {

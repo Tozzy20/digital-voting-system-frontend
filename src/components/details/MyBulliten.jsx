@@ -7,7 +7,7 @@ import { TbTimezone } from "react-icons/tb";
 
 
 
-const MyBulliten = ({ votingData, authToken, votingId }) => {
+const MyBulliten = ({ votingData, votingId }) => {
 
   const registrationStartDate = new Date(votingData.voting_full_info.registration_start);
   const registrationEndDate = new Date(votingData.voting_full_info.registration_end);

@@ -1,5 +1,4 @@
 import { useState, useEffect, useRef } from 'react';
-import { useAuth } from '/src/context/AuthProvider.jsx'
 import { getProfileData } from '../services/api'
 import DropdownMenu from '../components/DropdownMenu'
 import { CgProfile } from "react-icons/cg";
@@ -11,7 +10,6 @@ import HeaderDropdown from './Header/HeaderDropdown';
 import AltHeaderDropdown from './Header/AltHeaderDropdown';
 
 const Header = ({isAuthorized = true}) => {
-    const { authToken } = useAuth();
     const [user, setUser] = useState(null);
 
     const Users = [

@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { getVotingStatusConfig } from './Formatters';
-import { useAuth } from '../../context/AuthProvider';
 import { Modal, Box, Button, Typography } from '@mui/material';
 import { deleteVote } from '../../services/api';
 import { toast } from 'react-toastify';
@@ -12,7 +11,6 @@ import { IoMdStats } from "react-icons/io";
 const VotingCard = ({ voting }) => {
     const status = getVotingStatusConfig(voting);
 
-    const { user, authToken } = useAuth();
 
     const [isModalOpen, setIsModalOpen] = useState(false)
 
@@ -23,7 +21,7 @@ const VotingCard = ({ voting }) => {
 
     const handleDelete = async () => {
         try {
-            await deleteVote(voting.id, authToken);
+            await deleteVote(voting.id);
             toast.success("Голосование успешно удалено!");
             handleCloseModal();
         } catch (error) {

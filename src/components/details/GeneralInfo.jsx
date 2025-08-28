@@ -2,17 +2,15 @@ import {getVotingStatusConfigDetails} from '../votes/Formatters';
 import {Button} from '@material-tailwind/react'
 import {TbTimezone, TbLock, TbFileZip, TbFileDescription} from "react-icons/tb";
 import {LuCalendar1, LuAlarmClock, LuClock3} from "react-icons/lu";
-import {useAuth} from "../../context/AuthProvider.jsx";
 import {sendToArchive, unArchive} from "../../services/api.js";
 import {toast} from "react-toastify";
 import {useState} from "react";
 
-const GeneralInfo = ({votingData, isRegistered, onRegister, onNavigateToMyBulliten, onNavigateToResults}) => {
+const GeneralInfo = ({votingData, isRegistered, onRegister, onNavigateToMyBulliten, onNavigateToResults, user_id, role_id}) => {
     const [isArchived, setIsArchived] = useState(votingData.voting_full_info.archived);
 
     const status = getVotingStatusConfigDetails(votingData);
 
-    const {user, authToken} = useAuth()
 
     // Определяем текст и обработчик для кнопки
     let buttonText = '';
@@ -34,15 +32,13 @@ const GeneralInfo = ({votingData, isRegistered, onRegister, onNavigateToMyBullit
         isButtonDisabled = !isRegistered;
     }
 
-    if (!authToken) console.log('loading')
-
     const handleSendToArchive = async () => {
         if (!isArchived) {
-            await sendToArchive(votingData.voting_full_info.id, authToken)
+            await sendToArchive(votingData.voting_full_info.id)
             toast.success('Голосование успешно заархивировано')
             setIsArchived(true)
         } else {
-            await unArchive(votingData.voting_full_info.id, authToken)
+            await unArchive(votingData.voting_full_info.id)
             toast.success('Голосование успешно разархивировано')
             setIsArchived(false)
         }
@@ -93,7 +89,7 @@ const GeneralInfo = ({votingData, isRegistered, onRegister, onNavigateToMyBullit
                     </div>
 
                     {/*Кнопка для архивации*/}
-                    {(user.roleId === 3 || user.userId === votingData.voting_full_info.creator.id) &&
+                    {(role_id === 3 || user_id === votingData.voting_full_info.creator.id) &&
                         <Button
                             className='bg-[#437DE9] text-base px-5 lg:mt-auto py-4 w-full rounded-lg flex justify-center items-center gap-2.5'
                             onClick={handleSendToArchive}

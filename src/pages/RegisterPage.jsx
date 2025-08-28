@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import HeaderLogin from "/src/components/HeaderLogin";
 import { Link, useNavigate } from 'react-router-dom';
 import { register } from '../services/api'
+import {toast, ToastContainer} from "react-toastify";
 
 const RegisterPage = () => {
     const [formData, setFormData] = useState({
@@ -65,8 +66,8 @@ const RegisterPage = () => {
             const response = await register(formData);
             console.log('Ответ API регистрации:', response);
 
-            const successMsg = 'Регистрация прошла успешно!';
-            setMessage(successMsg);
+            toast.success('Регистрация прошла успешно!')
+
             console.log('Регистрация прошла успешно, переходим к входу в систему');
 
             setTimeout(() => {
@@ -75,14 +76,15 @@ const RegisterPage = () => {
 
         } catch (error) {
             console.error('Ошибка при регистрации:', error);
-            const errorMsg = error.response?.data?.message || error.message || 'Не удалось подключиться к серверу.';
+            // const errorMsg = error.response?.data?.message || error.message || 'Не удалось подключиться к серверу.';
             //setMessage(`Ошибка: ${errorMsg}`);
-            console.error('Ошибка регистрации с сообщением:', errorMsg);
+            // console.error('Ошибка регистрации с сообщением:', errorMsg);
         }
     };
 
     return (
         <>
+            <ToastContainer />
             <div className="flex flex-col items-center  justify-center min-h-[calc(100vh-100px)] bg-gray-100">
                 <h1 className="text-[40px] mb-6 w-[264px] h-[48px] font-mak">Регистрация</h1>
 

@@ -2,12 +2,11 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import HeaderLogin from '/src/components/HeaderLogin';
 import { ToastContainer, toast } from 'react-toastify';
-import { useAuth } from '../context/AuthProvider'
 import { loginUser } from '../services/api'
 
 const LoginPage = () => {
 
-    const { login } = useAuth();
+
 
     const [formData, setFormData] = useState({
         email: '',

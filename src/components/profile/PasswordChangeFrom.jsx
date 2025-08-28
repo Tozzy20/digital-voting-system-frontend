@@ -1,11 +1,9 @@
 import { useState } from 'react';
 import { changePassword } from "../../services/api";
-import { useAuth } from '/src/context/AuthProvider.jsx'
 import { TbCloudDownload } from "react-icons/tb";
 
 
 const PasswordChangeForm = () => {  
-    const { authToken } = useAuth();
 
     const [password, setPassword] = useState({
         old_password: '',
@@ -33,11 +31,6 @@ const PasswordChangeForm = () => {
             return;
         }
 
-        if (!authToken) {
-            console.log('Ошибка: Пользователь не авторизован.');
-            return;
-        }
-
         setIsSaving(true);
         try {
             const dataToSend = {
@@ -45,7 +38,7 @@ const PasswordChangeForm = () => {
                 new_password: password.new_password,
             };
 
-            await changePassword(authToken, dataToSend);
+            await changePassword(dataToSend);
 
             console.log("Пароль успешно изменен!");
             setPassword({
@@ -62,7 +55,7 @@ const PasswordChangeForm = () => {
     };
 
     return (
-        <form onSubmit={handleSubmit} className="ml-[240px]shadow-lg bg-white rounded-[15px] md:rounded-[20px] xl:w-[473px]">
+        <form onSubmit={handleSubmit} className="shadow-lg bg-white rounded-[15px] md:rounded-[20px] xl:w-[473px]">
             <div className="p-4 md:p-[32px] space-y-4 md:space-y-[20px]">
                 <h1 className="text-neutral-800 text-xl md:text-2xl font-semibold">Пароль</h1>
 

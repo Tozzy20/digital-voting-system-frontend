@@ -1,7 +1,6 @@
 import { AlignRight, ChartColumn } from 'lucide-react'
 import { useState, useParams, useEffect } from 'react'
 import { getVotingResults } from '../../services/api'
-import { useAuth } from '../../context/AuthProvider'
 // import { Button, GrayButton } from '../../../components/Buttons'
 
 const ResultsBlock= ({ title, description, children, buttons = true, results }) => {
@@ -36,7 +35,6 @@ const ResultsBlock= ({ title, description, children, buttons = true, results }) 
 export const ResultsForAdmin = ({ votingId }) => {
 	
 
- 	const { authToken } = useAuth();
 	const [results, setResults] = useState([]);
 
 
@@ -46,7 +44,7 @@ export const ResultsForAdmin = ({ votingId }) => {
 				try {
 
 					// Запрос на результаты
-					const results = await getVotingResults(votingId, authToken)
+					const results = await getVotingResults(votingId)
 					setResults(results)
 				} catch (e) {
 					console.error("Ошибка при получении данных:", e);
@@ -56,7 +54,7 @@ export const ResultsForAdmin = ({ votingId }) => {
 			if (votingId) {
 				fetchData();
 			}
-		}, [votingId, authToken]);
+		}, [votingId]);
 
 	const questions = results?.questions || [];
 	return (
