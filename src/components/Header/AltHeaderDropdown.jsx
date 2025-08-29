@@ -1,4 +1,5 @@
-import React, { useState, useRef } from "react"
+import React, { useState, useRef } from "react";
+import { NavLink } from "react-router-dom";
 
 const AltHeaderDropdown = ({ options = [], title }) => {
     const [isOpen, setIsOpen] = useState(false)
@@ -31,18 +32,22 @@ const AltHeaderDropdown = ({ options = [], title }) => {
         >
             <div className='col-span-4'>
                 <p className='p-3 cursor-pointer'>{title}</p>
+
                 <div className={!isOpen ? 'hidden' : ''}>
-                    {options.map((option, index) => (
-                        <p
-                            key={index}
+                    {options.map((option) => (
+                        <NavLink
+                            key={option.id}
+                            to={option.to}
                             className='p-3 cursor-pointer text-base font-normal select-none transition-all hover:bg-gray-200'
                             onClick={(e) => {
                                 e.stopPropagation()
                                 handleOptionClick()
                             }}
-                        >
-                            {option}
-                        </p>
+                            >
+                            <p>    
+                            {option.title}
+                            </p>
+                        </NavLink>
                     ))}
                 </div>
             </div>
