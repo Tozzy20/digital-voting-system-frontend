@@ -8,6 +8,8 @@ import Voters from '../components/details/Voters.jsx';
 import {ResultsForAdmin, BeforeResults} from '../components/details/Results.jsx';
 import Sidebar from '../components/constructor/Sidebar.jsx';
 import {
+    getLinkToVoting,
+    getQRcode,
     getVotingData,
     getVotingParticipants,
     getVotingStats,
@@ -54,8 +56,9 @@ const Details = () => {
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
     const [activeContent, setActiveContent] = useState("general-info");
     const [votingStats, setVotingStats] = useState(null);
-    const [voters, setVoters] = useState([]);
     const [isRegistered, setIsRegistered] = useState(false);
+    const [linkToVoting, setLinkToVoting] = useState('');
+    const [qrCode, setQRcode] = useState('');
 
     // для role_id и user_id
     const [user_id, setUserId] = useState(null);
@@ -132,13 +135,16 @@ const Details = () => {
                 // Запрос на голосующих
                 const votersData = await getVotingParticipants(votingId);
 
+                const linkToVoting = await getLinkToVoting(votingId)
+                const qrCodeToVoting = await getQRcode(votingId)
+
                 const isUserRegistered = votersData.participants.some(voter => voter.id === user_id);
                 setIsRegistered(isUserRegistered);
 
-
+                setQRcode(qrCodeToVoting);
+                setLinkToVoting(linkToVoting.registration_link);
                 setVotingData(formattedData);
                 setVotingStats(statsData);
-                setVoters(votersData);
             } catch (e) {
                 console.error("Ошибка при получении данных:", e);
                 // Можно добавить тост, чтобы показать ошибку пользователю
@@ -220,7 +226,7 @@ const Details = () => {
                 label: 'Результаты',
                 icon: (isActive) => <LuClipboardList
                     size={24}
-                    color={isActive ? '#437DE9' : '#4B5563'}
+                    color={isActive ? '#437DE9' : ''}
                     strokeWidth={isActive ? 1.5 : 0.5}
                 />
             });
@@ -240,12 +246,14 @@ const Details = () => {
                                     onNavigateToMyBulliten={handleNavigateToMyBulliten}
                                     onNavigateToResults={handleNavigateToResults}
                                     user_id = {user_id}
-                                    role_id = {role_id}/>;
+                                    role_id = {role_id}
+                                    linkToVoting = {linkToVoting}
+                                    qrCode = {qrCode}/>;
             case "stats":
                 return <VotingStatistic votingData={votingData} votingStats={votingStats}
                                         quorum={votingData.voting_full_info.quorum}/>;
             case "voters":
-                return <Voters voters={voters}/>;
+                return <Voters votingId={votingId}/>;
             case "results":
                 return status.text === 'Голосование завершено' ? <ResultsForAdmin votingId={votingId}/> :
                     <BeforeResults/>;

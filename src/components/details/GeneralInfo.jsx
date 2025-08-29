@@ -1,16 +1,39 @@
 import {getVotingStatusConfigDetails} from '../votes/Formatters';
 import {Button} from '@material-tailwind/react'
-import {TbTimezone, TbLock, TbFileZip, TbFileDescription} from "react-icons/tb";
-import {LuCalendar1, LuAlarmClock, LuClock3} from "react-icons/lu";
+import {TbTimezone, TbLock, TbFileZip} from "react-icons/tb";
+import {LuCalendar1, LuAlarmClock} from "react-icons/lu";
 import {sendToArchive, unArchive} from "../../services/api.js";
 import {toast} from "react-toastify";
-import {useState} from "react";
+import React, {useState} from "react";
+import {CopyToClipboard} from "react-copy-to-clipboard-ts";
+import {
+    Dialog,
+    DialogTitle,
+    DialogContent,
+    Box,
+    Typography
+} from "@mui/material";
 
-const GeneralInfo = ({votingData, isRegistered, onRegister, onNavigateToMyBulliten, onNavigateToResults, user_id, role_id}) => {
+const GeneralInfo = ({
+                         votingData,
+                         isRegistered,
+                         onRegister,
+                         onNavigateToMyBulliten,
+                         onNavigateToResults,
+                         user_id,
+                         role_id,
+                         linkToVoting,
+                         qrCode
+                     }) => {
     const [isArchived, setIsArchived] = useState(votingData.voting_full_info.archived);
+    const [open, setOpen] = useState(false);
 
     const status = getVotingStatusConfigDetails(votingData);
 
+    // qrcode
+    const imageUrl = `data:image/png;base64,${qrCode.message}`;
+
+    console.log(qrCode)
 
     // Определяем текст и обработчик для кнопки
     let buttonText = '';
@@ -28,7 +51,7 @@ const GeneralInfo = ({votingData, isRegistered, onRegister, onNavigateToMyBullit
         isButtonDisabled = !isRegistered;
     } else if (status.text === 'Голосование завершено') {
         buttonText = 'Результаты';
-        onButtonClick = onNavigateToResults; // Можно сделать отдельную функцию для навигации на результаты
+        onButtonClick = onNavigateToResults;
         isButtonDisabled = !isRegistered;
     }
 
@@ -43,12 +66,7 @@ const GeneralInfo = ({votingData, isRegistered, onRegister, onNavigateToMyBullit
             setIsArchived(false)
         }
     }
-    // // Если пользователь не зарегистрирован и голосование уже началось, кнопку не показываем
-    // if (!isRegistered && status.text !== 'Голосование на этапе регистрации') {
-    //   return null;
-    // }
 
-    // Проверка на наличие данных, чтобы избежать ошибок, если prop не передан
     if (!votingData) {
         return <div>Данные о голосовании не найдены.</div>;
     }
@@ -177,16 +195,43 @@ const GeneralInfo = ({votingData, isRegistered, onRegister, onNavigateToMyBullit
                             </div>
                         </div>
                     </div>
-                    <div className="px-5 py-4 rounded-xl outline outline-neutral-800 flex justify-between items-center">
-                        <div className="flex items-center gap-4">
-                            <div className="text-neutral-800 text-base font-medium">Материалы голосования</div>
-                        </div>
-                        <div className="w-2.5 h-2.5 bg-neutral-800 rounded-full"></div>
-                    </div>
+                    {/*<div className="items-center justify-center">*/}
+                    {/*    <CopyToClipboard text={linkToVoting} onCopy={() => alert("Скопировано!")}>*/}
+                    <button className='px-5 py-4 bg-gray-200 rounded-[10px] flex justify-center items-center'
+                            onClick={() => setOpen(true)}>Поделиться
+                    </button>
+                    {/*</CopyToClipboard>*/}
+                    {/*</div>*/}
+
+                    {/*Модальное окно для ссылки и qrcode*/}
+                    <Dialog open={open} onClose={() => setOpen(false)} keepMounted>
+                        <DialogTitle>Поделиться голосованием</DialogTitle>
+                        <DialogContent>
+                            <Box display="flex" flexDirection="column" alignItems="center" gap={1}>
+                                <Typography variant="body2" sx={{wordBreak: "break-all"}}>
+                                    <img src={imageUrl} alt='QR code'/>
+                                </Typography>
+
+
+                                <CopyToClipboard text={linkToVoting} onCopy={() => alert("Скопировано!")}>
+                                    <button className="w-full px-5 py-3 bg-[#437DE9] text-white rounded-lg">
+                                        Скопировать ссылку на регистрацию
+                                    </button>
+                                </CopyToClipboard>
+
+                                <button onClick={() => setOpen(false)}
+                                        className="w-full px-5 py-3 bg-gray-200 text-black rounded-lg">Закрыть
+                                </button>
+
+
+                                {/*<QRCodeCanvas value={linkToVoting} size={180} />*/}
+                            </Box>
+                        </DialogContent>
+                    </Dialog>
                 </div>
             </div>
         </main>
     );
 };
 
-export default GeneralInfo;
+export default React.memo(GeneralInfo);

@@ -1,12 +1,41 @@
 import SearchInput from "../votes/SearchInput.jsx";
+import {useEffect, useState} from "react";
+import {getVotingParticipants} from "../../services/api.js";
+import {toast} from "react-toastify";
 
-const Voters = ({voters}) => {
+const Voters = ({votingId}) => {
+    const [searchQuery, setSearchQuery] = useState('');
+    const [inputValue, setInputValue] = useState('');
+    const [voters, setVoters] = useState({ participants: [] });
+
+    const handleInputChange = (e) => {
+        setInputValue(e.target.value);
+    };
+
+    const handleSearchChange = () => {
+        setSearchQuery(inputValue);
+    };
+
+    useEffect(() => {
+        const fetchData = async () => {
+
+            const votersData = await getVotingParticipants(votingId, searchQuery);
+            setVoters(votersData);
+
+        }
+        fetchData();
+    }, [votingId, searchQuery]);
+
     return (
+
         <div className="bg-white shadow-sm rounded-[20px] h-[532px] overflow-hidden p-6">
 
             <div className="flex justify-between text-black text-xl font-bold mb-6 gap-4">
                 <span>Список голосующих</span>
-                <SearchInput/>
+                <SearchInput
+                    value={inputValue}
+                    onChange={handleInputChange}
+                    onSearch={handleSearchChange}/>
             </div>
 
             {/* <div className="flex"> */}
@@ -40,7 +69,8 @@ const Voters = ({voters}) => {
 
 
         </div>
-        //   </div>
+
+
     );
 };
 

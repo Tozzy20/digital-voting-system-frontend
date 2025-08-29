@@ -244,6 +244,24 @@ export const getVotingData = async (votingId) => {
   return response.data;
 }
 
+export const getLinkToVoting = async (votingId) => {
+    const response = await api.post(`/votings/${votingId}/generate-link`, {
+        headers: {
+            "Content-Type": "application/json",
+        },
+    });
+    return response.data;
+}
+
+export const getQRcode= async (votingId) => {
+    const response = await api.post(`/votings/${votingId}/generate-qr-code`, {
+        headers: {
+            "Content-Type": "application/json",
+        },
+    });
+    return response.data;
+}
+
 export const getVotingStats = async (votingId) => {
   const response = await api.get(`/votings/${votingId}/statistics`, {
     headers: {
@@ -253,11 +271,14 @@ export const getVotingStats = async (votingId) => {
   return response.data;
 }
 
-export const getVotingParticipants = async (votingId) => {
+export const getVotingParticipants = async (votingId, find='') => {
   const response = await api.get(`/votings/${votingId}/participants`, {
     headers: {
       "Content-Type": "application/json",
     },
+      params: {
+          find: find,
+      },
   });
   return response.data;
 }

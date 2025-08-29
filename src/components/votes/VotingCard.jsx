@@ -114,16 +114,15 @@ const VotingCard = ({ voting }) => {
 
             {/* Кнопки управления */}
             <div className="flex justify-end mt-2 sm:absolute sm:bottom-6 sm:right-6">
-                <div className="flex gap-2 sm:gap-[10px]">
-                    <Link to={`/votes/${voting.id}`} className=' bg-[#f4f4f4] hover:bg-[#ccc] transition-all rounded-lg p-2 cursor-pointer'>
+                <div className="flex gap-3 sm:gap-[10px]">
+                    <Link to={`/votes/${voting.id}`} className='bg-[#f4f4f4] hover:bg-[#ccc] transition-all rounded-lg p-3 cursor-pointer'>
                         <IoMdStats />
                     </Link>
                     {/*user.userId === voting.creator.id*/}
                     {/*{user.roleId === 3 &&*/}
-                        <div className=' bg-[#f4f4f4] hover:bg-[#EE5B5B] hover:text-[#FFE3E3] transition-all rounded-lg p-2 cursor-pointer' onClick={handleOpenModal} >
+                        <div className='bg-[#f4f4f4] hover:bg-[#EE5B5B] hover:text-[#FFE3E3] transition-all rounded-lg p-3 cursor-pointer' onClick={handleOpenModal} >
                             <LuTrash2 />
                         </div>
-
                 </div>
                 <ConfirmationModal
                     open={isModalOpen}
@@ -152,23 +151,23 @@ const ConfirmationModal = ({ open, handleClose, onConfirm, message }) => {
             onClose={handleClose}
             aria-labelledby="modal-title"
             aria-describedby="modal-description"
-            className="flex items-center justify-center p-4" // Tailwind классы для центрирования
+            className="flex items-center justify-center p-4"
         >
             <Box
                 sx={style}
-                className="bg-white rounded-xl shadow-2xl p-6 sm:p-8 max-w-sm w-full mx-auto" // Tailwind классы
+                className="bg-white rounded-xl shadow-2xl p-6 sm:p-8 max-w-sm w-full mx-auto"
             >
                 <Typography
                     id="modal-title"
                     variant="h6"
                     component="h2"
-                    className="text-xl sm:text-2xl font-bold mb-4 text-center" // Tailwind классы
+                    className="text-xl sm:text-2xl font-bold mb-4 text-center"
                 >
                     Подтверждение
                 </Typography>
                 <Typography
                     id="modal-description"
-                    className="text-gray-700 text-center mb-6" // Tailwind классы
+                    className="text-gray-700 text-center mb-6"
                 >
                     {message}
                 </Typography>
