@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { ToastContainer, toast } from 'react-toastify';
-import { loginUser } from '../services/api'
+import React, {useState} from 'react';
+import {Link, useNavigate} from 'react-router-dom';
+import {toast, ToastContainer} from 'react-toastify';
+import {loginUser} from '../services/api'
 
 const LoginPage = () => {
 
@@ -32,15 +32,14 @@ const LoginPage = () => {
         }
 
         setFormData(prevState => {
-            const updatedData = {
-                ...prevState,
-                [name]: parsedValue,
-            };
             // -------------------------------------------------------------------------
             // const logMessage = `Обновлены данные формы: ${JSON.stringify(updatedData)}`;
             //console.log(logMessage);
             //setMessage(logMessage); 
-            return updatedData;
+            return {
+                ...prevState,
+                [name]: parsedValue,
+            };
         });
     };
 

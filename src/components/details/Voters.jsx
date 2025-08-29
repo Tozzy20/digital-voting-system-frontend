@@ -1,7 +1,6 @@
 import SearchInput from "../votes/SearchInput.jsx";
 import {useEffect, useState} from "react";
 import {getVotingParticipants} from "../../services/api.js";
-import {toast} from "react-toastify";
 
 const Voters = ({votingId}) => {
     const [searchQuery, setSearchQuery] = useState('');
