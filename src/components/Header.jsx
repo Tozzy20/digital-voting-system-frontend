@@ -21,7 +21,11 @@ const Header = ({isAuthorized = true}) => {
       { title: 'Список голосований', to: '/votes' },
       { title: 'Конструктор голосований', to: '/constructor' }
     ]
-    const Add = ['Голосование', 'Шаблон голосований', 'Группу пользователей']
+    const Add = [
+      { id: 1, title: 'Голосование', to: '/constructor' },
+      { id: 2, title: 'Шаблон голосований', to: '/' },
+      { id: 3, title: 'Группу пользователей', to: '/' }
+    ]
     
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
 
