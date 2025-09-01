@@ -12,7 +12,7 @@ const SearchInput = ({value, onChange, onSearch}) => {
     
     return (
         <div className="px-3 py-2 sm:px-[20px] sm:py-[16px] rounded-lg border border-[#CCCCCC] flex items-center gap-2 w-full">
-            <CiSearch size={32} />
+            <CiSearch size={24} />
             <input
                 type="text"
                 placeholder="Поиск по таблице"

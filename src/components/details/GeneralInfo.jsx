@@ -3,7 +3,7 @@ import {Button} from '@material-tailwind/react'
 import {TbTimezone, TbLock, TbFileZip} from "react-icons/tb";
 import {LuCalendar1, LuAlarmClock} from "react-icons/lu";
 import {sendToArchive, unArchive, getLinkToVoting, getQRcode} from "../../services/api.js";
-import {toast} from "react-toastify";
+import {toast, ToastContainer} from "react-toastify";
 import React, {useState} from "react";
 import {CopyToClipboard} from "react-copy-to-clipboard-ts";
 import {
@@ -13,6 +13,7 @@ import {
     Box,
     Typography
 } from "@mui/material";
+import {useSearchParams} from "react-router-dom";
 
 const GeneralInfo = ({
                          votingData,
@@ -27,6 +28,12 @@ const GeneralInfo = ({
     const [open, setOpen] = useState(false);
     const [linkToVoting, setLinkToVoting] = useState('');
     const [qrCode, setQRcode] = useState('');
+
+    const [searchParams] = useSearchParams();
+    const statusSearch = searchParams.get('status');
+    if (statusSearch === 'success') {
+        toast.success('Вы успешно зарегистрировались на голосование')
+    }
 
     const status = getVotingStatusConfigDetails(votingData);
 
@@ -84,6 +91,8 @@ const GeneralInfo = ({
     }
 
     return (
+        <>
+        <ToastContainer />
         <main
             className="p-4 sm:p-6 bg-white rounded-[20px] w-full shadow-lg"> {/* Уменьшаем padding на маленьких экранах */}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 h-full">
@@ -243,6 +252,7 @@ const GeneralInfo = ({
                 </div>
             </div>
         </main>
+        </>
     );
 };
 

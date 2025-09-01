@@ -31,10 +31,11 @@ const Voters = ({votingId}) => {
 
             <div className="flex justify-between text-black text-xl font-bold mb-6 gap-4">
                 <span>Список голосующих</span>
+                <div className='w-[300px]'>
                 <SearchInput
                     value={inputValue}
                     onChange={handleInputChange}
-                    onSearch={handleSearchChange}/>
+                    onSearch={handleSearchChange}/></div>
             </div>
 
             {/* <div className="flex"> */}

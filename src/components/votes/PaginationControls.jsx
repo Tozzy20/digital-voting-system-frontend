@@ -16,7 +16,7 @@ const PaginationControls = ({currentPage, totalPages, hasNext, hasPrev, onNextPa
                         disabled={!hasPrev}
                         className={`rounded-lg flex items-center justify-center cursor-pointer ${!hasPrev ? 'opacity-50 cursor-not-allowed' : ''}`}
                     >
-                        <RiArrowLeftSFill size={32} />
+                        <RiArrowLeftSFill size={24} />
                     </button>
     
                     <button
@@ -24,7 +24,7 @@ const PaginationControls = ({currentPage, totalPages, hasNext, hasPrev, onNextPa
                         disabled={!hasNext}
                         className={`rounded-lg flex items-center justify-center cursor-pointer ${!hasNext ? 'opacity-50 cursor-not-allowed' : ''}`}
                     >
-                        <RiArrowRightSFill size={32} />
+                        <RiArrowRightSFill size={24} />
                     </button>
                 </div>
             </div>
