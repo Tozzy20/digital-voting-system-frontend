@@ -2,7 +2,7 @@ import {getVotingStatusConfigDetails} from '../votes/Formatters';
 import {Button} from '@material-tailwind/react'
 import {TbTimezone, TbLock, TbFileZip} from "react-icons/tb";
 import {LuCalendar1, LuAlarmClock} from "react-icons/lu";
-import {sendToArchive, unArchive} from "../../services/api.js";
+import {sendToArchive, unArchive, getLinkToVoting, getQRcode} from "../../services/api.js";
 import {toast} from "react-toastify";
 import React, {useState} from "react";
 import {CopyToClipboard} from "react-copy-to-clipboard-ts";
@@ -22,11 +22,11 @@ const GeneralInfo = ({
                          onNavigateToResults,
                          user_id,
                          role_id,
-                         linkToVoting,
-                         qrCode
                      }) => {
     const [isArchived, setIsArchived] = useState(votingData.voting_full_info.archived);
     const [open, setOpen] = useState(false);
+    const [linkToVoting, setLinkToVoting] = useState('');
+    const [qrCode, setQRcode] = useState('');
 
     const status = getVotingStatusConfigDetails(votingData);
 
@@ -53,7 +53,11 @@ const GeneralInfo = ({
         buttonText = 'Результаты';
         onButtonClick = onNavigateToResults;
         isButtonDisabled = !isRegistered;
-    }
+    } else if (status.text === 'Ожидает начала') {
+    buttonText = 'Зарегистрироваться';
+    onButtonClick = onNavigateToResults;
+    isButtonDisabled = !isRegistered;
+}
 
     const handleSendToArchive = async () => {
         if (!isArchived) {
@@ -65,6 +69,14 @@ const GeneralInfo = ({
             toast.success('Голосование успешно разархивировано')
             setIsArchived(false)
         }
+    }
+
+    const handleOpenModal = async () => {
+        const linkToVoting = await getLinkToVoting(votingData.voting_full_info.id)
+        const qrCodeToVoting = await getQRcode(votingData.voting_full_info.id)
+        setQRcode(qrCodeToVoting);
+        setLinkToVoting(linkToVoting.registration_link);
+        setOpen(true)
     }
 
     if (!votingData) {
@@ -198,7 +210,7 @@ const GeneralInfo = ({
                     {/*<div className="items-center justify-center">*/}
                     {/*    <CopyToClipboard text={linkToVoting} onCopy={() => alert("Скопировано!")}>*/}
                     <button className='px-5 py-4 bg-gray-200 rounded-[10px] flex justify-center items-center'
-                            onClick={() => setOpen(true)}>Поделиться
+                            onClick={handleOpenModal}>Поделиться
                     </button>
                     {/*</CopyToClipboard>*/}
                     {/*</div>*/}

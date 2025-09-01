@@ -209,7 +209,7 @@ const combineDateTime = (date, time) => {
   
     try {
       const result = await createVoting(data);
-      toast.success("Успех");
+      toast.success("Голосование успешно создано");
       //alert('Голосование успешно отправлено на сервер!');
     } catch (error) {
       console.error('Ошибка отправки:', error);

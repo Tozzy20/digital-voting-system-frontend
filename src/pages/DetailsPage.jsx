@@ -8,8 +8,6 @@ import Voters from '../components/details/Voters.jsx';
 import {ResultsForAdmin, BeforeResults} from '../components/details/Results.jsx';
 import Sidebar from '../components/constructor/Sidebar.jsx';
 import {
-    getLinkToVoting,
-    getQRcode,
     getVotingData,
     getVotingParticipants,
     getVotingStats,
@@ -21,9 +19,8 @@ import {ToastContainer, toast} from 'react-toastify';
 import MyBulliten from '../components/details/MyBulliten.jsx';
 import {CiCircleInfo} from "react-icons/ci";
 import {IoMdStats} from "react-icons/io"; //stats
-import {GoPeople} from "react-icons/go"; // icon-voters
-import {LuClipboardList} from "react-icons/lu"; // icon-results
-import {TbChecklist} from "react-icons/tb"; // icon-bulliten
+import {GoPeople, GoChecklist} from "react-icons/go"; // icon-voters
+import { LiaClipboardListSolid } from "react-icons/lia"; // icon-results
 
 
 const prepareVotingDataForComponent = (rawData) => {
@@ -57,8 +54,6 @@ const Details = () => {
     const [activeContent, setActiveContent] = useState("general-info");
     const [votingStats, setVotingStats] = useState(null);
     const [isRegistered, setIsRegistered] = useState(false);
-    const [linkToVoting, setLinkToVoting] = useState('');
-    const [qrCode, setQRcode] = useState('');
 
     // для role_id и user_id
     const [user_id, setUserId] = useState(null);
@@ -123,26 +118,21 @@ const Details = () => {
         const fetchData = async () => {
             setLoading(true);
             try {
-                // Первый запрос на основные данные
-                const rawData = await getVotingData(votingId);
+
+                // Запросы на общие данные, статистику и голосующих, что бы сравнить с создателем
+                const [rawData, statsData, votersData] = await Promise.all([
+                    getVotingData(votingId),
+                    getVotingStats(votingId),
+                    getVotingParticipants(votingId)
+                ]);
 
                 // Преобразуем данные в нужный формат и сохраняем в состояние
                 const formattedData = prepareVotingDataForComponent(rawData);
 
-                // Запрос на статистику
-                const statsData = await getVotingStats(votingId);
-
-                // Запрос на голосующих
-                const votersData = await getVotingParticipants(votingId);
-
-                const linkToVoting = await getLinkToVoting(votingId)
-                const qrCodeToVoting = await getQRcode(votingId)
-
                 const isUserRegistered = votersData.participants.some(voter => voter.id === user_id);
-                setIsRegistered(isUserRegistered);
 
-                setQRcode(qrCodeToVoting);
-                setLinkToVoting(linkToVoting.registration_link);
+
+                setIsRegistered(isUserRegistered);
                 setVotingData(formattedData);
                 setVotingStats(statsData);
             } catch (e) {
@@ -211,10 +201,10 @@ const Details = () => {
             baseItems.push({
                 key: 'my-bulletin',
                 label: 'Мой бюллетень',
-                icon: (isActive) => <TbChecklist
+                icon: (isActive) => <GoChecklist
                     size={24}
                     color={isActive ? '#437DE9' : '#4B5563'}
-                    strokeWidth={isActive ? 1.5 : 0.5}
+                    strokeWidth={isActive ? 0.5 : 0}
                 />
             });
         }
@@ -224,10 +214,10 @@ const Details = () => {
             baseItems.push({
                 key: 'results',
                 label: 'Результаты',
-                icon: (isActive) => <LuClipboardList
+                icon: (isActive) => <LiaClipboardListSolid
                     size={24}
-                    color={isActive ? '#437DE9' : ''}
-                    strokeWidth={isActive ? 1.5 : 0.5}
+                    color={isActive ? '#437DE9' : '#4B5563'}
+                    strokeWidth={isActive ? 0.5 : 0}
                 />
             });
         }
@@ -246,9 +236,7 @@ const Details = () => {
                                     onNavigateToMyBulliten={handleNavigateToMyBulliten}
                                     onNavigateToResults={handleNavigateToResults}
                                     user_id = {user_id}
-                                    role_id = {role_id}
-                                    linkToVoting = {linkToVoting}
-                                    qrCode = {qrCode}/>;
+                                    role_id = {role_id}/>;
             case "stats":
                 return <VotingStatistic votingData={votingData} votingStats={votingStats}
                                         quorum={votingData.voting_full_info.quorum}/>;

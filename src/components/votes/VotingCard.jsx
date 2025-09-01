@@ -35,7 +35,7 @@ const VotingCard = ({ voting }) => {
             {/* Заголовок, группа и часовой пояс */}
             <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-3">
                 <div className="flex flex-col gap-1 sm:gap-2">
-                    <div className="text-neutral-800 text-lg sm:text-xl font-semibold font-supermolotDB leading-tight">
+                    <div className="text-neutral-800 text-lg sm:text-xl leading-tight">
                         {voting.title}
                     </div>
                     <div className="text-stone-300 text-xs sm:text-sm font-normal leading-tight">
@@ -53,7 +53,7 @@ const VotingCard = ({ voting }) => {
                 <div className="flex flex-col gap-2 w-full lg:w-fit mb-4 lg:mb-0">
                     <div className={`h-8 sm:h-10 p-2 sm:p-[10px] rounded-lg w-full 2xl:w-90 flex items-center gap-2 ${status.bg}`}>
                         {status.icon}
-                        <div className={`text-base sm:text-sm font-semibold font-supermolotDB leading-tight ${status.textColor}`}>
+                        <div className={`text-base sm:text-sm leading-tight ${status.textColor}`}>
                             {status.text}
                         </div>
                     </div>
@@ -64,7 +64,7 @@ const VotingCard = ({ voting }) => {
                     <div className="flex flex-col gap-3 sm:gap-4 flex-1">
                         <div className="flex flex-col gap-1 sm:gap-2">
                             <div className="text-neutral-600 text-xs sm:text-base">Начало регистрации</div>
-                            <div className="flex items-center gap-1 sm:gap-2 text-neutral-800 text-xs sm:text-base font-semibold font-supermolotDB">
+                            <div className="flex items-center gap-1 sm:gap-2 text-neutral-800 text-xs sm:text-base">
                                 <LuCalendar1 size={20} />
                                 <span className="whitespace-nowrap">{voting.registrationStart.date}</span>
                                 <LuAlarmClock size={20} />
@@ -72,10 +72,10 @@ const VotingCard = ({ voting }) => {
                             </div>
                         </div>
                         <div className="flex flex-col gap-1 sm:gap-2">
-                            <div className="text-neutral-600 text-xs sm:text-base font-normal leading-tight">
+                            <div className="text-neutral-600 text-xs sm:text-base sm:text-base">
                                 Окончание регистрации
                             </div>
-                            <div className="flex items-center gap-1 sm:gap-2 text-neutral-800 text-xs sm:text-base font-semibold font-supermolotDB leading-tight">
+                            <div className="flex items-center gap-1 sm:gap-2 text-neutral-800 text-xs sm:text-base">
                                 <LuCalendar1 size={20} />
                                 <span className="whitespace-nowrap">{voting.registrationEnd.date}</span>
                                 <LuAlarmClock size={20} />
@@ -87,10 +87,10 @@ const VotingCard = ({ voting }) => {
                     {/* Даты голосования */}
                     <div className="flex flex-col gap-3 sm:gap-4 flex-1 mt-4 sm:mt-0">
                         <div className="flex flex-col gap-1 sm:gap-2">
-                            <div className="text-neutral-600 text-xs sm:text-base font-normal leading-tight">
+                            <div className="text-neutral-600 text-xs sm:text-base">
                                 Начало голосования
                             </div>
-                            <div className="flex items-center gap-1 py-1 sm:gap-2 text-neutral-800 text-xs sm:text-base font-semibold font-supermolotDB leading-tight">
+                            <div className="flex items-center gap-1 sm:gap-2 text-neutral-800 text-xs sm:text-base">
                                 <LuCalendar1 size={20} />
                                 <span className="whitespace-nowrap">{voting.votingStart.date}</span>
                                 <LuAlarmClock size={20} />
@@ -98,10 +98,10 @@ const VotingCard = ({ voting }) => {
                             </div>
                         </div>
                         <div className="flex flex-col gap-1 sm:gap-2">
-                            <div className="text-neutral-600 text-xs sm:text-base font-normal leading-tight">
+                            <div className="text-neutral-600 text-xs sm:text-base">
                                 Окончание голосования
                             </div>
-                            <div className="flex items-center gap-1 sm:gap-2 text-neutral-800 text-xs sm:text-base font-semibold font-supermolotDB leading-tight">
+                            <div className="flex items-center gap-1 sm:gap-2 text-neutral-800 text-xs sm:text-base">
                                 <LuCalendar1 size={20} />
                                 <span className="whitespace-nowrap">{voting.votingEnd.date}</span>
                                 <LuAlarmClock size={20} />
@@ -115,12 +115,12 @@ const VotingCard = ({ voting }) => {
             {/* Кнопки управления */}
             <div className="flex justify-end mt-2 sm:absolute sm:bottom-6 sm:right-6">
                 <div className="flex gap-3 sm:gap-[10px]">
-                    <Link to={`/votes/${voting.id}`} className='bg-[#f4f4f4] hover:bg-[#ccc] transition-all rounded-lg p-3 cursor-pointer'>
+                    <Link to={`/votes/${voting.id}`} className='bg-[#f4f4f4] hover:bg-[#ccc] transition-all rounded-lg p-2 cursor-pointer'>
                         <IoMdStats />
                     </Link>
                     {/*user.userId === voting.creator.id*/}
                     {/*{user.roleId === 3 &&*/}
-                        <div className='bg-[#f4f4f4] hover:bg-[#EE5B5B] hover:text-[#FFE3E3] transition-all rounded-lg p-3 cursor-pointer' onClick={handleOpenModal} >
+                        <div className='bg-[#f4f4f4] hover:bg-[#EE5B5B] hover:text-[#FFE3E3] transition-all rounded-lg p-2 cursor-pointer' onClick={handleOpenModal} >
                             <LuTrash2 />
                         </div>
                 </div>
