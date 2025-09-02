@@ -38,13 +38,13 @@ const AltHeaderDropdown = ({ options = [], title }) => {
                         <NavLink
                             key={option.id}
                             to={option.to}
-                            className='p-3 cursor-pointer text-base font-normal select-none transition-all hover:bg-gray-200'
+                            className='p-3 cursor-pointer text-base font-normal select-none transition-all'
                             onClick={(e) => {
                                 e.stopPropagation()
                                 handleOptionClick()
                             }}
                             >
-                            <p>    
+                            <p className='hover:bg-gray-200'>
                             {option.title}
                             </p>
                         </NavLink>

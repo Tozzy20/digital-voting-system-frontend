@@ -347,7 +347,7 @@ const RegisterPage = () => {
                                 </p>
                             )}
 
-                            <button type="submit" className="w-full bg-black  text-white px-[20px] py-[16px] rounded-[12px] my-5">
+                            <button type="submit" className="w-full bg-black  text-white px-[20px] py-[16px] rounded-[12px] my-10">
                                 Зарегистрироваться
                             </button>
                         </form>
