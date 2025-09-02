@@ -12,7 +12,7 @@ import {
 } from 'lucide-react'
 import { GrayTag, GreenTag, YellowTag } from './Tags'
 import { BlueButton, GreenButton } from './Buttons'
-import { ProgressCircle } from './ProgressCircle'
+import { ProgressCircle } from '../details/ProgressCircle'
 import { NavLink } from 'react-router-dom'
 
 const DateRow = ({ date, time, title }) => {

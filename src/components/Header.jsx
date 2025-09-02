@@ -70,7 +70,7 @@ const Header = ({isAuthorized = true}) => {
             </div>
             <div className='mt-1 flex gap-5'>
               <NavLink
-                to={'/main'}
+                to={'/'}
                 className='px-5 h-13 flex items-start py-3 cursor-pointer hover:bg-[#505050] rounded-2xl'
               >
                 Главная
@@ -140,7 +140,7 @@ const Header = ({isAuthorized = true}) => {
               alt='User avatar'
             />
             <NavLink
-              to={'/main'}
+              to={'/'}
               className='ml-3 text-lg font-semibold'
             >
               Главная

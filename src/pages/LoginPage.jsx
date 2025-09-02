@@ -60,7 +60,7 @@ const LoginPage = () => {
 
 
                 setTimeout(() => {
-                    navigate('/main');
+                    navigate('/');
                 }, 1000);
 
 

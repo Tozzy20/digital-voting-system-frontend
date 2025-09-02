@@ -138,7 +138,7 @@ const GeneralInfo = ({
 
                     {/*Кнопка проголосовать/зарегестрироваться/результаты*/}
                     <Button
-                        className='bg-[#437DE9] text-base px-5 py-4 w-full rounded-lg flex justify-center items-center gap-2.5'
+                        className={`bg-[#437DE9] text-base px-5 py-4 w-full rounded-lg flex justify-center ${(role_id === 1 || role_id === 2) ? 'mt-32.5' : '' } items-center gap-2.5`}
                         onClick={onButtonClick}
                         disabled={isButtonDisabled}
                     >

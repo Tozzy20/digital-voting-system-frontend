@@ -15,12 +15,12 @@ function AppContent() {
 
   return (
     <>
-      {location.pathname === '/' || location.pathname === '/register' ? <HeaderLogin /> : <Header /> }
+      {location.pathname === '/login' || location.pathname === '/register' ? <HeaderLogin /> : <Header /> }
       <Routes>
-        <Route path='/' element={<LoginPage />} />
+        <Route path='/login' element={<LoginPage />} />
         <Route path='/votes' element={<VotesPage />} />
         <Route path='/register' element={<RegisterPage />} />
-        <Route path='/main' element={<MainPage />} />
+        <Route path='/' element={<MainPage />} />
         <Route path='/profile' element={<ProfilePage />} />
         <Route path='/constructor' element={<ConstructorPage />} />
         <Route path='/details' element={<Details />} />

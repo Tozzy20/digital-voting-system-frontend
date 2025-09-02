@@ -140,7 +140,7 @@ const MyBulliten = ({ votingData, votingId }) => {
                 </div>
                 <div className="relative w-full h-24">
                   <div className="absolute inset-0 h-full bg-amber-200 rounded-xl"
-                    style={{ width: `${registrationProgress}` }}></div>
+                    style={{ width: `${registrationProgress}%` }}></div>
                   <div className="absolute inset-0 w-full h-full px-5 py-4 rounded-xl border border-stone-300"></div>
                 </div>
               </div>

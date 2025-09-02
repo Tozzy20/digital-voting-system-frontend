@@ -1,4 +1,3 @@
-// src/pages/VotesPage.jsx
 import React, { useState, useEffect } from "react";
 import Header from "../components/Header";
 import Breadcrumbs from "../components/Breadcrumbs";

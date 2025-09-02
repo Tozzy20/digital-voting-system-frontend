@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { StatisticCircle } from '../details/ProgressCircle'
+import { StatisticCircle } from './ProgressCircle'
 import { AlarmClock, Calendar1, Check, X } from 'lucide-react'
 import { Chart1 } from '../Charts'
 

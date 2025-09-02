@@ -102,7 +102,7 @@ api.interceptors.response.use(
                 console.log('Требуется авторизация');
 
                 localStorage.removeItem('x-csrf-refresh-token');
-                window.location.replace('/');
+                window.location.replace('/login');
                 return Promise.reject(refreshError);
             } finally {
                 isRefreshing = false; // Сбрасываем флаг

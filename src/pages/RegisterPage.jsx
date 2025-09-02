@@ -71,7 +71,7 @@ const RegisterPage = () => {
             console.log('Регистрация прошла успешно, переходим к входу в систему');
 
             setTimeout(() => {
-                navigate('/');
+                navigate('/login');
             }, 2000);
 
         } catch (error) {
@@ -144,7 +144,6 @@ const RegisterPage = () => {
                                     className="border rounded-[8px] w-full px-3 py-3" 
                                     value={formData.surname}
                                     onChange={handleChange}
-                                    required
                                 />
                             </div>
 
@@ -291,7 +290,6 @@ const RegisterPage = () => {
                                         className="border rounded-[8px] w-[178px] h-[51px] px-3 py-2" 
                                         value={formData.surname}
                                         onChange={handleChange}
-                                        required
                                     />
                                 </div>
                             </div>

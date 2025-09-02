@@ -1,12 +1,7 @@
-import { Flame, Rocket, ScanFace } from "lucide-react";
-import {
-  AltBlueButton,
-  BlueButton,
-  RedButton,
-} from "../components/main/Buttons";
-import { GreenTag, YellowTag } from "../components/main/Tags";
+import {Rocket } from "lucide-react";
+import {BlueButton} from "../components/Button";
 import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import {Link, Navigate} from "react-router-dom";
 import Calendar from "../components/main/Calendar";
 import { ActualVoteCard, MinInfoVoteCard } from "../components/main/VoteCard";
 import { LinkText } from "../components/main/Components";
@@ -245,9 +240,7 @@ useEffect(() => {
 
   if (roleId === null) {
     return (
-      <div className="text-center mt-10">
-        Ошибка аутентификации. Войдите снова.
-      </div>
+        <Navigate to="/login" replace />
     );
   }
 
