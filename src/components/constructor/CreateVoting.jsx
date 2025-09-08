@@ -4,7 +4,7 @@ import InputField from '/src/components/constructor/CreateVoting/InputField';
 import DateTimePicker from '/src/components/constructor/CreateVoting/DateTimePicker';
 import QuestionForm from '/src/components/constructor/CreateVoting/QuestionForm';
 import AddQuestionButton from '/src/components/constructor/CreateVoting/AddQuestionButton';
-import { createVoting, getDepartments } from '../../services/api'
+import {createVoting, getDepartments, saveTemplate} from '../../services/api'
 import { toast, ToastContainer } from 'react-toastify';
 import { CiViewList } from "react-icons/ci";
 import { MdOutlineRocketLaunch } from "react-icons/md";
@@ -217,6 +217,36 @@ const combineDateTime = (date, time) => {
     }
   };
 
+    const sendTemplateToServer = async () => {
+        const data = {
+            title: votingTitle || 'Без названия',
+            theme: 'string',
+            public: true,
+            quorum: quorumCondition === '50_plus_1' ? 50 : quorumCondition === 'two_thirds' ? 66 : 0,
+            registration_start: combineDateTime(registrationStart.date, registrationStart.time),
+            registration_end: combineDateTime(registrationEnd.date, registrationEnd.time),
+            voting_start: combineDateTime(votingStart.date, votingStart.time),
+            voting_end: combineDateTime(votingEnd.date, votingEnd.time),
+            questions: questions.map(q => ({
+                type: q.type || 'single_choice',
+                title: q.header || 'Без названия',
+                options: q.options
+                    .filter(opt => opt.trim() !== '')
+                    .map(opt => ({ option: opt.trim() }))
+            })),
+            department_ids: selectedDepartmentIds // Используем выбранные ID департаментов
+        };
+
+        try {
+            await saveTemplate(data)
+            toast.success('Шаблон сохранен');
+            //alert('Голосование успешно отправлено на сервер!');
+        } catch (error) {
+            console.error('Ошибка отправки:', error);
+            // alert('Не удалось отправить данные. Проверьте подключение или попробуйте позже.');
+        }
+    };
+
   // --- JSX ---
   return (
     <>
@@ -376,7 +406,7 @@ const combineDateTime = (date, time) => {
   </button>
 
   <button
-    onClick={sendToServer}
+    onClick={sendTemplateToServer}
     className="w-full sm:w-auto border border-blue-500 text-blue-500 px-3 py-2 sm:px-4 sm:py-2 rounded-lg flex items-center justify-center sm:justify-start space-x-2 hover:bg-blue-50 transition text-sm sm:text-base"
   >
     <CiViewList size={24} />
