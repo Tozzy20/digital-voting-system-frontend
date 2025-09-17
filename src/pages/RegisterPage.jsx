@@ -213,7 +213,7 @@ const RegisterPage = () => {
                             <p className="text-sm mb-6">
                                 Панель управления системой электронных голосований
                             </p>
-                            <Link to="/" className="block border border-white text-center rounded-xl px-4 py-4 w-full">
+                            <Link to="/login" className="block border border-white text-center rounded-xl px-4 py-4 w-full">
                                 Авторизация
                             </Link>
                         </div>
@@ -232,7 +232,7 @@ const RegisterPage = () => {
                                 Панель управления системой электронных голосований
                             </span>
                             <div className="w-full h-[20px]"></div>
-                            <Link to="/" className="block border border-white text-center rounded-xl px-[20px] py-[16px] w-full">
+                            <Link to="/login" className="block border border-white text-center rounded-xl px-[20px] py-[16px] w-full">
                                 Авторизация
                             </Link>
                         </div>

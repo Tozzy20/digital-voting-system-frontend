@@ -1,5 +1,5 @@
 // src/components/PageTitle.jsx
-import React from 'react';
+import React, {memo} from 'react';
 
 const PageTitle = (props) => {
     return (
@@ -9,4 +9,4 @@ const PageTitle = (props) => {
     );
 };
 
-export default PageTitle;
+export default memo(PageTitle);

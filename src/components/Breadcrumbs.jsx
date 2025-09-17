@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {memo} from 'react';
 
 const Breadcrumbs = (props) => {
     return (
@@ -8,4 +8,4 @@ const Breadcrumbs = (props) => {
     );
 };
 
-export default Breadcrumbs;
+export default memo(Breadcrumbs);

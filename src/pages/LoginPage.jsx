@@ -217,7 +217,7 @@ const LoginPage = () => {
                                 </p>
                             )} */}
 
-                            <button type="submit" className="w-full bg-black  text-white px-[20px] py-[16px] rounded-[12px] mt-14">
+                            <button type="submit" className="w-full bg-black  text-white px-[20px] py-[16px] rounded-[12px] mt-13">
                                 Войти
                             </button>
                         </form>

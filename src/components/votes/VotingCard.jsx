@@ -25,6 +25,7 @@ const VotingCard = ({ voting }) => {
             toast.success("Голосование успешно удалено!");
             handleCloseModal();
         } catch (error) {
+            toast.error("Не удалось удалить голосование")
             console.log(error)
         }
     }
@@ -72,7 +73,7 @@ const VotingCard = ({ voting }) => {
                             </div>
                         </div>
                         <div className="flex flex-col gap-1 sm:gap-2">
-                            <div className="text-neutral-600 text-xs sm:text-base sm:text-base">
+                            <div className="text-neutral-600 text-xs sm:text-base">
                                 Окончание регистрации
                             </div>
                             <div className="flex items-center gap-1 sm:gap-2 text-neutral-800 text-xs sm:text-base">
