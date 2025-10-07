@@ -15,7 +15,7 @@ export const Chart1 = ({ votingData, series, colors }) => {
 	const maxYValue = Math.max(...allData, 10);
 	const yAxisMax = maxYValue > 0 ? maxYValue + maxYValue * 0.2 : 10; // Добавляем 20% для отступа, но не менее 10
 
-	
+
 	const chartConfig = {
 		type: 'line',
 		height: 550,
@@ -110,7 +110,7 @@ export const Chart1 = ({ votingData, series, colors }) => {
 		},
 	}
 	return (
-		<Card>
+		<Card shadow={false}>
 			<CardHeader
 				floated={false}
 				shadow={false}

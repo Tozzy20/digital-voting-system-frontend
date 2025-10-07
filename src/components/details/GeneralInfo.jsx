@@ -61,11 +61,13 @@ const GeneralInfo = ({
         onButtonClick = onNavigateToResults;
         isButtonDisabled = !isRegistered;
     } else if (status.text === 'Ожидает начала') {
-    buttonText = 'Зарегистрироваться';
-    onButtonClick = onNavigateToResults;
-    isButtonDisabled = !isRegistered;
-}
+        buttonText = 'Зарегистрироваться';
+        onButtonClick = onNavigateToResults;
+        isButtonDisabled = !isRegistered;
+    }
 
+
+    // Архивация голосования
     const handleSendToArchive = async () => {
         if (!isArchived) {
             await sendToArchive(votingData.voting_full_info.id)

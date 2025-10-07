@@ -376,3 +376,37 @@ export const confirmEmail = async (email, code) => {
     })
     return response.data;
 }
+
+export const saveTemplate = async (template) => {
+    const response = await api.post(`/templates/`, template)
+    return response.data;
+}
+
+export const getTemplates = async (page = 1, find='', status='') => {
+    const params = {
+        page: page,
+        find: find,
+    }
+
+    if (status !== '') {
+        params.status = status
+    }
+
+    const response = await api.get(`/templates/`, {
+        headers: {
+            "Content-Type": "application/json",
+        },
+        params
+    });
+    return response.data;
+};
+
+export const logout = async () => {
+    const response = await api.post(`/auth/logout`)
+    return response.data;
+}
+
+export const logoutRefresh = async () => {
+    const response = await api.post(`/auth/logout_refresh`)
+    return response.data;
+}
