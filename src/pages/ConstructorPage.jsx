@@ -11,6 +11,7 @@ import {ToastContainer} from "react-toastify";
 const ConstructorPage = () => {
     const [activeContent, setActiveContent] = useState("create-poll");
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+    const [selectedTemplate, setSelectedTemplate] = useState(null);
 
     const handleMenuItemClick = (itemKey) => {
         setActiveContent(itemKey);
@@ -35,9 +36,10 @@ const ConstructorPage = () => {
     const renderContent = () => {
         switch (activeContent) {
             case "create-poll":
-                return <Constructor/>;
+                return <Constructor selectedTemplate={selectedTemplate} />;
             case "poll-templates":
-                return <Templates/>;
+                return <Templates setActiveContent={setActiveContent}
+                                  setSelectedTemplate={setSelectedTemplate} />;
             default:
                 return <Constructor/>;
         }

@@ -11,7 +11,7 @@ import {MdOutlineRocketLaunch} from "react-icons/md";
 import {useDepartments} from "../../hooks/useDepartments.js";
 
 
-const CreateVoting = () => {
+const CreateVoting = ({selectedTemplate}) => {
     const today = new Date().toISOString().split("T")[0]; // текущая дата
 
     const [votingTitle, setVotingTitle] = useState('');
@@ -21,6 +21,7 @@ const CreateVoting = () => {
     const [votingEnd, setVotingEnd] = useState({date: today, time: '10:00'});
     const [isDropdownOpen, setIsDropdownOpen] = useState(false); // Управление открытием/закрытием выпадающего списка для департаментов
 
+    // Департаменты
     const {
         departments,
         selectedDepartmentIds,
@@ -29,6 +30,31 @@ const CreateVoting = () => {
         hasMoreDepartments,
         handleLoadMore
     } = useDepartments();
+
+    // Загружаем данные из выбранного шаблона
+    useEffect(() => {
+        if (selectedTemplate) {
+            // Устанавливаем заголовок и условие кворума из шаблона
+            setVotingTitle(selectedTemplate.title || "");
+            setQuorumCondition(selectedTemplate.quorum || "");
+
+            // Нормализуем вопросы из шаблона:
+            // добавляем уникальный id
+            // приводим title => header (для совместимости с QuestionForm)
+            // options: вытаскиваем строку из объекта { option: "..." }
+            const normalized = (selectedTemplate.questions || []).map((q, idx) => ({
+                id: idx + 1,
+                type: q.type || 'single_choice',
+                header: q.title || '',
+                options: (q.options || []).map(opt =>
+                    typeof opt === 'object' && opt !== null ? opt.option : opt
+                )
+            }));
+
+            setQuestions(normalized);
+            console.log(selectedTemplate);
+        }
+    }, [selectedTemplate]);
 
     const [questions, setQuestions] = useState([
         {
@@ -92,9 +118,9 @@ const CreateVoting = () => {
         questions: questions.map(q => ({
             type: q.type || 'single_choice',
             title: q.header || 'Без названия',
-            options: q.options
+            options: (q.options || [])
                 .filter(opt => opt.trim() !== '')
-                .map(opt => ({option: opt.trim()}))
+                .map(opt => ({ option: opt.trim() }))
         })),
         department_ids: selectedDepartmentIds // Используем выбранные ID департаментов
     };

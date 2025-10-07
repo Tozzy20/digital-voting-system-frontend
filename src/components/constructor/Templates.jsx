@@ -2,7 +2,7 @@ import {useEffect, useState} from "react";
 import {getTemplates} from "../../services/api.js";
 import {LuCalendar1, LuAlarmClock} from "react-icons/lu"
 
-const Templates = () => {
+const Templates = ({setActiveContent, setSelectedTemplate}) => {
     const [templates, setTemplates] = useState([]);
 
     useEffect(() => {
@@ -23,6 +23,11 @@ const Templates = () => {
                 <div
                     key={index}
                     className="bg-[#CCCCCC] shadow-md rounded-xl p-4 border border-gray-200 hover:shadow-lg transition"
+                    onClick={() => {
+                        setSelectedTemplate(tpl);
+                        // переключаем вкладку сайдбара на "Конструктор"
+                        setActiveContent("create-poll");
+                    }}
                 >
                     <span className="block text-lg font-bold text-blue-600 mb-3">
                         Шаблон {index + 1}

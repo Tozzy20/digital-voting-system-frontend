@@ -30,7 +30,7 @@ const QuestionForm = ({question, onChange, onRemove}) => {
     };
 
     return (
-        <div className="mb-4 py-4">
+        <div className="mb-4">
             <div className="flex items-center justify-between">
                 <div className="text-base font-bold text-gray-700">
                     Вопрос №{question.id}

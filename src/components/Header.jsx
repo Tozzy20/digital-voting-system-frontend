@@ -25,7 +25,7 @@ const Header = ({isAuthorized = true}) => {
     ]
     const Add = [
         {id: 1, title: 'Голосование', to: '/constructor'},
-        {id: 2, title: 'Шаблон голосований', to: '/'},
+        {id: 2, title: 'Шаблон голосований', to: '/constructor'},
         {id: 3, title: 'Группу пользователей', to: '/'}
     ]
 

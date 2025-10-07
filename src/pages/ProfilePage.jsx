@@ -97,7 +97,7 @@ const ProfilePage = () => {
                             <div className="shadow-lg bg-white rounded-[15px] md:rounded-[20px] w-auto">
                                 <div className="p-4 md:p-[32px] space-y-4 md:space-y-[20px]">
                                     <h1 className="text-neutral-800 text-xl md:text-2xl font-semibold">Подтвердите
-                                        адресс
+                                        адрес
                                         электронной почты</h1>
                                     <div className="flex flex-col gap-2 md:gap-[10px]">
                                         {isInputVisible && (<div className="flex flex-col gap-2">
