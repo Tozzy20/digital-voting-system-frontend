@@ -1,7 +1,7 @@
-import React, { useState, useRef } from "react";
-import { NavLink } from "react-router-dom";
+import React, {useState, useRef} from "react";
+import {NavLink} from "react-router-dom";
 
-const AltHeaderDropdown = ({ options = [], title }) => {
+const AltHeaderDropdown = ({options = [], title}) => {
     const [isOpen, setIsOpen] = useState(false)
     const timeoutRef = useRef(null)
 
@@ -43,9 +43,9 @@ const AltHeaderDropdown = ({ options = [], title }) => {
                                 e.stopPropagation()
                                 handleOptionClick()
                             }}
-                            >
+                        >
                             <p className='hover:bg-gray-200'>
-                            {option.title}
+                                {option.title}
                             </p>
                         </NavLink>
                     ))}
